@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PDOGs Redesign · NTU IM</title>
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-pdogs">
+
+<!-- ============================ NAV ============================ -->
+<nav class="top" aria-label="Primary">
+  <div class="wrap row">
+    <a href="chelsea-portfolio-home.html" class="wordmark">Chelsea Hsu</a>
+    <ul>
+      <li><a class="link" href="chelsea-portfolio-home.html#work">Work</a></li>
+      <li><a class="link" href="about.html">About</a></li>
+      <li><a class="link" href="https://chelseahsu.framer.website/" target="_blank" rel="noreferrer">Resume</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="case-hero">
+  <div class="wrap">
+    <img class="case-hero-image" src="img/PDOGs/cover.png" alt="PDOGs Redesign cover">
+  </div>
+</header>
+
+<!-- ============================ MAIN ============================ -->
+<main class="case-main">
+  <div class="wrap case-grid">
+
+    <!-- ---------- TOC ---------- -->
+    <aside class="case-toc" aria-label="Section navigation">
+      <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#solution-overview">Solution Overview</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#findings">Key Findings</a></li>
+        <li><a href="#goals">Design Goals</a></li>
+        <li><a href="#improvements">Improvements</a></li>
+        <li><a href="#design-system">Design System</a></li>
+        <li><a href="#conclusion">Outcome</a></li>
+        <li><a href="#lessons">Lessons Learned</a></li>
+      </ul>
+    </aside>
+
+    <!-- ---------- CONTENT ---------- -->
+    <article class="case-content">
+
+      <!-- ===== Context ===== -->
+      <section id="context">
+        <span class="case-eyebrow">Context</span>
+        <h1>優化程式批改平台作業繳交與管理體驗</h1>
+        <p>
+          PDOGs 是台大資管系的程式作業批改平台。2023 年，我帶領 3 人設計團隊以<strong>「提升學生及助教使用體驗」</strong>為目標重新設計 PDOGs。我們透過<strong>重整平台資訊架構與系統流程</strong>，提升作業繳交效率；同時在助教端提供<strong>更明確的系統提示</strong>，讓助教能更輕鬆地掌握系統操作。
+        </p>
+
+        <div class="case-meta-grid">
+          <div class="case-meta-card">
+            <h3 class="meta-title"><span class="h3-num" aria-hidden="true">01</span>專案時程</h3>
+            <p>2 個月，2023 年 7 月 - 2023 年 9 月</p>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title"><span class="h3-num" aria-hidden="true">02</span>專案團隊</h3>
+            <ul>
+              <li>產品經理 × 1</li>
+              <li>開發團隊</li>
+              <li>UX/UI 設計師 × 4 (我)</li>
+            </ul>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title"><span class="h3-num" aria-hidden="true">03</span>我的角色</h3>
+            <ul>
+              <li>規劃使用者研究與測試</li>
+              <li>發想與統整設計提案</li>
+              <li>制定設計系統規範</li>
+              <li>規劃響應式設計</li>
+            </ul>
+          </div>
+          <div class="case-meta-card highlight">
+            <h3 class="meta-title"><span class="h3-num h3-num--brinno" aria-hidden="true">04</span>成果與產出</h3>
+            <ul>
+              <li>縮短繳交作業時間 <strong>28%</strong></li>
+              <li><strong>3/3</strong> 位使用者認為新的設計更加直覺</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Background ===== -->
+      <section id="background">
+        <span class="case-eyebrow">Background</span>
+        <h2>改善程式批改平台易用性問題，打造更流暢的學習與管理體驗</h2>
+
+        <h3>PDOGs 是什麼？</h3>
+        <p>
+          想像你是一位程式設計的初學者，在完成作業後，你迫不亟待地進入平台，貼上程式碼並按下繳交鍵，立刻就能看到自己的成績。這個平台就是 PDOGs (Programming Design Online Grading System)，每個學期陪伴 <strong>500 多位</strong>修習程式設計課程的學生，走過他們初次學習程式的旅程。
+        </p>
+
+        <h3>為什麼要重新設計 PDOGs？</h3>
+        <p>
+          經歷多個版本的迭代，PDOGs 逐步完善系統架構與使用體驗。然而，現有系統仍存在<strong>繳交作業流程繁瑣耗時、助教端系統不易上手</strong>的問題。因此，在這個版本的迭代中，我們希望改善既有的易用性問題，讓 PDOGs 能有效在課程中協助學生與助教完成任務。
+        </p>
+
+        <div class="callout">
+          <p><strong>專案目標：</strong>改善既有易用性問題，提升學生／助教使用系統的體驗，讓繳交與管理作業流程及資訊呈現更符合需求</p>
+        </div>
+
+        <div class="case-image"><img src="img/PDOGs/stakeholders.png" alt="利害關係人關係圖：學生、助教、開發團隊"></div>
+      </section>
+
+      <!-- ===== Solution Overview ===== -->
+      <section id="solution-overview">
+        <span class="case-eyebrow">Solution Overview</span>
+        <h2>四個方向重塑學生與助教的操作體驗</h2>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">01</span>更簡潔、緊密的資訊呈現</h3>
+            <p>重新定義欄位大小，並優先呈現使用者最關注的作業狀態，讓學生更有效率地找到所需資訊。</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="img/PDOGs/solution-1.png" alt="重整後的作業列表，狀態欄位優先呈現"></div>
+        </div>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">02</span>更直覺、友善的側邊欄操作</h3>
+            <p>在返回鍵上標示將前往的頁面，避免操作錯誤，並加上作業狀態標示，幫助掌握作業繳交情形。</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="img/PDOGs/solution-2.png" alt="側邊欄顯示返回頁面名稱與作業繳交狀態"></div>
+        </div>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">03</span>更清楚的系統回饋</h3>
+            <p>在助教系統中補充專有名詞與資料輸入規則的解釋，並統一錯誤訊息格式，降低上手難度並幫助偵錯。</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="img/PDOGs/solution-3.png" alt="專有名詞提示與統一錯誤訊息格式"></div>
+        </div>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">04</span>更順暢的跨裝置體驗</h3>
+            <p>導入響應式設計，方便學生與助教在不同裝置上查看或管理作業。</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="img/PDOGs/solution-4.png" alt="跨裝置響應式介面"></div>
+        </div>
+      </section>
+
+      <!-- ===== Research ===== -->
+      <section id="research">
+        <span class="case-eyebrow">Research</span>
+        <h2>從使用者出發釐清系統現存問題，並與團隊同步收斂改進方向</h2>
+        <p>
+          為了深入了解學生與助教使用 PDOGs 的現況，我與設計團隊展開了初步研究。考量到專案時程有限，我盤點了內部資源，並與開發團隊討論後，將觀察到的問題進行分類與優先級排序，<strong>聚焦在解決對使用者影響最大且技術上可行的問題</strong>。
+        </p>
+
+        <h3><span class="h3-num" aria-hidden="true">01</span>針對學生系統進行啟發式評估</h3>
+        <p>
+          由於所有團隊成員都曾經是 PDOGs 的使用者，我們回顧所有用戶流程 (User Flow)，並用便利貼標記曾在操作時感到困惑或尚待改進之處。接著，我將問題統整到表單中，並專注於解決對學生來說最重要的「繳交程式作業」流程中的問題。
+        </p>
+        <div class="case-image"><img src="img/PDOGs/heuristic.png" alt="啟發式評估：使用便利貼標記用戶流程中的問題"></div>
+
+        <h3><span class="h3-num" aria-hidden="true">02</span>與助教的使用者訪談</h3>
+        <p>
+          由於助教端系統包含較複雜的功能，我規劃了與 <strong>6 位助教</strong>的使用者訪談，了解他們過去使用 PDOGs 的行為與挑戰，以找出助教端系統可以改進的地方。
+        </p>
+
+        <div class="case-step-row">
+          <div class="case-step-text">
+            <h4>訪談前：訪綱規劃</h4>
+            <p>依照訪談曲線規劃訪綱問題，從較容易回答的背景資訊開始，逐步引導使用者分享實際操作的行為、想法與感受。</p>
+          </div>
+          <div class="case-image"><img src="img/PDOGs/interview-prep.png" alt="訪綱規劃：依訪談曲線排序問題"></div>
+        </div>
+
+        <div class="case-step-row">
+          <div class="case-step-text">
+            <h4>訪談中：半結構式訪談</h4>
+            <p>請助教透過畫面分享日常操作流程及過去經驗，並透過「放聲思考法」說出操作過程中的想法。</p>
+          </div>
+          <div class="case-image"><img src="img/PDOGs/interview-session.png" alt="半結構式訪談：畫面分享 + 放聲思考"></div>
+        </div>
+
+        <div class="case-step-row">
+          <div class="case-step-text">
+            <h4>訪談後：問題收斂</h4>
+            <p>
+              訪談後，先透過親和圖歸類相似問題。與開發團隊討論後，進一步區分為「系統端」與「介面端」的問題。考量到系統端的改動成本高，<strong>「介面端」的問題成為我們後續著重改進的方向</strong>。
+            </p>
+          </div>
+          <div class="case-image"><img src="img/PDOGs/affinity-diagram.png" alt="親和圖：將問題區分為系統端與介面端"></div>
+        </div>
+      </section>
+
+      <!-- ===== Key Findings ===== -->
+      <section id="findings">
+        <span class="case-eyebrow">Key Findings</span>
+        <h2>研究中發現的兩個核心洞察</h2>
+
+        <h3><span class="h3-num" aria-hidden="true">01</span>「資訊鬆散」、「步驟繁瑣」、「操作不直覺」是繳交流程冗長的主要原因</h3>
+        <div class="callout">
+          <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f64b.svg" alt="學生" style="width:1.4em;height:1.4em;vertical-align:-0.3em;margin-right:4px;display:inline"> <em>「我只是想快點交作業，為什麼每次都要先經過一堆步驟？」</em></p>
+        </div>
+        <div class="case-image"><img src="img/PDOGs/insight-1.png" alt="洞察 #1：繳交流程的痛點"></div>
+
+        <h3><span class="h3-num" aria-hidden="true">02</span>專有名詞與操作方式解釋不足，導致助教上手成本高</h3>
+        <div class="callout">
+          <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f469-200d-1f4bb.svg" alt="助教" style="width:1.4em;height:1.4em;vertical-align:-0.3em;margin-right:4px;display:inline"> <em>「很多地方提示不清楚，都是靠助教口耳相傳才知道如何操作。」</em></p>
+        </div>
+        <div class="case-image"><img src="img/PDOGs/insight-2.png" alt="洞察 #2：助教上手成本高"></div>
+      </section>
+
+      <!-- ===== Design Goals ===== -->
+      <section id="goals">
+        <span class="case-eyebrow">Design Goals</span>
+        <h2>根據研究發現與團隊期望訂定設計目標</h2>
+        <p>
+          在和 PM 及開發團隊同步研究發現後，團隊回饋希望在此次的改版中同時導入響應式設計。因此，我結合研究發現與團隊期望訂定了以下的設計目標：
+        </p>
+
+        <div class="goals-grid">
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+            </span>
+            <h3 class="goal-title">優化資訊架構</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+            </span>
+            <h3 class="goal-title">打造流暢的操作體驗</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </span>
+            <h3 class="goal-title">提供清楚的系統提示</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+            </span>
+            <h3 class="goal-title">增進跨裝置使用體驗</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Design Improvements ===== -->
+      <section id="improvements">
+        <span class="case-eyebrow">Design Improvements</span>
+        <h2>透過使用者測試驗證假設，作為推動設計改進的基石</h2>
+        <p>
+          我們針對上述設計目標提出初步提案。與團隊討論後，我意識到僅憑內部成員的意見作為設計決策方向，不足以說服 PM 與開發團隊進行改動。因此，我規劃了與 <strong>3 位 PDOGs 使用者</strong>的測試，驗證設計假設，幫助確立後續的設計方向並推動方案落地。
+        </p>
+
+        <!-- ----- Goal 1: 優化資訊架構 ----- -->
+        <h3>目標 #1 · 優化資訊架構</h3>
+
+        <h4><span class="h3-num" aria-hidden="true">01</span>重新定義欄位寬度，最大化資訊呈現量</h4>
+        <p>
+          表格中每個欄位需要的長度不一，因此我們重新定義能夠在頁面上呈現最多資訊，又不會讓資訊被切割的欄位長度，妥善利用頁面空間。此外，我們透過測試驗證設計假設，優先呈現「狀態」欄位。
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>
+                    1. 表格欄位與字級過大，滑動才能看到完整資訊<br>
+                    2. 「時間」排序在前，使用者傾向查看「狀態」<br>
+                    3. 箭頭點擊範圍過小
+                  </p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      <!-- <span class="note-icon"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span> -->
+                      <span class="note-title">設計假設</span>
+                    </div>
+                    <p>使用者在繳交作業時比起「時間」更在乎「狀態」</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-1-before.png" alt="Before：表格欄位與字級過大">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>
+                    1. 調整表格欄位大小與字級<br>
+                    2. 將「狀態」排序調整在「時間」前面<br>
+                    3. 增加按鈕點擊範圍
+                  </p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      <!-- <span class="note-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></span> -->
+                      <span class="note-title">測試結果</span>
+                    </div>
+                    <p><strong>3/3</strong> 位使用者會先透過「狀態」確認作業開啟，再查看「時間」</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-1-after.png" alt="After：調整欄位大小與排序">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h4><span class="h3-num" aria-hidden="true">02</span>凸顯重要資訊</h4>
+        <p>
+          為了讓使用者可以更有效率的瀏覽資訊，我們重新調整了頁面的資訊架構，隱藏空白欄位，並將重複內容移至頁面下方。此外，從啟發式評估中我們發現比起分數，使用者更在乎作業是否有達到滿分。因此，我們在測試驗證後，在表格中呈現像是滿分、裁決（Verdict）等可以幫助使用者判斷作業完成狀態的依據。
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>1. 多數作業描述欄未為空 <br>
+                    2. 作業資訊可以在前一頁的表格中看到 <br>
+                    3. 僅顯示作業分數，使用者更在意是否達到滿分</p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      <!-- <span class="note-icon"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span> -->
+                      <span class="note-title">設計假設</span>
+                    </div>
+                    <p>「顯示作業完成狀態」對使用者來說比「單純顯示分數」更有幫助</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-2-before.png" alt="Before：多數作業描述欄位為空">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>
+                    1. 當作業描述為空時則不顯示 <br>
+                    2. 將 Overview 提前顯示，讓使用者更快看到作業繳交情形 <br>
+                    3. 顯示作業分數與總分，幫助判斷與滿分的差距 <br>
+                    4. 加上 Verdict 欄位，一目了然作業完成狀況
+                  </p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      <!-- <span class="note-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></span> -->
+                      <span class="note-title">測試結果</span>
+                    </div>
+                    <p><strong>3/3</strong> 位使用者表示在表格中顯示總分，不用點進去看很方便</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-2-after.png" alt="After：顯示總分與 Verdict 欄位">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ----- Goal 2: 打造流暢的操作體驗 ----- -->
+        <h3>目標 #2 · 打造流暢的操作體驗</h3>
+
+        <h4><span class="h3-num" aria-hidden="true">01</span>提供清晰且友善的側邊欄回饋</h4>
+        <p>
+          原先的返回鍵會返回系統的上一個階層而非上一個瀏覽的頁面，經常讓使用者感到困惑。因此，我們在返回鍵上標示將前往頁面的名稱，並增加標示作業繳交狀態的圖示，鼓勵使用者完成作業。
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>原先系統的返回鍵是返回系統的上一個階層，而不是瀏覽的上一頁，導致使用者點擊後需從作業描述頁再重新進入繳交頁。</p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      <!-- <span class="note-icon"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span> -->
+                      <span class="note-title">設計假設</span>
+                    </div>
+                    <p>作業繳交提示能鼓勵使用者完成作業</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-3-before.png" alt="Before：返回鍵會跳回上一階層">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>
+                    1. 顯示返回建返回（上一層）的頁面名稱 <br>
+                    2. 當被選擇時填滿背景，凸顯當下瀏覽的課程 <br>
+                    3. 新增作業繳交狀態提示，鼓勵使用者完成作業
+                  </p>
+                  <div class="iteration-note">
+                    <!-- <span class="note-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></span> -->
+                    <p><strong>測試結果<br></strong><strong>3/3</strong> 位使用者能瞭解綠色打勾圖示的意思，且認為能幫助他們清楚知道作業完成情形</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-3-after.png" alt="After：返回鍵顯示前往頁面名稱與作業繳交狀態">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h4><span class="h3-num" aria-hidden="true">02</span>探索更快進入繳交入口的方式</h4>
+        <p>
+          我們以簡化繳交步驟為目標探索了 3 種繳交作業的方式。雖然方案二（Tab）在測試中獲得較多的正面回饋，但需將系統進行大幅度的改動。因此，我們選擇方案三（直接上傳檔案）的設計，在不增加開發負擔的情況下，仍能符合學生的使用習慣。
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="上一個方案" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">方案一</span>
+                  <h5 class="iteration-split-title">在繳交頁顯示所有測資結果</h5>
+                  <p>✔ 比原本重新繳交少一個步驟<br>✖ 適用線上即時編輯，與學生在本地端完成的流程不符</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/proposal-1.png" alt="方案一：繳交頁顯示所有測資結果">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">方案二</span>
+                  <h5 class="iteration-split-title">用 Tab 呈現任務分頁</h5>
+                  <p>✔ Tab 比側邊欄明顯、操作更直覺<br>✖ 重新繳交步驟一樣多；開發改動幅度大</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/proposal-2.png" alt="方案二：用 Tab 呈現任務分頁">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="2">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">方案三</span>
+                  <h5 class="iteration-split-title">直接上傳檔案</h5>
+                  <p>✔ 省去從本地端複製貼上的麻煩<br>✔ 和原本的使用行為相符</p>
+                  <div class="iteration-note">
+                    <!-- <span class="note-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></span> -->
+                    <p><strong>測試結果<br></strong><strong>2/3</strong> 位使用者覺得 Tab 比原本的設計直覺 <br> <strong>1/3</strong> 位使用者認為上傳檔案的設計不太需要思考就可以操作，與使用習慣相近</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/proposal-3.png" alt="方案三：直接上傳檔案">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="下一個方案">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="方案切換">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="方案一"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="方案二"></button>
+              <button type="button" class="iteration-dot" data-dot="2" aria-label="方案三"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ----- Goal 3: 提供清楚的系統提示 ----- -->
+        <h3>目標 #3 · 提供清楚的系統提示</h3>
+        <p>
+          在助教系統中有很多專有名詞與資料輸入的格式。然而，在操作時因為缺乏明確的系統提示，使用者常常需要自行摸索一段時間才知道如何使用。因此，我們<strong>提供更清楚的系統提示</strong>，並<strong>統一錯誤訊息的格式</strong>。
+        </p>
+
+        <h4><span class="h3-num" aria-hidden="true">01</span>清楚解釋專有名詞與資料輸入規則</h4>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>當創建新的任務時，使用者常分不清楚 Label 和 Title 的差異</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-4-before.png" alt="Before：Label 與 Title 容易混淆">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>Hover 顯示 Label 和 Title 的解釋</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-4-after.png" alt="After：Hover 顯示 Label 與 Title 解釋">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+            </div>
+          </div>
+        </div>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>原先的 placeholder 容易讓使用者誤會三種格式都需要輸入</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-5-before.png" alt="Before：placeholder 易讓使用者誤會">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>以斜線隔開每一種輸入方式，並說明每一種格式對應的條件</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/iteration-5-after.png" alt="After：以斜線隔開每種輸入方式並標註條件">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h4><span class="h3-num" aria-hidden="true">02</span>統一錯誤訊息格式，提供可能原因與解法</h4>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>只說明錯誤類型，使用者不知道下一步該怎麼處理</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/error 2.png" alt="Before：僅說明錯誤類型">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>統一格式並補上可能原因與解法，協助使用者快速排錯</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="img/PDOGs/error 1.png" alt="After：錯誤類型 + 可能原因 + 解決方法">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ----- Goal 4: 提升跨裝置體驗 ----- -->
+        <h3>目標 #4 · 提升跨裝置體驗</h3>
+        <p>
+          過去 PDOGs 並沒有提供手機版介面，但許多學生習慣用手機隨時查看成績與作業資訊。為此我們導入響應式設計，讓學生能在不同裝置間順暢切換。
+        </p>
+        <div class="case-image"><img src="img/PDOGs/RWD.png" alt="響應式設計：手機與桌機介面對照"></div>
+      </section>
+
+      <!-- ===== Design System ===== -->
+      <section id="design-system">
+        <span class="case-eyebrow">Design System</span>
+        <h2>設計系統與元件規範</h2>
+        <!-- <p>
+          為了讓改版後的設計能夠被有效率地開發與維護，我制定了 PDOGs 的設計系統規範，涵蓋色彩、字型、元件等基礎元素，確保學生端與助教端介面風格的一致性。
+        </p> -->
+        <div class="case-image"><img src="img/PDOGs/design system.png"></div>
+      </section>
+
+      <!-- ===== Conclusion ===== -->
+      <section id="conclusion">
+        <span class="case-eyebrow">Outcome</span>
+        <h2>縮短繳交時間，並降低助教學習成本</h2>
+
+        <p>
+          此次改版透過<strong>重整資訊架構與系統流程</strong>，簡化原先繁瑣耗時的繳交作業流程；在助教系統中提供清楚系統提示，讓助教更輕鬆掌握系統操作，降低學習成本。
+        </p>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-num">28%</span>
+            <span class="stat-label">繳交作業時間縮短</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">3/3</span>
+            <span class="stat-label">受測者認為新設計更直覺</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">2 mo</span>
+            <span class="stat-label">從研究到改版交付</span>
+          </div>
+        </div>
+
+        <!-- <h3>使用者回饋</h3>
+        <div class="callout">
+          <p><em>「表格有顯示滿分不用再點進去看滿好的。」</em></p>
+        </div>
+        <div class="callout">
+          <p><em>「有側邊欄提示很不錯，很清楚自己寫的狀況。」</em></p>
+        </div>
+        <div class="callout">
+          <p><em>「上傳檔案不太需要思考就可以操作。」</em></p>
+        </div> -->
+
+      </section>
+
+      <!-- ===== Lessons Learned ===== -->
+      <section id="lessons">
+        <span class="case-eyebrow">Lessons Learned</span>
+        <h2>專案中的反思 & 學習</h2>
+
+        <h3><span class="h3-num" aria-hidden="true">01</span>增進時程掌控與團隊溝通的能力</h3>
+        <p>
+          第一次擔任設計組長的角色，從一開始訂定專案目標到規劃時程都一手包辦，了解到在和內部溝通時需要非常了解每個團員的進度，<strong>以及做決策時要謹記其他團隊的需求與時程</strong>，並將其納入決策及時程規劃的考量。
+        </p>
+
+        <h3><span class="h3-num" aria-hidden="true">02</span>現有系統上改進帶來的限制</h3>
+        <p>
+          一開始有很多改進的點子在和工程團隊討論後都無疾而終，覺得非常可惜。認知到在一個已經相對完整的系統下重新設計時不能只有天馬行空，<strong>而是要在現有的系統下找到最可行的改進方式</strong>。
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<!-- ============================ NEXT PROJECT ============================ -->
+<section class="case-next" aria-labelledby="next-project-title">
+  <div class="wrap">
+    <div class="next-header">
+      <span class="next-label">Next project</span>
+      <!-- <a class="next-back" href="chelsea-portfolio-home.html#work">← All projects</a> -->
+    </div>
+    <a href="case-brinno.html" class="next-card">
+      <div class="next-card-body">
+        <span class="next-meta">01 · 台大 × Brinno 產學合作專案</span>
+        <h3 class="next-title" id="next-project-title">設計協助營建團隊掌握拍攝狀況的設備管理平台</h3>
+      </div>
+      <span class="next-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap row">
+    <span class="copy">© 2026 Chelsea Hsu</span>
+    <div class="links">
+      <a href="mailto:pupss95315@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/chien-chi-hsu" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script src="scroll-spy.js" defer></script>
+<script src="iteration-carousel.js" defer></script>
+
+
+
+</body>
+</html>

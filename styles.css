@@ -1,0 +1,2701 @@
+/* ============================================================
+   CHELSEA HSU PORTFOLIO · STYLES
+   Single source of truth shared across:
+     · chelsea-portfolio-home.html  (home)
+     · about.html                   (about)
+     · case-brinno.html             (case study template)
+
+   Sections:
+     [01] Tokens
+     [02] Reset + base
+     [03] Universal focus
+     [04] Layout (.wrap)
+     [05] Component · Nav
+     [06] Component · Footer
+     [07] Component · Pill button
+     [08] Component · Section heading
+     [09] Component · Tag pill
+     [10] Sparkle + emphasis
+     [11] Home · Hero
+     [12] Home · Work cards & covers
+     [13] Home · Legacy (curiosity / outcome-row)
+     [14] About · Timeline + about-text
+     [15] Case study · Hero, TOC sidebar, content, meta, callout, stats
+     [16] Responsive
+   ============================================================ */
+
+
+/* ============================================================
+   [01] TOKENS
+   ============================================================ */
+:root {
+  /* ---- Color · base ---- */
+  --color-canvas:       #F5F2EC;   /* warm off-white (Mocha-inspired) */
+  --color-surface:      #ECE7DD;   /* warm cream surface */
+  --color-surface-elev: #FFFFFF;
+  --color-paper:        #FFFFFF;
+
+  /* ---- Color · ink ---- */
+  --color-ink:        #0A0A0A;     /* near-black for impact */
+  --color-ink-soft:   #1F1F22;
+  --color-slate:      #4A4A52;
+  --color-stone:      #7A7A80;
+  --color-muted:      #9A9AA0;
+
+  /* ---- Color · border ---- */
+  --color-border:        #D8D2C6;
+  --color-border-soft:   #E5DFD2;
+  --color-border-strong: #B8B0A0;
+
+  /* ---- Color · brand (retro purple accent — sibling of hero sparkle #9F90D9) ---- */
+  --color-blue:        #5A4BB8;   /* deep retro purple — the ONE accent (token kept as -blue to avoid renaming) */
+  --color-blue-strong: #4A3CA0;
+  --color-blue-pale:   #E8E3F5;
+  --color-blue-soft:   #DDD4EE;
+  --color-blue-wash:   #F0ECF8;
+
+  /* ---- Legacy accent washes (kept warm-toned for compatibility) ---- */
+  --color-yellow:      #FFD02F;
+  --color-yellow-wash: #FFF1C7;
+  --color-teal-wash:   #C9E8DF;
+  --color-coral:       #C95846;
+  --color-coral-wash:  #F5D6CB;
+  --color-rose-wash:   #F2DAD0;
+  --color-navy:        #0E1240;
+
+  /* ---- Color · semantic ---- */
+  --color-success: #1F9658;
+  --color-cover:   #0A0A0A;
+
+  /* ---- Type families ----
+     Space Grotesk is the display face (hero, headings, work titles).
+     Inter handles body Latin. Chinese falls back to Noto Sans TC.
+     Fraunces keeps its italic-emphasis serif role. */
+  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', 'Noto Sans TC', sans-serif;
+  --font-serif:   'Fraunces', Georgia, serif;
+  --font-mono:    'Inter', ui-monospace, 'SFMono-Regular', 'Noto Sans TC', monospace;
+
+  /* ---- Type roles ---- */
+  --t-display:  clamp(54px, 9vw, 80px);   /* hero — much bolder */
+  --t-role:     clamp(28px, 3.6vw, 44px);
+  --t-headline: clamp(28px, 3.2vw, 40px);
+  --t-title:    clamp(20px, 2vw, 26px);
+  --t-body-lg:  18px;
+  --t-body:     16px;
+  --t-label:    14px;
+  --t-caption:  13px;
+  --t-micro:    12px;
+  --t-overline: 11px;
+
+  /* ---- Radius ---- */
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 12px;
+  --r-4: 16px;
+  --r-5: 28px;
+  --r-full: 9999px;
+
+  /* ---- Spacing (4-step base) ---- */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 40px;
+  --s-9: 48px;
+  --s-10: 64px;
+  --s-11: 96px;
+
+  /* ---- Elevation ---- */
+  --shadow-1: 0 1px 2px rgba(5,0,56,0.04);
+  --shadow-2: 0 4px 12px rgba(5,0,56,0.06);
+  --shadow-3: 0 12px 32px -4px rgba(5,0,56,0.08);
+
+  /* ---- Motion ---- */
+  --ease:     cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 360ms;
+
+  /* ---- Layout ---- */
+  --col:      1120px;   /* default container width across all pages */
+  --gutter:   32px;
+  --hit:      44px;
+
+  /* ---- Case study extras ---- */
+  --nav-h:     72px;
+  --sidebar-w: 180px;
+}
+
+
+/* ============================================================
+   [02] RESET + BASE
+   ============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+html, body { background: var(--color-canvas); color: var(--color-ink); }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+::selection { background: var(--color-blue); color: #FFFFFF; }
+
+
+/* ============================================================
+   [03] UNIVERSAL FOCUS
+   ============================================================ */
+*:focus { outline: none; }
+a:focus-visible,
+button:focus-visible,
+.work-card:focus-visible,
+.pill:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+  border-radius: var(--r-1);
+}
+.work-card:focus-visible {
+  outline-offset: 8px;
+  border-radius: var(--r-3);
+}
+
+
+/* ============================================================
+   [04] LAYOUT
+   ============================================================ */
+.wrap {
+  width: 100%;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+
+/* ============================================================
+   [05] COMPONENT · NAV
+   ============================================================ */
+nav.top {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(245, 242, 236, 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+nav.top .row {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 72px;
+}
+.wordmark {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  height: var(--hit);
+  padding: 0 var(--s-3);
+  margin-left: calc(var(--s-2) * -1);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--t-body-lg);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-full);
+}
+.wordmark .star {
+  color: var(--color-blue);
+  font-size: var(--t-caption);
+}
+
+nav.top ul {
+  list-style: none;
+  display: flex; gap: var(--s-2); align-items: center;
+}
+nav.top a.link {
+  display: inline-flex; align-items: center;
+  height: 36px; padding: 0 var(--s-3);
+  font-size: var(--t-body);
+  color: var(--color-ink-soft);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-full);
+  transition: color var(--dur-fast) var(--ease),
+              background-color var(--dur-fast) var(--ease);
+}
+nav.top a.link:hover {
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+nav.top a.link[aria-current="page"] {
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+
+
+/* ============================================================
+   [06] COMPONENT · FOOTER
+   ============================================================ */
+footer {
+  /* margin-top: var(--s-10); */
+  padding: var(--s-10) 0 var(--s-8);
+  border-top: 1px solid var(--color-ink);
+  background: var(--color-canvas);
+}
+footer .row {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+}
+footer .copy {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-slate);
+}
+footer .links {
+  display: flex; gap: var(--s-6);
+  font-size: var(--t-body);
+}
+footer .links a {
+  display: inline-flex; align-items: center;
+  height: 32px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-body);
+  color: var(--color-ink);
+  border-bottom: 1.5px solid transparent;
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+footer .links a:hover {
+  color: #5A4BB8;
+  border-bottom-color: #5A4BB8;
+}
+footer .star-mark {
+  color: var(--color-blue);
+  margin: 0 6px;
+}
+
+
+/* ============================================================
+   [07] COMPONENT · PILL BUTTON
+   ============================================================ */
+.pill {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  /* height: 52px; */
+  padding: var(--s-4) var(--s-4);
+  font-family: var(--font-display);
+  font-size: var(--t-body);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--color-ink);
+  background: transparent;
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--r-full);
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: color var(--dur-fast) var(--ease),
+              background-color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.pill:hover {
+  color: #FFFFFF;
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.pill.solid {
+  background: var(--color-ink);
+  color: #FFFFFF;
+  border-color: var(--color-ink);
+}
+.pill.solid:hover {
+  background: var(--color-blue);
+  border-color: var(--color-ink);
+  color: #FFFFFF;
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.pill .arr {
+  font-family: var(--font-display);
+  font-weight: 500;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.pill:hover .arr { transform: translateX(4px); }
+
+
+/* ============================================================
+   [08] COMPONENT · SECTION HEADING
+   ============================================================ */
+section { padding: var(--s-10) 0; }
+.sec-head {
+  display: flex; align-items: end; justify-content: space-between;
+  gap: var(--s-6);
+  /* padding-bottom: var(--s-6); */
+  margin-bottom: var(--s-4);
+  /* border-bottom: 1px solid var(--color-ink); */
+}
+.sec-head .heading-stack { flex: 1; min-width: 0; }
+.label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--t-overline);
+  font-weight: 500;
+  color: var(--color-slate);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--s-2);
+}
+.sec-head h2 {
+  font-family: var(--font-display);
+  font-size: var(--t-headline);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+}
+.sec-head h2 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+.sec-head .meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  color: var(--color-slate);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   [09] COMPONENT · TAG PILL
+   ============================================================ */
+.tag-row {
+  display: flex; flex-wrap: wrap; gap: var(--s-2);
+  margin-bottom: var(--s-6);
+}
+.tag-pill {
+  display: inline-flex; align-items: center;
+  height: 30px; padding: 0 14px;
+  font-family: var(--font-sans);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-ink-soft);
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--r-full);
+}
+
+
+/* ============================================================
+   [10] SPARKLE + EMPHASIS
+   ============================================================ */
+.star, .star-mark {
+  display: inline-block;
+  color: var(--color-blue);
+}
+
+h1.display em,
+.work-title em,
+.about-text em {
+  color: var(--color-blue);
+  font-style: normal;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   [11] HOME · HERO
+   ============================================================ */
+header.hero {
+  min-height: auto;
+  padding: var(--s-11) 0 var(--s-6);
+  background: var(--color-canvas);
+  position: relative;
+  overflow: hidden;
+}
+header.hero .wrap { position: relative; }
+.hero-main {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+}
+
+/* Status pill — "Available for work" */
+.hero-status {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  height: 36px;
+  padding: 0 var(--s-4) 0 var(--s-3);
+  margin-bottom: var(--s-7);
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: 1px solid var(--color-ink);
+  border-radius: var(--r-full);
+}
+.hero-status .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 0 4px rgba(31, 150, 88, 0.18);
+  animation: pulse 2.4s var(--ease) infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(31, 150, 88, 0.18); }
+  50%      { box-shadow: 0 0 0 7px rgba(31, 150, 88, 0.06); }
+}
+
+/* Big editorial / display heading */
+h1.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--t-display);
+  line-height: 1.2;
+  letter-spacing: -0.045em;
+  margin-bottom: var(--s-7);
+  color: var(--color-ink);
+  font-style: normal;
+}
+h1.display em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  /* slightly larger optical size to match sans weight */
+  font-size: 1.02em;
+}
+h1.display.about-h1 {
+  font-size: clamp(44px, 6.5vw, 88px);
+  line-height: 1.0;
+}
+h1.display .star {
+  color: var(--color-blue);
+  display: inline-block;
+  font-size: 0.55em;
+  margin-left: 0.18em;
+  vertical-align: 0.35em;
+  animation: spin 18s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hero-greeting {
+  font-family: var(--font-sans);
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  max-width: 60ch;
+  font-weight: 400;
+}
+.hero-greeting em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+.hero-greeting a {
+  color: var(--color-ink);
+  border-bottom: 1.5px solid var(--color-ink);
+  padding-bottom: 1px;
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+.hero-greeting a:hover {
+  color: var(--color-blue);
+  border-color: var(--color-blue);
+}
+.hero-actions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4);
+  margin-top: var(--s-8);
+}
+
+/* Retro outlined sparkle — static decorative focal element */
+.hero-sparkle {
+  position: absolute;
+  top: px;
+  right: 8%;
+  width: clamp(180px, 22vw, 200px);
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+  transform: rotate(-8deg);
+  transform-origin: 50% 50%;
+}
+
+/* Pill modifier — bigger size used by the hero */
+.pill.pill-lg {
+  height: 60px;
+  padding: 0 var(--s-7);
+  font-size: clamp(15px, 1.1vw, 17px);
+}
+
+/* Marquee — subtle ticker beneath hero */
+.hero-marquee {
+  position: relative;
+  margin-top: var(--s-9);
+  padding: var(--s-3) 0;
+  border-top: 1px solid var(--color-ink);
+  border-bottom: 1px solid var(--color-ink);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.hero-marquee-track {
+  display: inline-flex;
+  gap: var(--s-6);
+  align-items: center;
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+.hero-marquee span {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.5vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+.hero-marquee span em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+.hero-marquee .marquee-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  flex-shrink: 0;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-track { animation: none; }
+  h1.display .star { animation: none; }
+}
+
+
+/* ============================================================
+   [12] HOME · WORK CARDS & COVERS
+   ============================================================ */
+.work-list {
+  padding-top: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-10);
+}
+.work-card {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: var(--s-8);
+  padding: var(--s-7);
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--r-5);
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.work-card:hover {
+  box-shadow: 6px 6px 0 var(--color-ink);
+  transform: translate(-3px, -3px);
+}
+/* Project number — sits inline with meta row, no longer absolute */
+.work-card .work-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 26px; padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: var(--t-overline);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  border: 1px solid var(--color-ink);
+  border-radius: var(--r-full);
+}
+.work-card:hover .work-cover-img {
+  transform: scale(1.02);
+}
+.work-card:hover .work-title em {
+  color: var(--color-ink);
+}
+.work-card:hover .work-link {
+  color: var(--color-blue);
+  border-bottom-color: var(--color-blue);
+  gap: var(--s-3);
+}
+.work-card:hover .work-link .arrow {
+  transform: translate(3px, -3px);
+}
+.work-card.featured { padding: var(--s-7); }
+
+.work-cover {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-4);
+  overflow: hidden;
+  position: relative;
+  border: 1.5px solid var(--color-ink);
+  background: var(--color-surface);
+  box-shadow: none;
+  transition: transform var(--dur-base) var(--ease);
+}
+.work-cover-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease);
+}
+img.work-cover {
+  /* When the cover IS the image directly */
+  transition: transform var(--dur-base) var(--ease);
+}
+.work-card:hover img.work-cover {
+  transform: scale(1.015);
+}
+.work-cover .num {
+  position: absolute;
+  top: var(--s-5); left: var(--s-6);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 42px;
+  color: rgba(255,255,255,0.58);
+  line-height: 1;
+  z-index: 2;
+}
+.work-cover .layer {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Cover 01 — Brinno */
+.cover-brinno .frame {
+  width: 76%; height: 70%;
+  background: var(--color-canvas);
+  border-radius: var(--r-3);
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  overflow: hidden;
+  border: 1px solid var(--color-border-soft);
+}
+.cover-brinno .sidebar {
+  background: rgba(0,0,0,0.04);
+  padding: 16px 12px;
+  border-right: 1px solid rgba(0,0,0,0.05);
+}
+.cover-brinno .sidebar div {
+  height: 7px;
+  border-radius: var(--r-1);
+  background: var(--color-border-strong);
+  margin-bottom: 10px;
+}
+.cover-brinno .sidebar div:nth-child(1) { width: 65%; background: var(--color-blue); }
+.cover-brinno .sidebar div:nth-child(2) { width: 85%; }
+.cover-brinno .sidebar div:nth-child(3) { width: 72%; }
+.cover-brinno .sidebar div:nth-child(4) { width: 78%; }
+.cover-brinno .main {
+  padding: 14px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.cover-brinno .tile {
+  background: var(--color-cover);
+  border-radius: var(--r-2);
+  position: relative; overflow: hidden;
+}
+.cover-brinno .tile::after {
+  content: "";
+  position: absolute; left: 9px; bottom: 9px;
+  width: 22px; height: 4px;
+  border-radius: var(--r-1);
+  background: var(--color-blue);
+}
+
+/* Cover 02 — PDOGs */
+.cover-pdogs .frame {
+  width: 76%; height: 76%;
+  background: var(--color-canvas);
+  border-radius: var(--r-3);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 8px;
+  border: 1px solid var(--color-border-soft);
+}
+.cover-pdogs .row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-2);
+  font-size: var(--t-micro);
+  color: var(--color-ink-soft);
+  background: var(--color-canvas);
+}
+.cover-pdogs .row.passed {
+  background: rgba(46,149,96,0.10);
+  border-color: rgba(46,149,96,0.22);
+}
+.cover-pdogs .row.pending {
+  background: var(--color-blue-wash);
+  border-color: rgba(107,130,204,0.28);
+}
+.cover-pdogs .badge {
+  font-size: var(--t-overline);
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: white;
+}
+.cover-pdogs .badge.green { background: var(--color-success); }
+.cover-pdogs .badge.blue  { background: var(--color-blue); }
+
+/* Cover 03 — Moodmate */
+.cover-moodmate .frame {
+  width: 70%;
+  height: 78%;
+  background: var(--color-canvas);
+  border-radius: 28px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--color-border-soft);
+}
+.cover-moodmate .mood-orb {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  margin: 0 auto;
+  background: var(--color-coral-wash);
+  border: 1px solid var(--color-border-soft);
+}
+.cover-moodmate .mood-bars { display: grid; gap: 8px; }
+.cover-moodmate .mood-bars span {
+  display: block;
+  height: 9px;
+  border-radius: var(--r-full);
+  background: var(--color-border);
+}
+.cover-moodmate .mood-bars span:nth-child(1) { width: 88%; background: var(--color-blue-soft); }
+.cover-moodmate .mood-bars span:nth-child(2) { width: 68%; }
+.cover-moodmate .mood-bars span:nth-child(3) { width: 78%; background: rgba(46,149,96,0.18); }
+
+/* Cover — generic placeholder (used while a case study is in progress) */
+.cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      var(--color-surface) 0 14px,
+      var(--color-canvas)  14px 28px
+    );
+}
+.cover-placeholder__label {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.04em;
+  color: var(--color-slate);
+  background: var(--color-surface-elev);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--r-full);
+}
+
+/* Upcoming card — non-interactive variant */
+.work-card--upcoming { cursor: default; }
+.work-card--upcoming:hover {
+  transform: none;
+  box-shadow: 0 0 0 var(--color-ink);
+  border-color: var(--color-ink);
+}
+.work-card--upcoming:hover .work-cover-img { transform: none; }
+.work-card--upcoming:hover img.work-cover { transform: none; }
+
+/* Coming-soon label — non-interactive, kept quiet next to active text links */
+.work-link.work-link--coming {
+  color: var(--color-stone);
+  border-bottom: 1.5px dashed var(--color-border);
+  cursor: default;
+  pointer-events: none;
+}
+.work-card--upcoming:hover .work-link.work-link--coming {
+  color: var(--color-stone);
+  border-bottom-color: var(--color-border);
+  gap: var(--s-2);
+}
+
+/* Body */
+.work-body {
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.work-meta-row {
+  display: flex; align-items: center; gap: var(--s-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--s-6);
+}
+.work-meta-row .bar {
+  width: 22px; height: 1px;
+  background: var(--color-border-strong);
+  flex-shrink: 0;
+}
+.work-meta-row .where {
+  font-family: var(--font-sans);
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: 0;
+}
+.work-meta-row .year {
+  font-family: var(--font-mono);
+  font-size: var(--t-overline);
+  color: var(--color-slate);
+  letter-spacing: 0.08em;
+  margin-left: auto;
+}
+
+.work-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+  margin: 0 0 var(--s-5);
+}
+.work-title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+  transition: color var(--dur-base) var(--ease);
+}
+
+.work-desc {
+  font-size: var(--t-body-lg);
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  margin-bottom: var(--s-6);
+  max-width: 56ch;
+}
+
+.work-link {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: var(--t-body);
+  font-weight: 500;
+  color: var(--color-ink);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--color-ink);
+  border-radius: 0;
+  padding: 0 0 4px;
+  margin-top: var(--s-2);
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              gap var(--dur-fast) var(--ease);
+}
+.work-link .arrow {
+  font-style: normal;
+  display: inline-block;
+  transition: transform var(--dur-base) var(--ease);
+}
+
+
+/* ============================================================
+   [12.5] HOME · CONTACT CTA
+   ============================================================ */
+.contact-cta {
+  padding: var(--s-11) 0 var(--s-10);
+  background: var(--color-canvas);
+  border-top: 1px solid var(--color-ink);
+}
+.contact-headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(48px, 7.5vw, 104px);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  color: var(--color-ink);
+  margin-bottom: var(--s-8);
+}
+.contact-headline em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-blue);
+}
+.contact-btn { height: 60px; padding: 0 var(--s-7); font-size: var(--t-body-lg); }
+
+
+/* ============================================================
+   [14] ABOUT · TIMELINE + ABOUT-TEXT
+   ============================================================ */
+.timeline { padding-top: var(--s-3); }
+.tl-row {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: var(--s-7);
+  align-items: baseline;
+  padding: var(--s-6) 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: padding var(--dur-base) var(--ease),
+              background-color var(--dur-base) var(--ease);
+}
+.tl-row:last-child { border-bottom: none; }
+.tl-row:hover {
+  padding-left: var(--s-3);
+  padding-right: var(--s-3);
+}
+.tl-year {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  color: var(--color-slate);
+  letter-spacing: 0.06em;
+}
+.tl-where {
+  font-family: var(--font-sans);
+  font-size: clamp(18px, 1.6vw, 22px);
+  color: var(--color-ink);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+.tl-where a {
+  border-bottom: 1.5px solid var(--color-ink);
+  padding-bottom: 1px;
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+.tl-where a:hover { color: var(--color-blue); border-color: var(--color-blue); }
+.tl-role {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  color: var(--color-slate);
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+
+.about-text {
+  padding-top: var(--s-3);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--color-ink);
+  max-width: none;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+.about-text p + p { margin-top: var(--s-4); }
+.about-text em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-blue);
+}
+
+/* "Hi. I'm Chelsea ✦" page headline — sits inside about-text */
+.about-headline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(36px, 4.5vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  color: var(--color-ink);
+  margin: 0 0 28px;
+}
+.about-sparkle {
+  display: inline-block;
+  color: var(--color-blue);
+  font-size: 0.6em;
+  line-height: 1;
+}
+
+/* Outside-of-work card grid — 3 columns of interest cards */
+.outside-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: var(--s-3);
+}
+.outside-card {
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.outside-card:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.outside-card .interest-icon {
+  display: block;
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.outside-card .interest-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  margin: 0 0 8px;
+  color: var(--color-ink);
+}
+.outside-card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+.outside-desc {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+  margin-bottom: var(--s-5);
+  max-width: 100%;
+}
+.outside-photo {
+  border-radius: var(--r-4);
+  overflow: hidden;
+  border: 1.5px solid var(--color-ink);
+  aspect-ratio: 4 / 3;
+}
+.outside-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 720px) {
+  .outside-grid { grid-template-columns: 1fr; gap: 12px; }
+}
+.about-text p + p { margin-top: var(--s-6); }
+.about-text em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+.about-actions {
+  display: flex; gap: var(--s-3); flex-wrap: wrap;
+  margin-top: var(--s-8);
+}
+
+/* 2-column About: text + portrait — text-led ratio, portrait sized as a side accent */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--s-9);
+  align-items: center;
+  padding-top: var(--s-3);
+}
+.about-grid .about-text {
+  padding-top: 0;
+  max-width: none;
+}
+.about-portrait {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 5 / 4;
+  border-radius: var(--r-4);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-surface), var(--color-yellow-wash));
+  border: 1.5px solid var(--color-ink);
+  justify-self: end;
+}
+.about-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 720px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-7);
+  }
+  .about-portrait {
+    aspect-ratio: 1 / 1;
+    max-width: 320px;
+    justify-self: start;
+  }
+}
+
+
+/* ============================================================
+   [15] CASE STUDY · Hero, TOC, content, meta, callout, image, stats,
+        next-project. Aligned with the homepage's playful-brutalist
+        language (1.5px ink borders, offset drop shadows, generous
+        radii). Each case page can remap --color-blue* tokens at :root
+        to theme the accent for that project (see case-brinno.html).
+   ============================================================ */
+
+/* ---------- Layout ---------- */
+.case-hero .wrap,
+.case-main .wrap { max-width: var(--col); }
+
+.case-hero { padding: 32px 0 64px; position: relative; }
+.case-hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 28px;
+}
+
+.case-main { padding-bottom: var(--s-8); }
+.case-grid {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  gap: var(--s-9);
+  padding-top: var(--s-8);
+  align-items: start;
+}
+.case-content,
+.case-toc { margin-top: 0; padding-top: 0; }
+.case-content > section:first-child,
+.case-content > section:first-child .case-eyebrow,
+.case-content > section:first-child h1 { margin-top: 0; padding-top: 0; }
+
+/* ---------- TOC sidebar (sticky) ---------- */
+.case-toc {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--s-7));
+  align-self: start;
+  max-height: calc(100vh - var(--nav-h) - var(--s-9));
+  overflow-y: auto;
+}
+.case-toc ul {
+  list-style: none;
+  border-left: 1px solid var(--color-border);
+  padding: 0;
+}
+.case-toc a {
+  display: block;
+  padding: var(--s-2) 0 var(--s-2) var(--s-4);
+  margin-left: -1px;
+  font-family: var(--font-sans);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-slate);
+  border-left: 2px solid transparent;
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+.case-toc a:hover { color: var(--color-ink-soft); }
+.case-toc a.active {
+  color: var(--color-ink);
+  border-left-color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* ---------- Section structure ---------- */
+.case-content section {
+  scroll-margin-top: 96px;
+  padding-bottom: var(--s-9);
+}
+.case-content section + section {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--s-9);
+}
+.case-content section:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+/* ---------- Typography ---------- */
+.case-eyebrow {
+  display: inline-block;
+  color: var(--color-slate);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.case-content h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.15;
+  letter-spacing: -0.028em;
+  color: var(--color-ink);
+  margin-bottom: 24px;
+}
+.case-content h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  color: var(--color-ink);
+  margin-bottom: 24px;
+}
+.case-content h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
+  margin: 16px 0 12px;
+}
+.case-content h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.4;
+  letter-spacing: -0.008em;
+  color: var(--color-ink);
+  margin: 14px 0 10px;
+}
+.case-content h1 em,
+.case-content h2 em,
+.case-content h3 em,
+.case-content p em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-blue);
+}
+.case-content p {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+  margin-bottom: var(--s-5);
+  max-width: none;
+}
+.case-content p strong { color: var(--color-ink); font-weight: 600; }
+.case-content ul {
+  margin: 0 0 var(--s-6) var(--s-5);
+  color: var(--color-ink-soft);
+}
+.case-content ul li {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* Unified plain-text number prefix on h3 (e.g. "01 Title") */
+.h3-num {
+  display: inline-block;
+  margin-right: 12px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+  color: var(--color-blue);
+  vertical-align: baseline;
+}
+.h3-num--brinno {
+  color: var(--color-brinno-strong, var(--color-blue-strong));
+}
+
+/* ---------- Meta grid (2×2 cards summarizing the project) ---------- */
+.case-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.case-meta-card {
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 24px;
+  cursor: default;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.case-meta-card:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.case-meta-card .meta-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  color: var(--color-ink);
+}
+.case-meta-card p,
+.case-meta-card li {
+  color: var(--color-ink-soft);
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0;
+}
+.case-meta-card ul { margin: 0; padding-left: 16px; }
+
+/* ---------- Solution row (Solution Overview · text left / image right) ----------
+   Each item in the "Solution Overview" section is wrapped in a bordered
+   card with 40% text on the left and 60% image on the right. Reuses the
+   same ink-border + offset-shadow hover treatment as .case-meta-card so
+   it sits visually consistent with the rest of the case study. */
+.solution-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 32px;
+  align-items: center;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 32px;
+  margin-top: 32px;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.solution-row:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.solution-row .solution-row-text { min-width: 0; }
+.solution-row .solution-row-text h3 { margin-top: 0; }
+.solution-row .solution-row-text p:last-child { margin-bottom: 0; }
+.solution-row .case-image {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+.solution-row .case-image img {
+  border-radius: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 720px) {
+  .solution-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px;
+    border-radius: 16px;
+    margin-top: 24px;
+  }
+}
+
+/* ---------- Goals grid (soft cream cards with icon chip) ----------
+   Used by the "Design Goals" section. Cards sit on a pale wash with a
+   small icon chip top-left and bold ink-coloured copy. Mirrors the
+   softer callout aesthetic — quieter than .case-meta-card. */
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.goal-card {
+  position: relative;
+  background: var(--color-blue-wash);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 24px;
+  padding: 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-ink);
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.goal-card:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.goal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--color-blue-soft);
+  color: var(--color-blue-strong);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.goal-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.goal-title {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.4vw, 19px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
+  margin: 0 0 8px;
+}
+.goal-desc {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .goals-grid { grid-template-columns: 1fr; gap: 12px; }
+  .goal-card { padding: 24px; border-radius: 20px; }
+  .goal-icon { margin-bottom: 10px; }
+}
+
+/* Highlight card — themed accent (project color via remapped token) */
+.case-meta-card.highlight {
+  background: var(--color-brinno-wash, var(--color-blue-wash));
+  border-color: var(--color-brinno, var(--color-blue));
+}
+.case-meta-card.highlight:hover {
+  box-shadow: 4px 4px 0 var(--color-brinno, var(--color-blue));
+}
+.case-meta-card.highlight strong {
+  color: var(--color-brinno-strong, var(--color-blue-strong));
+  font-weight: 700;
+}
+
+/* ---------- Callout ---------- */
+.callout {
+  background: var(--color-blue-wash);
+  border: 1.5px solid var(--color-ink);
+  border-left: 5px solid var(--color-blue);
+  border-radius: 4px 18px 18px 4px;
+  padding: 20px 24px;
+  margin: 28px 0;
+}
+.callout p {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-ink);
+  max-width: none;
+  font-weight: 500;
+}
+.callout p strong { font-weight: 700; color: var(--color-ink); }
+.callout p em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-blue);
+}
+
+/* Project-goal callout — Brinno-orange variant (kept for semantic
+   differentiation even when the default accent is also orange) */
+.callout.callout--brinno {
+  background: var(--color-brinno-wash, var(--color-blue-wash));
+  border-color: var(--color-ink);
+  border-left-color: var(--color-brinno, var(--color-blue));
+}
+.callout.callout--brinno p strong {
+  color: var(--color-brinno-strong, var(--color-blue-strong));
+}
+
+/* ---------- Case image (figure) ---------- */
+.case-image {
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  margin: 24px 0;
+  overflow: hidden;
+}
+/* Image variant: block layout, moderate padding, image fills width.
+   Frame height naturally wraps image's intrinsic height + padding. */
+.case-image:has(img) {
+  display: block;
+  padding: clamp(20px, 2.5vw, 36px) clamp(24px, 3vw, 44px);
+  aspect-ratio: auto;
+}
+.case-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 0;
+}
+/* Text-only placeholder: flex-center inside the padded frame */
+.case-image:not(:has(img)) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  min-height: 200px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--color-slate);
+}
+
+/* Flush variant — image touches the frame's inner edge (no padding).
+   Useful for UI screenshots / GIFs with their own background. */
+.case-image.case-image--flush:has(img) { padding: 0; }
+.case-image.case-image--flush img { border-radius: 0; }
+.case-image.case-image--flush:not(:has(img)) {
+  padding: 16px;
+  min-height: 160px;
+}
+
+/* Small variant — narrower FRAME (centered) for diagrams or screenshots
+   that don't need full content-width. Image inside fills the smaller frame. */
+.case-image.case-image--small {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Side-by-side pair (e.g. Before/After) — two separate framed images */
+.case-image-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.case-image-pair > .case-image { margin: 0; }
+
+/* ---------- Iteration block (Before/After with description cards) ----------
+   Two cream cards on top describe the change in plain language; below sit
+   two framed screenshots with a pill label ("Before" / "After") tucked into
+   the top-left corner. Replaces the bare .case-image-pair when the pair
+   needs spoken context. */
+.case-iteration {
+  margin: 24px 0;
+}
+.iteration-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.iteration-cards--three {
+  grid-template-columns: repeat(3, 1fr);
+}
+.iteration-card {
+  background: var(--color-blue-wash);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 22px 26px;
+}
+.iteration-card .iteration-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
+  margin-bottom: 6px;
+}
+.iteration-card .iteration-label em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-blue-strong);
+  font-size: 0.85em;
+  margin-left: 4px;
+}
+.iteration-card-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--color-ink);
+  margin: 0 0 10px;
+}
+.iteration-card p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+/* Highlight variant — used for the chosen / final option */
+.iteration-card--highlight {
+  background: var(--color-blue-pale);
+  border-color: var(--color-blue-strong);
+}
+/* Test-result footer inside a card — separates the proposal's pros/cons
+   from the user-feedback evidence that justified the choice. */
+.iteration-card-test {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--color-blue-strong);
+}
+.iteration-card-test p {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+.iteration-card-test .test-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-blue-strong);
+  margin-bottom: 4px;
+}
+.iteration-card-test em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+
+/* ---------- B-1 · Iteration stack (Before/After 上下堆疊大圖) ----------
+   Two full-width bordered cards stacked vertically. Each card holds a
+   Before/After pill label, a full-width screenshot, and a numbered
+   description. Used when screenshot detail matters more than direct
+   side-by-side comparison. */
+.iteration-compare {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin: 8px 0 4px;
+}
+.iteration-compare-card {
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.iteration-compare-card:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.iteration-compare-card--after {
+  background: var(--color-blue-wash);
+}
+.iteration-compare-card .iteration-label {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  height: 30px;
+  padding: 0 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-paper);
+  background: var(--color-ink);
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+.iteration-compare-card .iteration-label--after {
+  background: var(--color-blue-strong);
+}
+.iteration-compare-image {
+  margin: 0 0 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
+}
+.iteration-compare-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.iteration-compare-card p {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .iteration-compare-card {
+    padding: 22px;
+    border-radius: 16px;
+  }
+}
+
+/* ---------- B-2 · Iteration split (文字左 / 圖右，Before/After 兩列堆疊) ----------
+   Two bordered rows, each split text-left / image-right. Visual rhythm
+   matches .case-step-row and .solution-row so the whole case study
+   shares a single "framed comparison" pattern. */
+.iteration-split {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 8px 0 4px;
+}
+.iteration-split-row {
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+  gap: 32px;
+  align-items: center;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.iteration-split-row:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.iteration-split-row--after {
+  background: var(--color-blue-wash);
+}
+.iteration-split-text { min-width: 0; }
+.iteration-split-text .iteration-label {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-paper);
+  background: var(--color-ink);
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.iteration-split-text .iteration-label--after {
+  background: var(--color-blue-strong);
+}
+.iteration-split-text p {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+.iteration-split-image {
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
+}
+.iteration-split-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* Inline note inside a split-row text column — holds the design hypothesis
+   (Before slide) or the test result (After slide). Both Before/After use
+   the same background colour so visual differentiation comes from the
+   pill label, not the note tint. Background depth + text contrast pass
+   WCAG AAA (text #0A0A0A on bg #F0E3D2 ≈ 14:1, exceeds 7:1 AAA threshold). */
+.iteration-note {
+  margin-top: 16px;
+  padding: 20px;
+  background: var(--color-blue-wash);
+  border: 1.5px solid var(--color-blue-soft);
+  border-radius: 14px;
+}
+.iteration-note .note-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.iteration-note .note-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--color-blue-soft);
+}
+.iteration-note .note-title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-ink);
+}
+.iteration-note .note-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-blue-strong);
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iteration-note p {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+.iteration-note p strong {
+  font-weight: 700;
+}
+.iteration-note--after {
+  background: var(--color-blue-pale);
+}
+@media (max-width: 720px) {
+  .iteration-split-row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 22px;
+    border-radius: 16px;
+  }
+}
+
+.iteration-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.iteration-figure {
+  position: relative;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0;
+}
+.iteration-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.iteration-pill {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 14px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #FFFFFF;
+  background: var(--color-ink);
+  border-radius: 9999px;
+  z-index: 2;
+}
+.iteration-pill--after {
+  background: var(--color-blue-strong);
+}
+
+/* Split figure variant — two-column layout: text rationale on the left
+   (pill label, numbered findings, optional test-result footer), screenshot
+   on the right. Replaces the description cards on top + pill overlay pattern. */
+.iteration-figure--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  align-items: stretch;
+}
+.iteration-figure--split .iteration-pill {
+  position: static;
+  align-self: flex-start;
+  margin-bottom: 20px;
+}
+.iteration-detail {
+  padding: 30px 32px;
+  display: flex;
+  flex-direction: column;
+}
+.iteration-screen {
+  background: var(--color-canvas);
+  border-left: 1.5px solid var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.iteration-screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Numbered findings list — accent-coloured counter circle + description.
+   Counter colour follows the page accent so PDOGs gets coffee, Brinno gets
+   orange, etc. */
+.iteration-points {
+  list-style: none;
+  counter-reset: pt;
+  padding: 0;
+  margin: 0;
+}
+.iteration-points li {
+  counter-increment: pt;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 7px 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+.iteration-points li::before {
+  content: counter(pt);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: var(--color-blue);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* Carousel variant — single slide visible at a time, prev/next arrows
+   sit outside the figure on desktop, dots beneath. JS toggles .is-active. */
+.iteration-carousel {
+  position: relative;
+}
+.iteration-viewport {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.iteration-viewport .iteration-figure {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  z-index: 0;
+}
+.iteration-viewport .iteration-figure.is-active {
+  visibility: visible;
+  z-index: 1;
+}
+.iteration-nav {
+  position: absolute;
+  top: calc(50% - 22px);
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 9999px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  padding: 0;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: background-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.iteration-nav:hover {
+  background: var(--color-ink);
+  color: #FFFFFF;
+  box-shadow: 3px 3px 0 var(--color-ink);
+  transform: translate(-1px, -1px);
+}
+.iteration-nav[hidden] { display: none; }
+.iteration-nav svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iteration-nav--prev { left: -22px; }
+.iteration-nav--next { right: -22px; }
+
+.iteration-dots {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 12px;
+}
+/* Dot button: visual size stays 9×9 via inner pseudo-element, but the
+   button itself is a 44×44 hit target (WCAG 2.5.5 / 2.2 AA). */
+.iteration-dot {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.iteration-dot::before {
+  content: '';
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: var(--color-border-strong);
+  transition: background-color var(--dur-fast) var(--ease),
+              width var(--dur-fast) var(--ease);
+}
+.iteration-dot:hover::before { background: var(--color-stone); }
+.iteration-dot.is-active::before {
+  background: var(--color-ink);
+  width: 26px;
+}
+
+/* ---------- Carousel × Split figure ----------
+   Each carousel slide is a full bordered card holding text + embedded
+   hypothesis/result on the left, and the screenshot on the right. The
+   container is white, so depth comes from the .iteration-note tint
+   inside. Replaces the older "text cards + image-only carousel" pair. */
+.iteration-viewport .iteration-figure.iteration-figure--split {
+  display: grid;
+  grid-area: 1 / 1;
+  grid-template-columns: 2fr 3.5fr;
+  align-items: stretch;
+  gap: 0;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  visibility: hidden;
+  z-index: 0;
+}
+.iteration-viewport .iteration-figure.iteration-figure--split.is-active {
+  visibility: visible;
+  z-index: 1;
+}
+.iteration-figure--split .iteration-split-text {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.iteration-figure--split .iteration-split-text .iteration-label {
+  align-self: flex-start;
+}
+/* Sub-title inside a split slide — used by the 3-proposal carousel where
+   each proposal has a short headline above its pros/cons list. */
+.iteration-split-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
+  margin: 10px 0 8px;
+}
+.iteration-label em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.85em;
+  margin-left: 4px;
+  opacity: 0.9;
+}
+.iteration-figure--split .iteration-split-image {
+  border: none;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-paper);
+  overflow: hidden;
+  margin: 0;
+  padding: 32px;
+}
+/* Tighten text column's right padding so total gap to image isn't doubled
+   once both sides have 32px padding. */
+.iteration-figure--split .iteration-split-text {
+  padding-right: 0;
+}
+/* On mobile the layout stacks vertically — image goes below the text. */
+@media (max-width: 720px) {
+  .iteration-figure--split .iteration-split-image {
+    padding: 0 24px 24px;
+  }
+  .iteration-figure--split .iteration-split-text {
+    padding: 24px;
+  }
+}
+.iteration-figure--split .iteration-split-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 720px) {
+  .iteration-cards,
+  .iteration-images {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .iteration-nav--prev { left: 8px; }
+  .iteration-nav--next { right: 8px; }
+  .iteration-viewport .iteration-figure.iteration-figure--split {
+    grid-template-columns: 1fr;
+  }
+  .iteration-figure--split .iteration-split-image {
+    border-left: none;
+    border-top: 1.5px solid var(--color-ink);
+  }
+  .iteration-figure--split .iteration-split-text {
+    padding: 24px;
+  }
+}
+
+/* Step row — text on one side, image block on the other (for stepped
+   processes like interview-prep / mid / post). Aligns h3 + p with the
+   accompanying figure side-by-side on desktop, stacks on mobile. */
+.case-step-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 32px;
+  align-items: center;
+  margin: 32px 0;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 32px;
+  min-height: 280px;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.case-step-row:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.case-step-row .case-step-text { min-width: 0; }
+.case-step-row .case-step-text > :first-child { margin-top: 0; }
+.case-step-row .case-step-text > :last-child { margin-bottom: 0; }
+.case-step-row .case-image {
+  margin: 0;
+  max-width: none;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+}
+.case-step-row .case-image img {
+  border-radius: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Comparison frame — two images sharing ONE outer frame with an arrow between.
+   Use for as-is vs to-be / transformation narratives. */
+.case-image-compare {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(16px, 2vw, 32px);
+  padding: clamp(20px, 2.5vw, 36px) clamp(24px, 3vw, 44px);
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  margin: 24px 0;
+}
+.case-compare-side { min-width: 0; }
+.case-compare-side img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0px;
+}
+.case-compare-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 500;
+  color: var(--color-blue);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ---------- Stat row ---------- */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.stat-item {
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.stat-item:hover {
+  box-shadow: 4px 4px 0 var(--color-blue);
+  transform: translate(-2px, -2px);
+}
+.stat-item .stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5vw, 60px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--color-blue);
+  margin-bottom: 10px;
+}
+.stat-item .stat-label {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+/* ---------- Process divider (optional break between sections) ---------- */
+.case-process-divider {
+  margin: 0 0 72px;
+  padding: 48px 0;
+  border-top: 1.5px solid var(--color-ink);
+  border-bottom: 1.5px solid var(--color-ink);
+  text-align: center;
+}
+.case-process-divider h2 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  color: var(--color-ink);
+  margin: 0;
+}
+.case-process-divider h2 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-blue);
+}
+
+/* ---------- Next project link ---------- */
+.case-next {
+  /* padding: 80px 0; */
+  margin-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+.case-next .wrap { max-width: var(--col); }
+.next-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-slate);
+  margin-bottom: 20px;
+}
+/* Row that pairs the eyebrow "Next project" label with a back-to-index
+   link. Optional — case pages that don't include .next-header still
+   render the bare .next-label as before. */
+.next-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.next-header .next-label { margin-bottom: 0; }
+.next-back {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-slate);
+  border-bottom: 1px solid transparent;
+  padding: 4px 2px;
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+.next-back:hover {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-ink);
+}
+.next-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  padding: 36px 40px;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 24px;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 0 0 var(--color-ink);
+  transition: background-color var(--dur-base) var(--ease),
+              box-shadow var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.next-card:hover {
+  background: #2E1E12;
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+.next-card-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.next-meta {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-ink);
+  transition: color var(--dur-base) var(--ease);
+}
+.next-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  color: var(--color-ink);
+  margin: 0;
+  transition: color var(--dur-base) var(--ease);
+}
+.next-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--color-ink);
+  background: transparent;
+  flex-shrink: 0;
+  transition: background-color var(--dur-base) var(--ease),
+              color var(--dur-base) var(--ease),
+              border-color var(--dur-base) var(--ease),
+              transform var(--dur-base) var(--ease);
+}
+.next-card:hover .next-meta,
+.next-card:hover .next-title { color: #FFFFFF; }
+.next-card:hover .next-arrow {
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+  color: var(--color-ink);
+  transform: translateX(4px);
+}
+
+/* Override generic footer margin when case-next sits right above footer */
+.case-next + footer { margin-top: 0; border-top: 1px solid var(--color-ink); }
+
+
+/* ============================================================
+   [16] RESPONSIVE
+   ============================================================ */
+@media (max-width: 960px) {
+  /* Case study layout — sidebar collapses to top horizontal scroll */
+  .case-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+  .case-toc {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 10;
+    max-height: none;
+    padding: var(--s-3) 0;
+    background: rgba(245, 242, 236, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border-soft);
+    margin: 0 calc(var(--gutter) * -1);
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+  .case-toc ul {
+    display: flex;
+    gap: var(--s-2);
+    border-left: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .case-toc ul::-webkit-scrollbar { display: none; }
+  .case-toc a {
+    flex-shrink: 0;
+    padding: var(--s-2) var(--s-3);
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    margin-left: 0;
+  }
+  .case-toc a.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--color-ink);
+  }
+  .case-content h1 { font-size: clamp(24px, 6vw, 32px); }
+}
+
+@media (max-width: 720px) {
+  :root { --gutter: 20px; }
+
+  /* Hero (home) */
+  header.hero {
+    min-height: auto;
+    padding: var(--s-10) 0 var(--s-9);
+  }
+  h1.display {
+    font-size: clamp(40px, 10.5vw, 60px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    max-width: none;
+  }
+  .hero-greeting {
+    font-size: var(--t-body);
+    max-width: 36ch;
+  }
+  .hero-sparkle {
+    width: 96px;
+    top: -8px;
+    right: 12px;
+  }
+  .hero-actions { gap: var(--s-3); margin-top: var(--s-7); }
+  .pill.pill-lg { height: 52px; padding: 0 var(--s-6); }
+  .pill.pill-ghost { padding: 0 var(--s-2); }
+  .hero-status { margin-bottom: var(--s-5); height: 32px; font-size: var(--t-micro); }
+  .hero-marquee { margin-top: var(--s-8); padding: var(--s-3) 0; }
+  .hero-marquee span { font-size: clamp(22px, 6vw, 32px); }
+
+  /* Contact CTA */
+  .contact-headline { font-size: clamp(40px, 10vw, 56px); }
+  .contact-btn { height: 52px; font-size: var(--t-body); }
+
+  /* Nav */
+  nav.top ul { gap: var(--s-1); }
+  nav.top li.hide-sm { display: none; }
+  .hide-sm { display: none; }
+  nav.top .row { min-height: 64px; }
+  nav.top a.link,
+  .wordmark {
+    height: 44px;
+    padding: 0 var(--s-3);
+    font-size: var(--t-label);
+  }
+
+  /* Section heading */
+  .sec-head { flex-direction: column; align-items: stretch; gap: var(--s-3); }
+  .sec-head .meta { text-align: left; }
+  .sec-head h2 { font-size: clamp(32px, 8vw, 44px); }
+
+  /* Timeline (about) */
+  .tl-row { grid-template-columns: 80px 1fr; gap: var(--s-4); padding: var(--s-4) 0; }
+  .tl-row:hover { padding-left: 0; padding-right: 0; }
+  .tl-where { font-size: 18px; }
+  .tl-role { grid-column: 2; text-align: left; color: var(--color-slate); }
+
+  /* Work cards */
+  .work-list { gap: var(--s-6); }
+  .work-card { grid-template-columns: 1fr; gap: var(--s-5); padding: var(--s-5); border-radius: var(--r-4); }
+  .work-card.featured { padding: var(--s-5); }
+  .work-cover { aspect-ratio: 16 / 11; }
+  .work-cover .num { font-size: 40px; top: var(--s-4); left: var(--s-5); }
+  .work-title { font-size: clamp(22px, 5.5vw, 28px); }
+  .work-link { padding: 11px 20px; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; gap: var(--s-7); }
+  .about-text { font-size: 17px; max-width: none; }
+
+  /* Case study mobile */
+  .case-hero { padding: 20px 0 40px; }
+  .case-hero-image { border-radius: 20px; }
+  .case-meta-grid { grid-template-columns: 1fr; }
+  .case-image-pair { grid-template-columns: 1fr; gap: 12px; }
+  .case-image-compare { grid-template-columns: 1fr; }
+  .case-step-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px;
+    border-radius: 16px;
+    margin: 24px 0;
+  }
+  .case-image-compare .case-compare-arrow { transform: rotate(90deg); margin: 4px 0; }
+  .stat-row { grid-template-columns: 1fr; }
+  .stat-item .stat-num { font-size: 44px; }
+  .case-content section { margin-bottom: 56px; }
+  .case-next { padding: 56px 0; }
+  .next-card { grid-template-columns: 1fr; padding: 24px; gap: 20px; }
+  .next-arrow { width: 48px; height: 48px; font-size: 20px; align-self: flex-end; }
+
+  /* Footer */
+  footer .row { flex-direction: column; align-items: flex-start; }
+}
+
+
+/* ============================================================
+   [17] CASE PAGE THEMES
+   Per-page accent colour overrides. Each case page adds a
+   body class (e.g. .page-pdogs, .page-brinno) and we remap
+   --color-blue* tokens here so every shared component
+   automatically picks up the project's palette.
+   ============================================================ */
+
+/* --- PDOGs (coffee) --- */
+.page-pdogs {
+  --color-brinno:        #6B5235;
+  --color-brinno-strong: #4F3B22;
+  --color-brinno-wash:   #F0E3D2;
+  --color-brinno-soft:   #DAC4A8;
+  --color-blue:          #6B5235;
+  --color-blue-strong:   #4F3B22;
+  --color-blue-pale:     #F0E3D2;
+  --color-blue-soft:     #DAC4A8;
+  --color-blue-wash:     #FAF3E8;
+}
+
+/* PDOGs solution-overview — ink-bordered cards with shadow hover */
+.page-pdogs #solution-overview .solution-row {
+  background: var(--color-paper);
+  border-color: var(--color-ink);
+}
+.page-pdogs #solution-overview .solution-row:hover {
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+.page-pdogs #solution-overview .solution-row h3 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 0;
+}
+.page-pdogs #solution-overview .solution-row h3 .h3-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  border-radius: 9999px;
+  background: var(--color-brinno-strong);
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  flex-shrink: 0;
+}
+.page-pdogs #solution-overview .solution-row .case-image {
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+/* --- Brinno (orange) --- */
+.page-brinno {
+  --color-brinno:        #C46B3A;
+  --color-brinno-strong: #A05528;
+  --color-brinno-wash:   #FDF5EE;
+  --color-brinno-soft:   #EDC9AA;
+  --color-blue:          #C46B3A;
+  --color-blue-strong:   #A05528;
+  --color-blue-pale:     #F7E2CF;
+  --color-blue-soft:     #EDC9AA;
+  --color-blue-wash:     #FDF5EE;
+}
+
+/* Brinno solution groups — spacing between groups */
+.page-brinno .solution-group + .solution-group {
+  margin-top: 64px;
+}
+@media (max-width: 720px) {
+  .page-brinno .solution-group + .solution-group {
+    margin-top: 40px;
+  }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .work-card:hover .work-cover { transform: none; }
+  /* Hover offsets feel jolty without easing — disable the translate for
+     users who asked for reduced motion. */
+  .case-meta-card:hover,
+  .solution-row:hover,
+  .case-step-row:hover,
+  .stat-item:hover,
+  .goal-card:hover,
+  .iteration-compare-card:hover,
+  .iteration-split-row:hover,
+  .iteration-nav:hover {
+    transform: none;
+  }
+}
