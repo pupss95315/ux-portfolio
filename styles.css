@@ -186,7 +186,7 @@ button:focus-visible,
 
 /* ── Hamburger menu button ── */
 .nav-menu-btn {
-  display: inline-flex;
+  display: none; /* hidden on desktop; shown via mobile media query below */
   align-items: center;
   justify-content: center;
   width: 44px;
@@ -2629,9 +2629,8 @@ img.work-cover {
   .contact-btn { height: 52px; font-size: var(--t-body); }
 
   /* Nav */
-  nav.top ul { gap: var(--s-1); }
-  nav.top li.hide-sm { display: none; }
-  .hide-sm { display: none; }
+  nav.top ul.nav-links { display: none; }   /* hide desktop links */
+  .nav-menu-btn { display: inline-flex; }   /* show hamburger */
   nav.top .row { min-height: 64px; }
   nav.top a.link,
   .wordmark {
