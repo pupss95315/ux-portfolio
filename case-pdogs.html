@@ -16,11 +16,20 @@
 <nav class="top" aria-label="Primary">
   <div class="wrap row">
     <a href="index.html" class="wordmark">Chelsea Hsu</a>
-    <ul>
-      <li><a class="link" href="index.html#work">Work</a></li>
-      <li><a class="link" href="about.html">About</a></li>
-      <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
-    </ul>
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="開啟選單">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+  <div class="nav-dropdown" id="navMenu" aria-hidden="true">
+    <div class="wrap">
+      <ul>
+        <li><a class="link" href="index.html#work">Work</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 
@@ -739,6 +748,34 @@
 <script src="iteration-carousel.js" defer></script>
 
 
+
+<script>
+  (function () {
+    var btn  = document.getElementById('navMenuBtn');
+    var menu = document.getElementById('navMenu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function() {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('is-open', !open);
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>

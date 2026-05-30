@@ -81,6 +81,8 @@
   .vp-cursor .vp-eyes svg { width: 100%; height: 100%; display: block; }
 
   @media (hover: none) { .vp-cursor { display: none !important; } }
+
+
 </style>
 </head>
 <body>
@@ -89,11 +91,21 @@
 <nav class="top" aria-label="Primary">
   <div class="wrap row">
     <a href="#top" class="wordmark">Chelsea Hsu</a>
-    <ul>
-      <li><a class="link" href="#work">Work</a></li>
-      <li class="hide-sm"><a class="link" href="about.html">About</a></li>
-      <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
-    </ul>
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="開啟選單">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+  <!-- Dropdown menu -->
+  <div class="nav-dropdown" id="navMenu" aria-hidden="true">
+    <div class="wrap">
+      <ul>
+        <li><a class="link" href="#work">Work</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 
@@ -261,6 +273,38 @@
     </svg>
   </span>
 </div>
+
+<script>
+  /* ── Nav menu toggle ── */
+  (function () {
+    const btn  = document.getElementById('navMenuBtn');
+    const menu = document.getElementById('navMenu');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('is-open', !open);
+    });
+
+    /* Close on link click or outside click */
+    menu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      }
+    });
+  })();
+</script>
 
 <script>
   (function () {
