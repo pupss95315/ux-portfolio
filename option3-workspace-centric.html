@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option 3 - Workspace-Centric Homepage</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-hover: #1a1a26;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --text-secondary: #8888a0;
+    --accent: #6c5ce7;
+    --accent-light: #a29bfe;
+    --accent-glow: rgba(108, 92, 231, 0.15);
+    --green: #00cec9;
+    --orange: #fdcb6e;
+    --pink: #fd79a8;
+    --radius: 16px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    margin-bottom: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .sidebar-section {
+    padding: 0 12px;
+    margin-bottom: 24px;
+  }
+  .sidebar-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 8px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sidebar-item:hover { background: var(--surface-hover); color: var(--text); }
+  .sidebar-item.active {
+    background: var(--accent-glow);
+    color: var(--accent-light);
+  }
+  .sidebar-item-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .sidebar-count {
+    margin-left: auto;
+    font-size: 11px;
+    background: var(--border);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .new-workspace-btn {
+    margin: 0 12px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px dashed var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .new-workspace-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent-light);
+    background: var(--accent-glow);
+  }
+
+  .sidebar-bottom {
+    margin-top: auto;
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Main Content */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    height: 100vh;
+  }
+
+  /* Content Header */
+  .content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 50;
+  }
+  .content-title {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .search-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 16px;
+    min-width: 240px;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { background: var(--surface-hover); color: var(--text); }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--pink));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Filter Bar */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .filter-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 3px;
+    border: 1px solid var(--border);
+  }
+  .filter-tab {
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .filter-tab.active { background: var(--accent); color: #fff; }
+  .filter-tab:hover:not(.active) { color: var(--text); }
+  .filter-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .filter-pill:hover { border-color: var(--accent); color: var(--text); }
+  .sort-select {
+    margin-left: auto;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Workspace List */
+  .workspace-list {
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ws-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    align-items: center;
+  }
+  .ws-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  }
+
+  .ws-icon-large {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  .ws-body { min-width: 0; }
+  .ws-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ws-agent-badge {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .ws-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .ws-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .ws-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .ws-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .ws-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .ws-actions {
+    display: flex;
+    gap: 6px;
+  }
+  .ws-action-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .ws-action-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .ws-action-primary:hover { background: var(--accent-light); }
+  .ws-action-secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .ws-action-secondary:hover { border-color: var(--accent); }
+
+  /* Progress */
+  .ws-progress-bar {
+    width: 100px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .ws-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  /* Pinned Section */
+  .section-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Scheme badge */
+  .scheme-badge {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+    z-index: 200;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">A</div>
+      AgentSpace
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <div class="sidebar-item active">
+        <div class="sidebar-item-icon">&#128194;</div>
+        Workspaces
+        <span class="sidebar-count">8</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon">&#128172;</div>
+        Chats
+        <span class="sidebar-count">23</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon">&#129302;</div>
+        Agents
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon">&#128208;</div>
+        Templates
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Pinned</div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon" style="background:rgba(108,92,231,0.15);border-radius:6px">&#128202;</div>
+        Q4 Analysis
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon" style="background:rgba(0,206,201,0.15);border-radius:6px">&#128187;</div>
+        API v2 Refactor
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon" style="background:rgba(253,121,168,0.15);border-radius:6px">&#127912;</div>
+        Dashboard UI
+      </div>
+    </div>
+
+    <button class="new-workspace-btn">+ New Workspace</button>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon">&#9881;</div>
+        Settings
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-icon">&#10067;</div>
+        Help
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="content">
+
+    <div class="content-header">
+      <div class="content-title">Workspaces</div>
+      <div class="header-actions">
+        <div class="search-input">&#128269; Search workspaces...</div>
+        <button class="icon-btn">&#128276;</button>
+        <div class="avatar">JC</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button class="filter-tab active">All</button>
+        <button class="filter-tab">Active</button>
+        <button class="filter-tab">Archived</button>
+      </div>
+      <button class="filter-pill">&#129302; Agent: All</button>
+      <button class="filter-pill">&#128196; Type: All</button>
+      <select class="sort-select">
+        <option>Sort: Last Modified</option>
+        <option>Sort: Name</option>
+        <option>Sort: Created</option>
+      </select>
+    </div>
+
+    <div class="workspace-list">
+
+      <!-- Pinned -->
+      <div class="section-label">&#128204; Pinned</div>
+
+      <!-- Workspace 1 -->
+      <div class="ws-card">
+        <div class="ws-icon-large" style="background:rgba(108,92,231,0.12)">&#128202;</div>
+        <div class="ws-body">
+          <div class="ws-name">
+            Q4 Market Analysis
+            <span class="ws-agent-badge" style="background:rgba(108,92,231,0.15);color:var(--accent-light)">&#129302; Research Assistant</span>
+          </div>
+          <div class="ws-description">Competitive analysis and market sizing for Q4 product strategy. Includes survey data and financial models.</div>
+          <div class="ws-meta">
+            <span class="ws-meta-item">&#128196; 12 files</span>
+            <span class="ws-meta-item">&#128172; 34 messages</span>
+            <span class="ws-meta-item">
+              <div class="ws-progress-bar">
+                <div class="ws-progress-fill" style="width:75%;background:var(--accent)"></div>
+              </div>
+              75%
+            </span>
+          </div>
+        </div>
+        <div class="ws-right">
+          <div class="ws-time">2 hours ago</div>
+          <div class="ws-actions">
+            <button class="ws-action-primary">&#128194; Open</button>
+            <button class="ws-action-secondary">&#128172; Chat</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workspace 2 -->
+      <div class="ws-card">
+        <div class="ws-icon-large" style="background:rgba(0,206,201,0.12)">&#128187;</div>
+        <div class="ws-body">
+          <div class="ws-name">
+            API v2 Refactor
+            <span class="ws-agent-badge" style="background:rgba(0,206,201,0.15);color:var(--green)">&#128187; Code Architect</span>
+          </div>
+          <div class="ws-description">Migrating REST endpoints to GraphQL with improved error handling. Currently working on authentication module.</div>
+          <div class="ws-meta">
+            <span class="ws-meta-item">&#128196; 28 files</span>
+            <span class="ws-meta-item">&#128172; 87 messages</span>
+            <span class="ws-meta-item">
+              <div class="ws-progress-bar">
+                <div class="ws-progress-fill" style="width:40%;background:var(--green)"></div>
+              </div>
+              40%
+            </span>
+          </div>
+        </div>
+        <div class="ws-right">
+          <div class="ws-time">5 hours ago</div>
+          <div class="ws-actions">
+            <button class="ws-action-primary">&#128194; Open</button>
+            <button class="ws-action-secondary">&#128172; Chat</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent -->
+      <div class="section-label" style="margin-top:12px">&#128337; Recent</div>
+
+      <!-- Workspace 3 -->
+      <div class="ws-card">
+        <div class="ws-icon-large" style="background:rgba(253,121,168,0.12)">&#127912;</div>
+        <div class="ws-body">
+          <div class="ws-name">
+            Dashboard Redesign
+            <span class="ws-agent-badge" style="background:rgba(253,121,168,0.15);color:var(--pink)">&#127912; Design Copilot</span>
+          </div>
+          <div class="ws-description">Redesigning the analytics dashboard with new data visualization components and responsive layout.</div>
+          <div class="ws-meta">
+            <span class="ws-meta-item">&#128196; 8 files</span>
+            <span class="ws-meta-item">&#128172; 19 messages</span>
+            <span class="ws-meta-item">
+              <div class="ws-progress-bar">
+                <div class="ws-progress-fill" style="width:60%;background:var(--pink)"></div>
+              </div>
+              60%
+            </span>
+          </div>
+        </div>
+        <div class="ws-right">
+          <div class="ws-time">Yesterday</div>
+          <div class="ws-actions">
+            <button class="ws-action-primary">&#128194; Open</button>
+            <button class="ws-action-secondary">&#128172; Chat</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workspace 4 -->
+      <div class="ws-card">
+        <div class="ws-icon-large" style="background:rgba(253,203,110,0.12)">&#9997;</div>
+        <div class="ws-body">
+          <div class="ws-name">
+            Blog Content Pipeline
+            <span class="ws-agent-badge" style="background:rgba(253,203,110,0.15);color:var(--orange)">&#9997; Content Writer</span>
+          </div>
+          <div class="ws-description">Weekly blog post drafts, SEO optimization, and social media copy for the marketing team.</div>
+          <div class="ws-meta">
+            <span class="ws-meta-item">&#128196; 15 files</span>
+            <span class="ws-meta-item">&#128172; 42 messages</span>
+            <span class="ws-meta-item">
+              <div class="ws-progress-bar">
+                <div class="ws-progress-fill" style="width:90%;background:var(--orange)"></div>
+              </div>
+              90%
+            </span>
+          </div>
+        </div>
+        <div class="ws-right">
+          <div class="ws-time">2 days ago</div>
+          <div class="ws-actions">
+            <button class="ws-action-primary">&#128194; Open</button>
+            <button class="ws-action-secondary">&#128172; Chat</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workspace 5 -->
+      <div class="ws-card">
+        <div class="ws-icon-large" style="background:rgba(108,92,231,0.12)">&#128202;</div>
+        <div class="ws-body">
+          <div class="ws-name">
+            User Survey Analysis
+            <span class="ws-agent-badge" style="background:rgba(108,92,231,0.15);color:var(--accent-light)">&#128202; Data Analyst</span>
+          </div>
+          <div class="ws-description">Analyzing responses from the 2024 product satisfaction survey. Building segmentation models and churn predictors.</div>
+          <div class="ws-meta">
+            <span class="ws-meta-item">&#128196; 6 files</span>
+            <span class="ws-meta-item">&#128172; 28 messages</span>
+            <span class="ws-meta-item">
+              <div class="ws-progress-bar">
+                <div class="ws-progress-fill" style="width:100%;background:var(--accent)"></div>
+              </div>
+              100%
+            </span>
+          </div>
+        </div>
+        <div class="ws-right">
+          <div class="ws-time">3 days ago</div>
+          <div class="ws-actions">
+            <button class="ws-action-primary">&#128194; Open</button>
+            <button class="ws-action-secondary">&#128172; Chat</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="scheme-badge">Option 3: Workspace-Centric</div>
+
+</body>
+</html>

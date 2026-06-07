@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option 2 - Task-Centric Homepage</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-hover: #1a1a26;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --text-secondary: #8888a0;
+    --accent: #6c5ce7;
+    --accent-light: #a29bfe;
+    --accent-glow: rgba(108, 92, 231, 0.15);
+    --green: #00cec9;
+    --orange: #fdcb6e;
+    --pink: #fd79a8;
+    --radius: 16px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* Top Navigation */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .topbar-nav {
+    display: flex;
+    gap: 8px;
+  }
+  .nav-link {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .nav-link.active { color: var(--text); background: var(--surface-hover); }
+  .nav-link:hover { color: var(--text); }
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--pink));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { background: var(--surface-hover); color: var(--text); }
+
+  /* Main */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+
+  /* Chat Hero */
+  .chat-hero {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .chat-hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text), var(--accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .chat-hero p {
+    color: var(--text-secondary);
+    font-size: 16px;
+  }
+
+  /* Chat Input Area */
+  .chat-input-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s;
+  }
+  .chat-input-area:focus-within { border-color: var(--accent); }
+
+  .agent-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .agent-selector-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .agent-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .agent-chip:hover { border-color: var(--accent); }
+  .agent-chip.selected {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    color: var(--accent-light);
+  }
+  .agent-chip-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+
+  .chat-textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    min-height: 60px;
+    font-family: inherit;
+  }
+  .chat-textarea::placeholder { color: var(--text-secondary); }
+
+  .chat-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+  }
+  .chat-tools {
+    display: flex;
+    gap: 6px;
+  }
+  .tool-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+  }
+  .tool-btn:hover { border-color: var(--accent); color: var(--text); }
+  .send-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .send-btn:hover { background: var(--accent-light); }
+
+  /* Quick Prompts */
+  .quick-prompts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+  .quick-prompt {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .quick-prompt:hover {
+    border-color: var(--accent);
+    color: var(--accent-light);
+    background: var(--accent-glow);
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .divider-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  /* Workspace Cards */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .see-all {
+    font-size: 13px;
+    color: var(--accent-light);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .see-all:hover { text-decoration: underline; }
+
+  .workspace-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .workspace-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .workspace-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .ws-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .ws-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .ws-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .ws-agent {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .ws-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .ws-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .ws-files {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .ws-progress {
+    width: 60px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .ws-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  /* Recent Chats */
+  .chat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .chat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chat-item:hover { background: var(--surface); }
+  .chat-agent-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .chat-info { flex: 1; }
+  .chat-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .chat-preview {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+  }
+  .chat-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  /* Scheme badge */
+  .scheme-badge {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+    z-index: 200;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-icon">A</div>
+      AgentSpace
+    </div>
+    <div class="topbar-nav">
+      <a class="nav-link active">Home</a>
+      <a class="nav-link">Workspaces</a>
+      <a class="nav-link">Agents</a>
+      <a class="nav-link">History</a>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn">&#128276;</button>
+      <button class="icon-btn">&#9881;</button>
+      <div class="avatar">JC</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Chat Hero -->
+    <div class="chat-hero">
+      <h1>What would you like to work on?</h1>
+      <p>Start a conversation or jump into a workspace below.</p>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chat-input-area">
+      <div class="agent-selector">
+        <span class="agent-selector-label">Agent:</span>
+        <div class="agent-chip selected">
+          <span class="agent-chip-icon" style="background:rgba(108,92,231,0.2)">&#129302;</span>
+          Research
+        </div>
+        <div class="agent-chip">
+          <span class="agent-chip-icon" style="background:rgba(0,206,201,0.2)">&#128187;</span>
+          Code
+        </div>
+        <div class="agent-chip">
+          <span class="agent-chip-icon" style="background:rgba(253,203,110,0.2)">&#9997;</span>
+          Writer
+        </div>
+        <div class="agent-chip">
+          <span class="agent-chip-icon" style="background:rgba(253,121,168,0.2)">&#127912;</span>
+          Design
+        </div>
+        <div class="agent-chip">
+          <span class="agent-chip-icon" style="background:rgba(108,92,231,0.1)">+</span>
+          More
+        </div>
+      </div>
+      <textarea class="chat-textarea" placeholder="Describe what you need help with..." rows="2"></textarea>
+      <div class="chat-bottom">
+        <div class="chat-tools">
+          <button class="tool-btn">&#128206; Attach</button>
+          <button class="tool-btn">&#128194; File</button>
+          <button class="tool-btn">&#127760; Web</button>
+        </div>
+        <button class="send-btn">&#10148;</button>
+      </div>
+    </div>
+
+    <!-- Quick Prompts -->
+    <div class="quick-prompts">
+      <button class="quick-prompt">&#128161; Analyze this dataset</button>
+      <button class="quick-prompt">&#128221; Write a blog post</button>
+      <button class="quick-prompt">&#128736; Debug my code</button>
+      <button class="quick-prompt">&#127912; Create a mockup</button>
+      <button class="quick-prompt">&#128202; Generate a report</button>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">Workspaces</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Workspaces -->
+    <div class="section-header">
+      <span class="section-title">Active Workspaces</span>
+      <a class="see-all">See all &rarr;</a>
+    </div>
+    <div class="workspace-grid">
+      <div class="workspace-card">
+        <div class="ws-header">
+          <div class="ws-icon" style="background:rgba(108,92,231,0.15)">&#128202;</div>
+          <div>
+            <div class="ws-title">Q4 Market Analysis</div>
+            <div class="ws-agent">Research Assistant</div>
+          </div>
+        </div>
+        <div class="ws-desc">Competitive analysis and market research for Q4 product strategy.</div>
+        <div class="ws-footer">
+          <div class="ws-files">&#128196; 12 files</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span>75%</span>
+            <div class="ws-progress">
+              <div class="ws-progress-fill" style="width:75%;background:var(--accent)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="workspace-card">
+        <div class="ws-header">
+          <div class="ws-icon" style="background:rgba(0,206,201,0.15)">&#128187;</div>
+          <div>
+            <div class="ws-title">API v2 Refactor</div>
+            <div class="ws-agent">Code Architect</div>
+          </div>
+        </div>
+        <div class="ws-desc">Migrating REST endpoints to GraphQL with improved error handling.</div>
+        <div class="ws-footer">
+          <div class="ws-files">&#128196; 28 files</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span>40%</span>
+            <div class="ws-progress">
+              <div class="ws-progress-fill" style="width:40%;background:var(--green)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="workspace-card">
+        <div class="ws-header">
+          <div class="ws-icon" style="background:rgba(253,121,168,0.15)">&#127912;</div>
+          <div>
+            <div class="ws-title">Dashboard Redesign</div>
+            <div class="ws-agent">Design Copilot</div>
+          </div>
+        </div>
+        <div class="ws-desc">Redesigning the analytics dashboard with new data visualization components.</div>
+        <div class="ws-footer">
+          <div class="ws-files">&#128196; 8 files</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span>60%</span>
+            <div class="ws-progress">
+              <div class="ws-progress-fill" style="width:60%;background:var(--pink)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Chats -->
+    <div class="section-header">
+      <span class="section-title">Recent Chats</span>
+      <a class="see-all">See all &rarr;</a>
+    </div>
+    <div class="chat-list">
+      <div class="chat-item">
+        <div class="chat-agent-dot" style="background:rgba(108,92,231,0.15)">&#129302;</div>
+        <div class="chat-info">
+          <div class="chat-title">Competitor pricing analysis</div>
+          <div class="chat-preview">Here's the comparison table for the top 5 competitors...</div>
+        </div>
+        <span class="chat-time">2h ago</span>
+      </div>
+      <div class="chat-item">
+        <div class="chat-agent-dot" style="background:rgba(0,206,201,0.15)">&#128187;</div>
+        <div class="chat-info">
+          <div class="chat-title">Fix authentication middleware</div>
+          <div class="chat-preview">The issue was in the token refresh logic. I've updated the...</div>
+        </div>
+        <span class="chat-time">5h ago</span>
+      </div>
+      <div class="chat-item">
+        <div class="chat-agent-dot" style="background:rgba(253,203,110,0.15)">&#9997;</div>
+        <div class="chat-info">
+          <div class="chat-title">Blog post draft: AI trends 2025</div>
+          <div class="chat-preview">I've structured the article around three main themes...</div>
+        </div>
+        <span class="chat-time">yesterday</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scheme-badge">Option 2: Task-Centric</div>
+
+</body>
+</html>

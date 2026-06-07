@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage V3 — Workspace-centric</title>
+<style>
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f0;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-tertiary: #999999;
+    --border-tertiary: rgba(0,0,0,0.1);
+    --border-secondary: rgba(0,0,0,0.2);
+    --bg-info: #E6F1FB;
+    --text-info: #0C447C;
+    --text-success: #3B6D11;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-secondary); color: var(--text-primary); }
+  .app { max-width: 960px; margin: 40px auto; background: var(--bg-primary); border-radius: var(--radius-lg); border: 1px solid var(--border-tertiary); overflow: hidden; min-height: 600px; display: flex; flex-direction: column; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--border-tertiary); }
+  .topbar-logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-info); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: var(--text-info); }
+  .new-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border: 1px solid var(--border-tertiary); border-radius: var(--radius-md); background: none; cursor: pointer; font-size: 13px; font-family: inherit; transition: background 0.15s; }
+  .new-btn:hover { background: var(--bg-secondary); }
+  .content { flex: 1; padding: 24px 28px; overflow-y: auto; }
+  .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .header-row h2 { font-size: 20px; font-weight: 600; }
+  .tabs { display: flex; border: 1px solid var(--border-tertiary); border-radius: var(--radius-md); overflow: hidden; }
+  .tab { padding: 6px 14px; font-size: 13px; cursor: pointer; border: none; background: none; font-family: inherit; transition: background 0.15s; color: var(--text-secondary); }
+  .tab.active { background: var(--bg-secondary); font-weight: 600; color: var(--text-primary); }
+  .search-btn { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border-tertiary); border-radius: var(--radius-md); font-size: 13px; color: var(--text-secondary); cursor: pointer; background: none; font-family: inherit; }
+  .ws-item { padding: 16px; border: 1px solid var(--border-tertiary); border-radius: var(--radius-md); margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.15s; }
+  .ws-item:hover { background: var(--bg-secondary); }
+  .ws-icon { width: 38px; height: 38px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .dot-active { width: 6px; height: 6px; border-radius: 50%; background: var(--text-success); }
+  .ws-bar { display: flex; align-items: center; gap: 10px; padding: 10px 24px; border-bottom: 1px solid var(--border-tertiary); }
+  .back-btn { cursor: pointer; width: 30px; height: 30px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; border: none; background: none; font-size: 16px; color: var(--text-secondary); transition: background 0.15s; }
+  .back-btn:hover { background: var(--bg-secondary); }
+  .mode-toggle { display: flex; border: 1px solid var(--border-tertiary); border-radius: var(--radius-md); overflow: hidden; }
+  .mode-btn { padding: 5px 12px; font-size: 12px; cursor: pointer; border: none; background: none; font-family: inherit; color: var(--text-secondary); transition: background 0.15s; }
+  .mode-btn.active { background: var(--bg-secondary); font-weight: 600; color: var(--text-primary); }
+  .agent-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 100px; font-size: 12px; }
+  .workspace-panels { display: flex; gap: 16px; padding: 20px 24px; flex: 1; }
+  .panel { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 16px; flex: 1; }
+  .panel-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
+  .file-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-tertiary); margin-bottom: 6px; }
+  .preview-box { flex: 1.3; background: var(--bg-primary); border-radius: var(--radius-md); border: 1px solid var(--border-tertiary); padding: 14px; }
+  .chat-view { padding: 20px 24px; flex: 1; display: flex; flex-direction: column; }
+  .msg { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
+  .msg-bubble { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 10px 14px; font-size: 13px; line-height: 1.5; max-width: 80%; }
+  .msg-bubble.user { background: var(--bg-info); color: var(--text-info); margin-left: auto; }
+  .msg-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .chat-input-bar { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 12px; }
+  .chat-input-bar input { flex: 1; border: 1px solid var(--border-tertiary); border-radius: var(--radius-md); padding: 10px 14px; font-size: 13px; font-family: inherit; outline: none; }
+  .chat-input-bar input:focus { border-color: var(--border-secondary); }
+  .chat-send { width: 30px; height: 30px; border-radius: 50%; background: var(--text-primary); color: var(--bg-primary); border: none; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  #workspace-view { display: none; flex-direction: column; flex: 1; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-logo">🤖 AgentSpace</div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <button class="new-btn">+ New workspace</button>
+      <span style="color:var(--text-secondary); cursor:pointer;">🔔</span>
+      <div class="avatar">U</div>
+    </div>
+  </div>
+
+  <div id="list-view" class="content">
+    <div class="header-row">
+      <h2>Workspaces</h2>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="tabs">
+          <button class="tab active" onclick="filterTab(this,'all')">All</button>
+          <button class="tab" onclick="filterTab(this,'active')">Active</button>
+          <button class="tab" onclick="filterTab(this,'archived')">Archived</button>
+        </div>
+        <button class="search-btn">🔍 Search</button>
+      </div>
+    </div>
+    <div id="ws-list"></div>
+  </div>
+
+  <div id="workspace-view">
+    <div class="ws-bar">
+      <button class="back-btn" onclick="backToList()">←</button>
+      <span id="ws-title" style="font-weight:600; font-size:14px;"></span>
+      <div style="flex:1;"></div>
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="btn-workspace" onclick="switchMode('workspace')">📁 Workspace</button>
+        <button class="mode-btn" id="btn-chat" onclick="switchMode('chat')">💬 Chat</button>
+      </div>
+      <div class="agent-pill" id="ws-agent" style="margin-left:10px;"></div>
+    </div>
+    <div id="ws-workspace-mode" class="workspace-panels">
+      <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
+        <div class="panel">
+          <p class="panel-title">📄 Documents</p>
+          <div class="file-row">📃 report-draft.md</div>
+          <div class="file-row">📃 data-sources.csv</div>
+          <div class="file-row">📃 notes.txt</div>
+        </div>
+        <div class="panel">
+          <p class="panel-title">☑️ Tasks</p>
+          <div class="file-row"><span style="color:var(--text-success)">✓</span> <span style="text-decoration:line-through;">Gather data sources</span></div>
+          <div class="file-row">○ Draft executive summary</div>
+          <div class="file-row">○ Add charts</div>
+        </div>
+      </div>
+      <div style="flex:1.3; display:flex; flex-direction:column;">
+        <div class="panel" style="flex:1;">
+          <p class="panel-title">👁️ Preview</p>
+          <div class="preview-box">
+            <p style="font-weight:600; font-size:14px; margin-bottom:8px;">Market report Q2</p>
+            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">Executive summary placeholder...</p>
+            <div style="height:70px; background:var(--bg-secondary); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:var(--text-tertiary); font-size:12px;">📈 Chart placeholder</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ws-chat-mode" class="chat-view" style="display:none;">
+      <div class="msg">
+        <div class="msg-avatar" style="background:#EEEDFE;">📊</div>
+        <div class="msg-bubble">I've drafted the executive summary based on the data sources. Want me to add the competitor comparison section next?</div>
+      </div>
+      <div class="msg" style="justify-content:flex-end;">
+        <div class="msg-bubble user">Yes, and include a pricing table.</div>
+      </div>
+      <div class="chat-input-bar">
+        <input type="text" placeholder="Type a message..." />
+        <button class="chat-send">↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const wsData = [
+  { name:'Market report Q2', agent:'Research analyst', icon:'📊', bg:'#EEEDFE', text:'#3C3489', status:'active', updated:'2 hours ago', items:3 },
+  { name:'Blog draft — AI trends', agent:'Content writer', icon:'✏️', bg:'#E1F5EE', text:'#085041', status:'active', updated:'5 hours ago', items:2 },
+  { name:'API refactor', agent:'Code assistant', icon:'💻', bg:'#E6F1FB', text:'#0C447C', status:'active', updated:'Yesterday', items:7 },
+  { name:'Homepage redesign', agent:'Design copilot', icon:'🎨', bg:'#FAECE7', text:'#712B13', status:'active', updated:'2 days ago', items:4 },
+  { name:'ETL pipeline v2', agent:'Data engineer', icon:'🗄️', bg:'#FAEEDA', text:'#633806', status:'archived', updated:'1 week ago', items:5 },
+  { name:'Q3 roadmap', agent:'Product manager', icon:'📋', bg:'#FBEAF0', text:'#993556', status:'active', updated:'3 days ago', items:6 }
+];
+
+let currentFilter = 'all';
+
+function renderList() {
+  const filtered = currentFilter === 'all' ? wsData : wsData.filter(w => w.status === currentFilter);
+  document.getElementById('ws-list').innerHTML = filtered.map((w,i) =>
+    `<div class="ws-item" onclick="openWorkspace(${wsData.indexOf(w)})">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div class="ws-icon" style="background:${w.bg}">${w.icon}</div>
+        <div>
+          <p style="font-weight:600; font-size:14px; margin:0;">${w.name}</p>
+          <p style="font-size:12px; color:var(--text-tertiary); margin:2px 0 0;">${w.agent} · ${w.items} items · ${w.updated}</p>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        ${w.status === 'active' ? '<div class="dot-active"></div>' : ''}
+        <span style="color:var(--text-tertiary)">›</span>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function filterTab(el, filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); });
+  el.classList.add('active');
+  renderList();
+}
+
+function openWorkspace(idx) {
+  const w = wsData[idx];
+  document.getElementById('list-view').style.display = 'none';
+  const wv = document.getElementById('workspace-view');
+  wv.style.display = 'flex';
+  document.getElementById('ws-title').textContent = w.name;
+  const pill = document.getElementById('ws-agent');
+  pill.style.background = w.bg;
+  pill.style.color = w.text;
+  pill.innerHTML = `${w.icon} ${w.agent}`;
+  switchMode('workspace');
+}
+
+function backToList() {
+  document.getElementById('list-view').style.display = 'block';
+  document.getElementById('workspace-view').style.display = 'none';
+}
+
+function switchMode(mode) {
+  const bw = document.getElementById('btn-workspace');
+  const bc = document.getElementById('btn-chat');
+  if (mode === 'workspace') {
+    document.getElementById('ws-workspace-mode').style.display = 'flex';
+    document.getElementById('ws-chat-mode').style.display = 'none';
+    bw.classList.add('active'); bc.classList.remove('active');
+  } else {
+    document.getElementById('ws-workspace-mode').style.display = 'none';
+    document.getElementById('ws-chat-mode').style.display = 'flex';
+    bc.classList.add('active'); bw.classList.remove('active');
+  }
+}
+
+renderList();
+</script>
+</body>
+</html>

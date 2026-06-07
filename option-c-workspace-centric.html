@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option C — Workspace-Centric Homepage</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { position: fixed; left: 0; top: 0; width: 260px; height: 100vh; background: #111118; border-right: 1px solid #1e1e2a; display: flex; flex-direction: column; z-index: 10; }
+  .sidebar-logo { padding: 24px 20px 20px; display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: #fff; }
+  .sidebar-logo .dot { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .sidebar-nav { flex: 1; padding: 8px 12px; }
+  .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; color: #a1a1aa; text-decoration: none; font-size: 14px; transition: all .15s; }
+  .sidebar-nav a:hover, .sidebar-nav a.active { background: #1a1a26; color: #e4e4e7; }
+  .sidebar-nav a.active { background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(139,92,246,.1)); color: #a78bfa; }
+  .nav-icon { width: 20px; height: 20px; opacity: .7; }
+  .sidebar-bottom { padding: 16px; border-top: 1px solid #1e1e2a; }
+  .user-pill { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
+  .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; }
+  .user-name { font-size: 13px; color: #a1a1aa; }
+
+  /* Main */
+  .main { margin-left: 260px; padding: 32px 48px; }
+
+  /* Top Bar */
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .topbar h1 { font-size: 24px; font-weight: 700; color: #fff; }
+  .topbar-actions { display: flex; align-items: center; gap: 12px; }
+  .search-sm { padding: 9px 14px 9px 38px; background: #16161f; border: 1px solid #27273a; border-radius: 8px; color: #e4e4e7; font-size: 13px; outline: none; width: 220px; transition: border .2s; position: relative; }
+  .search-sm:focus { border-color: #6366f1; }
+  .search-wrap { position: relative; }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #52525b; }
+  .new-ws-btn { padding: 9px 18px; border-radius: 8px; border: none; background: #6366f1; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; }
+  .new-ws-btn:hover { background: #5558e6; }
+
+  /* Filters */
+  .filters { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+  .filter-chip { padding: 7px 14px; border-radius: 20px; background: transparent; border: 1px solid #27273a; color: #a1a1aa; font-size: 13px; cursor: pointer; transition: all .15s; }
+  .filter-chip:hover { border-color: #6366f1; color: #e4e4e7; }
+  .filter-chip.active { background: rgba(99,102,241,.12); border-color: #6366f1; color: #a78bfa; }
+  .filter-divider { width: 1px; height: 20px; background: #27273a; margin: 0 4px; }
+  .view-toggle { display: flex; gap: 2px; background: #16161f; border-radius: 8px; padding: 2px; margin-left: auto; }
+  .view-btn { width: 32px; height: 32px; border: none; background: transparent; border-radius: 6px; color: #52525b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .view-btn.active { background: #27273a; color: #e4e4e7; }
+
+  /* Workspace Cards — List Style */
+  .ws-list { display: flex; flex-direction: column; gap: 8px; }
+  .ws-row { display: grid; grid-template-columns: 1fr 180px 140px 120px 60px; align-items: center; background: #13131c; border: 1px solid #1e1e2a; border-radius: 12px; padding: 18px 24px; cursor: pointer; transition: all .2s; }
+  .ws-row:hover { border-color: #27273a; background: #16161f; }
+  .ws-info { display: flex; align-items: center; gap: 14px; }
+  .ws-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .ws-title { font-size: 15px; font-weight: 600; color: #e4e4e7; margin-bottom: 2px; }
+  .ws-desc { font-size: 13px; color: #71717a; }
+  .ws-agent { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a1a1aa; }
+  .ws-agent-dot { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .ws-status-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 10px; border-radius: 12px; }
+  .status-active { background: rgba(16,185,129,.1); color: #34d399; }
+  .status-idle { background: rgba(113,113,122,.1); color: #71717a; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status-active .status-dot { background: #10b981; }
+  .status-idle .status-dot { background: #52525b; }
+  .ws-time { font-size: 13px; color: #52525b; }
+  .ws-menu { width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent; color: #52525b; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .ws-menu:hover { background: #27273a; color: #a1a1aa; }
+
+  /* Section labels */
+  .section-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #52525b; margin-bottom: 12px; margin-top: 32px; }
+  .section-label:first-of-type { margin-top: 0; }
+
+  /* Pinned Grid */
+  .pinned-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 8px; }
+  .pinned-card { background: #13131c; border: 1px solid #1e1e2a; border-radius: 14px; padding: 22px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden; }
+  .pinned-card:hover { border-color: #6366f1; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,.1); }
+  .pinned-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; }
+  .pinned-card.c-indigo::before { background: linear-gradient(90deg, #6366f1, #818cf8); }
+  .pinned-card.c-emerald::before { background: linear-gradient(90deg, #10b981, #34d399); }
+  .pinned-card.c-amber::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .pinned-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .pinned-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .pin-badge { font-size: 11px; color: #f59e0b; display: flex; align-items: center; gap: 4px; }
+  .pinned-card h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .pinned-card p { font-size: 13px; color: #71717a; margin-bottom: 14px; }
+  .pinned-meta { display: flex; align-items: center; gap: 12px; font-size: 12px; color: #52525b; }
+
+  /* Chat toggle inside workspace (preview) */
+  .mode-toggle { display: inline-flex; gap: 2px; background: #16161f; border-radius: 8px; padding: 3px; margin-bottom: 16px; }
+  .mode-btn { padding: 6px 14px; border-radius: 6px; border: none; font-size: 12px; font-weight: 500; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px; }
+  .mode-btn.active { background: #27273a; color: #e4e4e7; }
+  .mode-btn:not(.active) { background: transparent; color: #52525b; }
+
+  .bg-indigo { background: linear-gradient(135deg, #6366f1, #818cf8); }
+  .bg-emerald { background: linear-gradient(135deg, #10b981, #34d399); }
+  .bg-amber { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+  .bg-rose { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+  .bg-cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+
+  .label-annotation {
+    position: fixed; top: 16px; right: 24px;
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    color: #000; font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px; z-index: 20;
+  }
+
+  /* Tooltip preview */
+  .preview-tooltip { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 520px; background: #16161f; border: 1px solid #27273a; border-radius: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.6); z-index: 100; overflow: hidden; }
+  .preview-tooltip.open { display: block; }
+  .preview-header { padding: 16px 20px; border-bottom: 1px solid #1e1e2a; display: flex; align-items: center; justify-content: space-between; }
+  .preview-header h3 { font-size: 16px; font-weight: 600; color: #fff; }
+  .preview-close { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; color: #71717a; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .preview-close:hover { background: #27273a; }
+  .preview-body { padding: 20px; }
+  .preview-body .mode-toggle { margin-bottom: 16px; }
+  .preview-workspace-view, .preview-chat-view { display: none; }
+  .preview-workspace-view.active, .preview-chat-view.active { display: block; }
+  .preview-files { display: flex; flex-direction: column; gap: 6px; }
+  .preview-file { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; background: #1a1a26; font-size: 13px; color: #a1a1aa; }
+  .preview-file-icon { font-size: 16px; }
+  .preview-chat-msg { padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 8px; max-width: 80%; }
+  .msg-user { background: #6366f1; color: #fff; margin-left: auto; }
+  .msg-agent { background: #1a1a26; color: #e4e4e7; }
+  .preview-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 99; }
+  .preview-overlay.open { display: block; }
+</style>
+</head>
+<body>
+
+<div class="label-annotation">Option C — Workspace-Centric</div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="dot">⚡</div>
+    AgentOS
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Workspaces
+    </a>
+    <a href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Chats
+    </a>
+    <a href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-7.07-2.93 2.83-2.83m8.48-8.48 2.83-2.83M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83"/></svg>
+      Agents
+    </a>
+    <a href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Templates
+    </a>
+    <a href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="user-avatar">U</div>
+      <span class="user-name">User</span>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+  <div class="topbar">
+    <h1>Workspaces</h1>
+    <div class="topbar-actions">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="search-sm" placeholder="Search workspaces...">
+      </div>
+      <button class="new-ws-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Workspace
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-chip active">All</div>
+    <div class="filter-chip">Active</div>
+    <div class="filter-chip">Archived</div>
+    <div class="filter-divider"></div>
+    <div class="filter-chip">💻 Code</div>
+    <div class="filter-chip">✍️ Writing</div>
+    <div class="filter-chip">📊 Data</div>
+    <div class="filter-chip">🎨 Design</div>
+    <div class="view-toggle">
+      <button class="view-btn active" title="List view">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      </button>
+      <button class="view-btn" title="Grid view">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pinned -->
+  <div class="section-label">📌 Pinned</div>
+  <div class="pinned-grid">
+    <div class="pinned-card c-indigo" onclick="openPreview('Payment API v2', '💻', 'bg-indigo')">
+      <div class="pinned-top">
+        <div class="pinned-icon bg-indigo">💻</div>
+        <div class="pin-badge">📌 Pinned</div>
+      </div>
+      <h3>Payment API v2</h3>
+      <p>Refactoring payment flow with Stripe integration</p>
+      <div class="pinned-meta">
+        <span>Code Assistant</span>
+        <span>· 12 files</span>
+        <span>· Active now</span>
+      </div>
+    </div>
+    <div class="pinned-card c-emerald" onclick="openPreview('Q2 Content Hub', '✍️', 'bg-emerald')">
+      <div class="pinned-top">
+        <div class="pinned-icon bg-emerald">✍️</div>
+        <div class="pin-badge">📌 Pinned</div>
+      </div>
+      <h3>Q2 Content Hub</h3>
+      <p>Blog posts, email campaigns, social media copy</p>
+      <div class="pinned-meta">
+        <span>Content Writer</span>
+        <span>· 8 docs</span>
+        <span>· 1h ago</span>
+      </div>
+    </div>
+    <div class="pinned-card c-amber" onclick="openPreview('Revenue Dashboard', '📊', 'bg-amber')">
+      <div class="pinned-top">
+        <div class="pinned-icon bg-amber">📊</div>
+        <div class="pin-badge">📌 Pinned</div>
+      </div>
+      <h3>Revenue Dashboard</h3>
+      <p>Monthly revenue tracking and forecast models</p>
+      <div class="pinned-meta">
+        <span>Data Analyst</span>
+        <span>· 5 charts</span>
+        <span>· 3h ago</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Workspaces List -->
+  <div class="section-label" style="margin-top:32px;">All Workspaces</div>
+  <div class="ws-list">
+    <div class="ws-row" onclick="openPreview('Auth Module Rewrite', '💻', 'bg-indigo')">
+      <div class="ws-info">
+        <div class="ws-icon bg-indigo">💻</div>
+        <div><div class="ws-title">Auth Module Rewrite</div><div class="ws-desc">Migrate from JWT to session-based auth</div></div>
+      </div>
+      <div class="ws-agent"><div class="ws-agent-dot bg-indigo">💻</div> Code Assistant</div>
+      <div class="ws-status-pill status-active"><div class="status-dot"></div> Active</div>
+      <div class="ws-time">20 min ago</div>
+      <button class="ws-menu">⋯</button>
+    </div>
+    <div class="ws-row" onclick="openPreview('Brand Guidelines v3', '🎨', 'bg-rose')">
+      <div class="ws-info">
+        <div class="ws-icon bg-rose">🎨</div>
+        <div><div class="ws-title">Brand Guidelines v3</div><div class="ws-desc">Updated color palette and typography system</div></div>
+      </div>
+      <div class="ws-agent"><div class="ws-agent-dot bg-rose">🎨</div> UI Designer</div>
+      <div class="ws-status-pill status-active"><div class="status-dot"></div> Active</div>
+      <div class="ws-time">45 min ago</div>
+      <button class="ws-menu">⋯</button>
+    </div>
+    <div class="ws-row">
+      <div class="ws-info">
+        <div class="ws-icon bg-cyan">🔍</div>
+        <div><div class="ws-title">Competitor Analysis Q2</div><div class="ws-desc">Market positioning and feature comparison</div></div>
+      </div>
+      <div class="ws-agent"><div class="ws-agent-dot bg-cyan">🔍</div> Research Agent</div>
+      <div class="ws-status-pill status-idle"><div class="status-dot"></div> Idle</div>
+      <div class="ws-time">2 days ago</div>
+      <button class="ws-menu">⋯</button>
+    </div>
+    <div class="ws-row">
+      <div class="ws-info">
+        <div class="ws-icon bg-amber">📊</div>
+        <div><div class="ws-title">User Retention Analysis</div><div class="ws-desc">Cohort analysis and churn prediction model</div></div>
+      </div>
+      <div class="ws-agent"><div class="ws-agent-dot bg-amber">📊</div> Data Analyst</div>
+      <div class="ws-status-pill status-idle"><div class="status-dot"></div> Idle</div>
+      <div class="ws-time">3 days ago</div>
+      <button class="ws-menu">⋯</button>
+    </div>
+    <div class="ws-row">
+      <div class="ws-info">
+        <div class="ws-icon bg-emerald">✍️</div>
+        <div><div class="ws-title">Help Center Articles</div><div class="ws-desc">Onboarding guides and FAQ documentation</div></div>
+      </div>
+      <div class="ws-agent"><div class="ws-agent-dot bg-emerald">✍️</div> Content Writer</div>
+      <div class="ws-status-pill status-idle"><div class="status-dot"></div> Idle</div>
+      <div class="ws-time">5 days ago</div>
+      <button class="ws-menu">⋯</button>
+    </div>
+  </div>
+</main>
+
+<!-- Preview Modal -->
+<div class="preview-overlay" id="overlay" onclick="closePreview()"></div>
+<div class="preview-tooltip" id="preview">
+  <div class="preview-header">
+    <h3 id="previewTitle">Workspace</h3>
+    <button class="preview-close" onclick="closePreview()">✕</button>
+  </div>
+  <div class="preview-body">
+    <div class="mode-toggle">
+      <button class="mode-btn active" onclick="switchMode('workspace')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Workspace
+      </button>
+      <button class="mode-btn" onclick="switchMode('chat')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+      </button>
+    </div>
+
+    <div class="preview-workspace-view active" id="wsView">
+      <div class="preview-files">
+        <div class="preview-file"><span class="preview-file-icon">📄</span> src/api/payment.ts</div>
+        <div class="preview-file"><span class="preview-file-icon">📄</span> src/hooks/usePayment.ts</div>
+        <div class="preview-file"><span class="preview-file-icon">📄</span> tests/payment.test.ts</div>
+        <div class="preview-file"><span class="preview-file-icon">📋</span> CHANGELOG.md</div>
+        <div class="preview-file"><span class="preview-file-icon">⚙️</span> .env.local</div>
+      </div>
+    </div>
+
+    <div class="preview-chat-view" id="chatView">
+      <div class="preview-chat-msg msg-user">Help me add error handling to the payment flow</div>
+      <div class="preview-chat-msg msg-agent">I'll add try-catch blocks with proper error types for each payment step. Here's my plan...</div>
+      <div class="preview-chat-msg msg-user">Sounds good, also add retry logic</div>
+      <div class="preview-chat-msg msg-agent">Added exponential backoff with max 3 retries. Check the updated code.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openPreview(title) {
+    document.getElementById('previewTitle').textContent = title;
+    document.getElementById('preview').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+    switchMode('workspace');
+  }
+
+  function closePreview() {
+    document.getElementById('preview').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+  }
+
+  function switchMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach((b,i) => {
+      b.classList.toggle('active', (mode === 'workspace' && i === 0) || (mode === 'chat' && i === 1));
+    });
+    document.getElementById('wsView').classList.toggle('active', mode === 'workspace');
+    document.getElementById('chatView').classList.toggle('active', mode === 'chat');
+  }
+
+  // Filter chips
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

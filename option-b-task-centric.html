@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option B — Task-Centric Homepage</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e4e4e7; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { position: fixed; left: 0; top: 0; width: 260px; height: 100vh; background: #111118; border-right: 1px solid #1e1e2a; display: flex; flex-direction: column; z-index: 10; }
+  .sidebar-logo { padding: 24px 20px 20px; display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: #fff; }
+  .sidebar-logo .dot { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .sidebar-nav { flex: 1; padding: 8px 12px; }
+  .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; color: #a1a1aa; text-decoration: none; font-size: 14px; transition: all .15s; }
+  .sidebar-nav a:hover, .sidebar-nav a.active { background: #1a1a26; color: #e4e4e7; }
+  .sidebar-nav a.active { background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(139,92,246,.1)); color: #a78bfa; }
+  .nav-icon { width: 20px; height: 20px; opacity: .7; }
+  .sidebar-section { padding: 16px 20px 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #52525b; }
+  .sidebar-history { padding: 0 12px; }
+  .sidebar-history a { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; color: #71717a; text-decoration: none; font-size: 13px; transition: all .15s; }
+  .sidebar-history a:hover { background: #1a1a26; color: #a1a1aa; }
+  .history-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .sidebar-bottom { padding: 16px; border-top: 1px solid #1e1e2a; }
+  .user-pill { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
+  .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; }
+  .user-name { font-size: 13px; color: #a1a1aa; }
+
+  /* Main */
+  .main { margin-left: 260px; }
+
+  /* Hero / Chat Area */
+  .hero { padding: 80px 48px 48px; text-align: center; background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,.08) 0%, transparent 70%); }
+  .hero h1 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .hero p { font-size: 15px; color: #71717a; margin-bottom: 32px; }
+
+  /* Chat Input */
+  .chat-box { max-width: 680px; margin: 0 auto; position: relative; }
+  .chat-input-wrap { background: #13131c; border: 1px solid #27273a; border-radius: 16px; overflow: hidden; transition: border .2s; }
+  .chat-input-wrap:focus-within { border-color: #6366f1; }
+  .chat-input { width: 100%; padding: 18px 20px 14px; background: transparent; border: none; color: #e4e4e7; font-size: 15px; outline: none; resize: none; min-height: 56px; }
+  .chat-input::placeholder { color: #52525b; }
+  .chat-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px 12px; }
+  .chat-left { display: flex; align-items: center; gap: 6px; }
+  .agent-selector { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 8px; background: rgba(99,102,241,.1); border: 1px solid rgba(99,102,241,.2); cursor: pointer; transition: all .15s; }
+  .agent-selector:hover { background: rgba(99,102,241,.18); }
+  .agent-selector-dot { width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .agent-selector span { font-size: 13px; color: #a78bfa; font-weight: 500; }
+  .agent-selector svg { color: #6366f1; }
+  .tool-btn { width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent; color: #52525b; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .tool-btn:hover { background: #1a1a26; color: #a1a1aa; }
+  .send-btn { width: 36px; height: 36px; border-radius: 10px; border: none; background: #6366f1; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .send-btn:hover { background: #5558e6; }
+
+  /* Quick Actions */
+  .quick-actions { max-width: 680px; margin: 20px auto 0; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .quick-chip { padding: 8px 16px; border-radius: 20px; background: #16161f; border: 1px solid #1e1e2a; color: #a1a1aa; font-size: 13px; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px; }
+  .quick-chip:hover { border-color: #6366f1; color: #e4e4e7; }
+  .quick-chip span { font-size: 14px; }
+
+  /* Agent dropdown */
+  .agent-dropdown { position: absolute; bottom: 72px; left: 14px; width: 280px; background: #16161f; border: 1px solid #27273a; border-radius: 12px; padding: 8px; display: none; box-shadow: 0 12px 40px rgba(0,0,0,.5); z-index: 20; }
+  .agent-dropdown.open { display: block; }
+  .agent-option { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all .15s; }
+  .agent-option:hover { background: #1e1e2a; }
+  .agent-option-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .agent-option-name { font-size: 14px; color: #e4e4e7; font-weight: 500; }
+  .agent-option-desc { font-size: 12px; color: #71717a; }
+
+  /* Divider */
+  .divider { max-width: 900px; margin: 48px auto 0; padding: 0 48px; }
+  .divider-line { border: none; border-top: 1px solid #1e1e2a; margin-bottom: 32px; }
+
+  /* Workspaces Section */
+  .workspaces-section { max-width: 900px; margin: 0 auto; padding: 0 48px 60px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .section-header h2 { font-size: 18px; font-weight: 600; color: #fff; }
+  .see-all { font-size: 13px; color: #6366f1; text-decoration: none; }
+  .see-all:hover { text-decoration: underline; }
+
+  .workspace-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .workspace-card { background: #13131c; border: 1px solid #1e1e2a; border-radius: 12px; padding: 20px; cursor: pointer; transition: all .2s; }
+  .workspace-card:hover { border-color: #27273a; transform: translateY(-1px); }
+  .ws-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .ws-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .ws-status { width: 8px; height: 8px; border-radius: 50%; }
+  .ws-active { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,.4); }
+  .ws-idle { background: #52525b; }
+  .workspace-card h3 { font-size: 15px; font-weight: 600; color: #e4e4e7; margin-bottom: 4px; }
+  .workspace-card p { font-size: 13px; color: #71717a; margin-bottom: 12px; }
+  .ws-meta { display: flex; align-items: center; gap: 12px; font-size: 12px; color: #52525b; }
+  .ws-meta span { display: flex; align-items: center; gap: 4px; }
+
+  .bg-indigo { background: linear-gradient(135deg, #6366f1, #818cf8); }
+  .bg-emerald { background: linear-gradient(135deg, #10b981, #34d399); }
+  .bg-amber { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+  .bg-rose { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+
+  .label-annotation {
+    position: fixed; top: 16px; right: 24px;
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: #fff; font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px; z-index: 20;
+  }
+</style>
+</head>
+<body>
+
+<div class="label-annotation">Option B — Task-Centric</div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="dot">⚡</div>
+    AgentOS
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+      Home
+    </a>
+    <a href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Workspaces
+    </a>
+    <a href="#">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-7.07-2.93 2.83-2.83m8.48-8.48 2.83-2.83M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83"/></svg>
+      Agents
+    </a>
+  </nav>
+  <div class="sidebar-section">Recent Chats</div>
+  <div class="sidebar-history">
+    <a href="#"><div class="history-dot" style="background:#6366f1"></div> Fix auth bug in login</a>
+    <a href="#"><div class="history-dot" style="background:#10b981"></div> Write Q2 report draft</a>
+    <a href="#"><div class="history-dot" style="background:#f59e0b"></div> Analyze user funnel</a>
+    <a href="#"><div class="history-dot" style="background:#f43f5e"></div> Landing page mockup</a>
+    <a href="#"><div class="history-dot" style="background:#6366f1"></div> API endpoint design</a>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="user-avatar">U</div>
+      <span class="user-name">User</span>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+  <!-- Hero Chat -->
+  <div class="hero">
+    <h1>What are you working on?</h1>
+    <p>Describe your task and let the right agent help you</p>
+
+    <div class="chat-box">
+      <div class="chat-input-wrap">
+        <textarea class="chat-input" placeholder="e.g. Help me debug the payment API..." rows="1"></textarea>
+        <div class="chat-toolbar">
+          <div class="chat-left">
+            <div class="agent-selector" onclick="toggleDropdown()">
+              <div class="agent-selector-dot bg-indigo">💻</div>
+              <span id="selectedAgentName">Code Assistant</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <button class="tool-btn" title="Attach file">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.49"/></svg>
+            </button>
+          </div>
+          <button class="send-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Agent Dropdown -->
+      <div class="agent-dropdown" id="agentDropdown">
+        <div class="agent-option" onclick="pickAgent('💻','bg-indigo','Code Assistant')">
+          <div class="agent-option-icon bg-indigo">💻</div>
+          <div><div class="agent-option-name">Code Assistant</div><div class="agent-option-desc">Development & debugging</div></div>
+        </div>
+        <div class="agent-option" onclick="pickAgent('✍️','bg-emerald','Content Writer')">
+          <div class="agent-option-icon bg-emerald">✍️</div>
+          <div><div class="agent-option-name">Content Writer</div><div class="agent-option-desc">Writing & editing</div></div>
+        </div>
+        <div class="agent-option" onclick="pickAgent('📊','bg-amber','Data Analyst')">
+          <div class="agent-option-icon bg-amber">📊</div>
+          <div><div class="agent-option-name">Data Analyst</div><div class="agent-option-desc">Analytics & visualization</div></div>
+        </div>
+        <div class="agent-option" onclick="pickAgent('🎨','bg-rose','UI Designer')">
+          <div class="agent-option-icon bg-rose">🎨</div>
+          <div><div class="agent-option-name">UI Designer</div><div class="agent-option-desc">Design & prototyping</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <div class="quick-chip"><span>🐛</span> Debug my code</div>
+      <div class="quick-chip"><span>📝</span> Write a blog post</div>
+      <div class="quick-chip"><span>📊</span> Analyze this CSV</div>
+      <div class="quick-chip"><span>🎨</span> Design a landing page</div>
+      <div class="quick-chip"><span>🔍</span> Research competitors</div>
+    </div>
+  </div>
+
+  <!-- Workspaces -->
+  <div class="divider"><hr class="divider-line"></div>
+
+  <div class="workspaces-section">
+    <div class="section-header">
+      <h2>Your Workspaces</h2>
+      <a href="#" class="see-all">See all →</a>
+    </div>
+    <div class="workspace-list">
+      <div class="workspace-card">
+        <div class="ws-top">
+          <div class="ws-icon bg-indigo">💻</div>
+          <div class="ws-status ws-active"></div>
+        </div>
+        <h3>Payment API v2</h3>
+        <p>Refactoring payment flow with Stripe integration</p>
+        <div class="ws-meta">
+          <span>💻 Code Assistant</span>
+          <span>· 12 files</span>
+          <span>· 2h ago</span>
+        </div>
+      </div>
+      <div class="workspace-card">
+        <div class="ws-top">
+          <div class="ws-icon bg-emerald">✍️</div>
+          <div class="ws-status ws-active"></div>
+        </div>
+        <h3>Q2 Marketing Copy</h3>
+        <p>Landing page & email campaign drafts</p>
+        <div class="ws-meta">
+          <span>✍️ Content Writer</span>
+          <span>· 5 docs</span>
+          <span>· 4h ago</span>
+        </div>
+      </div>
+      <div class="workspace-card">
+        <div class="ws-top">
+          <div class="ws-icon bg-amber">📊</div>
+          <div class="ws-status ws-idle"></div>
+        </div>
+        <h3>User Funnel Analysis</h3>
+        <p>Conversion metrics and drop-off analysis</p>
+        <div class="ws-meta">
+          <span>📊 Data Analyst</span>
+          <span>· 3 charts</span>
+          <span>· 1d ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  function toggleDropdown() {
+    document.getElementById('agentDropdown').classList.toggle('open');
+  }
+
+  function pickAgent(emoji, bg, name) {
+    document.getElementById('selectedAgentName').textContent = name;
+    const dot = document.querySelector('.agent-selector-dot');
+    dot.className = 'agent-selector-dot ' + bg;
+    dot.textContent = emoji;
+    document.getElementById('agentDropdown').classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.agent-selector') && !e.target.closest('.agent-dropdown')) {
+      document.getElementById('agentDropdown').classList.remove('open');
+    }
+  });
+</script>
+</body>
+</html>
