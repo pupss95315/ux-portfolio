@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>PDOGs Redesign · NTU IM</title>
 <meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-pdogs">
@@ -20,7 +21,8 @@
     <ul class="nav-links">
       <li><a class="link" href="index.html#work">Work</a></li>
       <li><a class="link" href="about.html">About</a></li>
-      <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="en/case-pdogs.html" hreflang="en" lang="en">EN</a></li>
     </ul>
     <!-- Mobile hamburger -->
     <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="開啟選單">
@@ -35,7 +37,8 @@
       <ul>
         <li><a class="link" href="index.html#work">Work</a></li>
         <li><a class="link" href="about.html">About</a></li>
-        <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="en/case-pdogs.html" hreflang="en" lang="en">English</a></li>
       </ul>
     </div>
   </div>
@@ -59,10 +62,10 @@
         <li><a href="#background">Background</a></li>
         <li><a href="#solution-overview">Solution Overview</a></li>
         <li><a href="#research">Research</a></li>
-        <li><a href="#findings">Key Findings</a></li>
+        <!-- <li><a href="#findings">Key Findings</a></li> -->
         <li><a href="#goals">Design Goals</a></li>
-        <li><a href="#improvements">Improvements</a></li>
-        <li><a href="#design-system">Design System</a></li>
+        <li><a href="#improvements">Design</a></li>
+        <!-- <li><a href="#design-system">Design System</a></li> -->
         <li><a href="#conclusion">Outcome</a></li>
         <li><a href="#lessons">Lessons Learned</a></li>
       </ul>
@@ -81,11 +84,11 @@
 
         <div class="case-meta-grid">
           <div class="case-meta-card">
-            <h3 class="meta-title"><span class="h3-num" aria-hidden="true">01</span>專案時程</h3>
+            <h3 class="meta-title">專案時程</h3>
             <p>2 個月，2023 年 7 月 - 2023 年 9 月</p>
           </div>
           <div class="case-meta-card">
-            <h3 class="meta-title"><span class="h3-num" aria-hidden="true">02</span>專案團隊</h3>
+            <h3 class="meta-title">專案團隊</h3>
             <ul>
               <li>產品經理 × 1</li>
               <li>開發團隊</li>
@@ -93,7 +96,7 @@
             </ul>
           </div>
           <div class="case-meta-card">
-            <h3 class="meta-title"><span class="h3-num" aria-hidden="true">03</span>我的角色</h3>
+            <h3 class="meta-title">我的角色</h3>
             <ul>
               <li>規劃使用者研究與測試</li>
               <li>發想與統整設計提案</li>
@@ -102,7 +105,7 @@
             </ul>
           </div>
           <div class="case-meta-card highlight">
-            <h3 class="meta-title"><span class="h3-num h3-num--brinno" aria-hidden="true">04</span>成果與產出</h3>
+            <h3 class="meta-title">成果與產出</h3>
             <ul>
               <li>縮短繳交作業時間 <strong>28%</strong></li>
               <li><strong>3/3</strong> 位使用者認為新的設計更加直覺</li>
@@ -118,7 +121,7 @@
 
         <h3>PDOGs 是什麼？</h3>
         <p>
-          想像你是一位程式設計的初學者，在完成作業後，你迫不亟待地進入平台，貼上程式碼並按下繳交鍵，立刻就能看到自己的成績。這個平台就是 PDOGs (Programming Design Online Grading System)，每個學期陪伴 <strong>500 多位</strong>修習程式設計課程的學生，走過他們初次學習程式的旅程。
+          想像你是一位程式設計的初學者，在完成作業後，你迫不及待地進入平台，貼上程式碼並按下繳交鍵，立刻就能看到自己的成績。這個平台就是 PDOGs (Programming Design Online Grading System)，每個學期陪伴 <strong>500 多位</strong>修習程式設計課程的學生，走過他們初次學習程式的旅程。
         </p>
 
         <h3>為什麼要重新設計 PDOGs？</h3>
@@ -288,12 +291,12 @@
         </p>
         <div class="case-iteration">
           <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
-            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
 
             <div class="iteration-viewport">
-              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
                 <div class="iteration-split-text">
                   <span class="iteration-label">Before</span>
                   <p>
@@ -313,7 +316,7 @@
                   <img src="img/PDOGs/iteration-1-before.png" alt="Before：表格欄位與字級過大">
                 </div>
               </figure>
-              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
                 <div class="iteration-split-text">
                   <span class="iteration-label iteration-label--after">After</span>
                   <p>
@@ -335,13 +338,13 @@
               </figure>
             </div>
 
-            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
             </button>
 
             <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
-              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
-              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="顯示 After"></button>
             </div>
           </div>
         </div>
@@ -352,15 +355,15 @@
         </p>
         <div class="case-iteration">
           <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
-            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
 
             <div class="iteration-viewport">
-              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
                 <div class="iteration-split-text">
                   <span class="iteration-label">Before</span>
-                  <p>1. 多數作業描述欄未為空 <br>
+                  <p>1. 多數作業描述欄位為空 <br>
                     2. 作業資訊可以在前一頁的表格中看到 <br>
                     3. 僅顯示作業分數，使用者更在意是否達到滿分</p>
                   <div class="iteration-note">
@@ -375,7 +378,7 @@
                   <img src="img/PDOGs/iteration-2-before.png" alt="Before：多數作業描述欄位為空">
                 </div>
               </figure>
-              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
                 <div class="iteration-split-text">
                   <span class="iteration-label iteration-label--after">After</span>
                   <p>
@@ -398,13 +401,13 @@
               </figure>
             </div>
 
-            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
             </button>
 
             <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
-              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
-              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="顯示 After"></button>
             </div>
           </div>
         </div>
@@ -418,12 +421,12 @@
         </p>
         <div class="case-iteration">
           <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
-            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
 
             <div class="iteration-viewport">
-              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
                 <div class="iteration-split-text">
                   <span class="iteration-label">Before</span>
                   <p>原先系統的返回鍵是返回系統的上一個階層，而不是瀏覽的上一頁，導致使用者點擊後需從作業描述頁再重新進入繳交頁。</p>
@@ -439,11 +442,11 @@
                   <img src="img/PDOGs/iteration-3-before.png" alt="Before：返回鍵會跳回上一階層">
                 </div>
               </figure>
-              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
                 <div class="iteration-split-text">
                   <span class="iteration-label iteration-label--after">After</span>
                   <p>
-                    1. 顯示返回建返回（上一層）的頁面名稱 <br>
+                    1. 顯示返回鍵返回（上一層）的頁面名稱 <br>
                     2. 當被選擇時填滿背景，凸顯當下瀏覽的課程 <br>
                     3. 新增作業繳交狀態提示，鼓勵使用者完成作業
                   </p>
@@ -458,13 +461,13 @@
               </figure>
             </div>
 
-            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
             </button>
 
             <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
-              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
-              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="顯示 After"></button>
             </div>
           </div>
         </div>
@@ -537,12 +540,12 @@
         <h4><span class="h3-num" aria-hidden="true">01</span>清楚解釋專有名詞與資料輸入規則</h4>
         <div class="case-iteration">
           <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
-            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
 
             <div class="iteration-viewport">
-              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
                 <div class="iteration-split-text">
                   <span class="iteration-label">Before</span>
                   <p>當創建新的任務時，使用者常分不清楚 Label 和 Title 的差異</p>
@@ -551,7 +554,7 @@
                   <img src="img/PDOGs/iteration-4-before.png" alt="Before：Label 與 Title 容易混淆">
                 </div>
               </figure>
-              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
                 <div class="iteration-split-text">
                   <span class="iteration-label iteration-label--after">After</span>
                   <p>Hover 顯示 Label 和 Title 的解釋</p>
@@ -562,24 +565,24 @@
               </figure>
             </div>
 
-            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
             </button>
 
             <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
-              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
-              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="顯示 After"></button>
             </div>
           </div>
         </div>
         <div class="case-iteration">
           <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
-            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
 
             <div class="iteration-viewport">
-              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
                 <div class="iteration-split-text">
                   <span class="iteration-label">Before</span>
                   <p>原先的 placeholder 容易讓使用者誤會三種格式都需要輸入</p>
@@ -588,7 +591,7 @@
                   <img src="img/PDOGs/iteration-5-before.png" alt="Before：placeholder 易讓使用者誤會">
                 </div>
               </figure>
-              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
                 <div class="iteration-split-text">
                   <span class="iteration-label iteration-label--after">After</span>
                   <p>以斜線隔開每一種輸入方式，並說明每一種格式對應的條件</p>
@@ -599,13 +602,13 @@
               </figure>
             </div>
 
-            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
             </button>
 
             <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
-              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
-              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="顯示 After"></button>
             </div>
           </div>
         </div>
@@ -613,12 +616,12 @@
         <h4><span class="h3-num" aria-hidden="true">02</span>統一錯誤訊息格式，提供可能原因與解法</h4>
         <div class="case-iteration">
           <div class="iteration-carousel" data-iteration-carousel aria-label="設計迭代切換">
-            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before" hidden>
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="顯示 Before">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
 
             <div class="iteration-viewport">
-              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
                 <div class="iteration-split-text">
                   <span class="iteration-label">Before</span>
                   <p>只說明錯誤類型，使用者不知道下一步該怎麼處理</p>
@@ -627,7 +630,7 @@
                   <img src="img/PDOGs/error 2.png" alt="Before：僅說明錯誤類型">
                 </div>
               </figure>
-              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
                 <div class="iteration-split-text">
                   <span class="iteration-label iteration-label--after">After</span>
                   <p>統一格式並補上可能原因與解法，協助使用者快速排錯</p>
@@ -638,13 +641,13 @@
               </figure>
             </div>
 
-            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After">
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="顯示 After" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
             </button>
 
             <div class="iteration-dots" role="tablist" aria-label="Before / After 切換">
-              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="顯示 Before"></button>
-              <button type="button" class="iteration-dot" data-dot="1" aria-label="顯示 After"></button>
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="顯示 Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="顯示 After"></button>
             </div>
           </div>
         </div>

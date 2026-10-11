@@ -4,43 +4,22 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Chelsea Hsu · UX / Product Designer</title>
-<meta name="theme-color" content="#FFFFFF" />
+<meta name="description" content="UX/Product Designer with a frontend development background. Selected case studies spanning B2B SaaS, EdTech, and enterprise AI." />
+<meta property="og:title" content="Chelsea Hsu · UX / Product Designer" />
+<meta property="og:description" content="UX/Product Designer with a frontend development background. Selected case studies spanning B2B SaaS, EdTech, and enterprise AI." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#F5F2EC" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 
 <!-- ============================ View Project Cursor ============================ -->
 <style>
-  /* Outline pill ("About me") — hover: white bg + black drop shadow */
-  .pill:not(.solid):hover {
-    background: #FFFFFF;
-    color: var(--color-ink);
-    border-color: var(--color-ink);
-    box-shadow: 4px 4px 0 var(--color-ink);
-    transform: translate(-2px, -2px);
-  }
-
-  /* Solid pill ("View selected work") — hover: purple bg + white text */
-  .pill.solid:hover {
-    background: #9F90D9;
-    color: #FFFFFF;
-    border-color: var(--color-ink);
-    box-shadow: 4px 4px 0 var(--color-ink);
-    transform: translate(-2px, -2px);
-  }
-
-  /* Work card — hover: white bg, ink text retained, smaller offset */
-  .work-card:not(.work-card--upcoming):hover {
-    background: #FFFFFF;
-    border-color: var(--color-ink);
-    box-shadow: 4px 4px 0 var(--color-ink);
-    transform: translate(-2px, -2px);
-  }
-
   /* hide native cursor on hoverable work cards */
-  .work-card:not(.work-card--upcoming) { cursor: none; }
-  .work-card:not(.work-card--upcoming) * { cursor: none; }
+  .work-card { cursor: none; }
+  .work-card * { cursor: none; }
 
   .vp-cursor {
     position: fixed;
@@ -62,8 +41,11 @@
     font-weight: 600;
     letter-spacing: 0.1px;
     transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 0.18s ease;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.18s ease,
+                background-color 0.18s ease,
+                color 0.18s ease,
+                border-color 0.18s ease;
     opacity: 0;
     white-space: nowrap;
     box-shadow: 0 8px 20px rgba(10, 10, 10, 0.12);
@@ -80,12 +62,47 @@
   }
   .vp-cursor .vp-eyes svg { width: 100%; height: 100%; display: block; }
 
+  .vp-cursor-default,
+  .vp-cursor-coming {
+    display: none;
+    align-items: center;
+    gap: 10px;
+  }
+  .vp-cursor-default { display: flex; }
+  .vp-cursor.is-coming {
+    background: #E5E5E5;
+    color: #4A4A52;
+    border-color: #E5E5E5;
+  }
+  .vp-cursor.is-coming .vp-cursor-default { display: none; }
+  .vp-cursor.is-coming .vp-cursor-coming { display: flex; }
+
+  /* Locked (password protected) variant */
+  .vp-cursor-locked { display: none; align-items: center; gap: 10px; }
+  .vp-cursor.is-locked { background: #0A0A0A; color: #FFFFFF; border-color: #0A0A0A; }
+  .vp-cursor.is-locked .vp-cursor-default { display: none; }
+  .vp-cursor.is-locked .vp-cursor-locked { display: flex; }
+  .vp-lock { display: inline-flex; width: 17px; height: 17px; }
+  .vp-lock svg { width: 100%; height: 100%; display: block; }
+  .vp-spinner {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    animation: vp-spin 1.1s linear infinite;
+  }
+  .vp-spinner svg { width: 100%; height: 100%; display: block; }
+  @keyframes vp-spin {
+    to { transform: rotate(360deg); }
+  }
+
   @media (hover: none) { .vp-cursor { display: none !important; } }
 
 
 </style>
 </head>
 <body>
+
+<a href="#work" class="skip-link">Skip to work</a>
 
 <!-- ============================ NAV ============================ -->
 <nav class="top" aria-label="Primary">
@@ -95,10 +112,11 @@
     <ul class="nav-links">
       <li><a class="link" href="#work">Work</a></li>
       <li><a class="link" href="about.html">About</a></li>
-      <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="en/index.html" hreflang="en" lang="en">EN</a></li>
     </ul>
     <!-- Mobile hamburger -->
-    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="開啟選單">
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
       <span class="nav-menu-icon" aria-hidden="true">
         <span></span><span></span>
       </span>
@@ -110,7 +128,8 @@
       <ul>
         <li><a class="link" href="#work">Work</a></li>
         <li><a class="link" href="about.html">About</a></li>
-        <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="en/index.html" hreflang="en" lang="en">English</a></li>
       </ul>
     </div>
   </div>
@@ -124,18 +143,14 @@
             fill="#9F90D9" stroke="#0A0A0A" stroke-width="9" stroke-linejoin="round"/>
     </svg>
     <div class="hero-main">
-      <h1 class="display">
+      <h1 class="display" lang="en">
         Hi, I'm Chelsea Hsu
       </h1>
 
       <p class="hero-greeting">
-        前端開發背景的 UX 設計師，擅長從使用者研究出發，<br class="hide-sm">打造兼具可行性與愉悅體驗的解決方案
+        具備 B2B 與 AI 設計經驗的 UX/UI 設計師
+        <br class="hide-sm">專注於將複雜流程轉化為直覺的產品體驗
       </p>
-
-      <div class="hero-actions">
-        <a href="#work" class="pill solid pill-lg">View selected work</span></a>
-        <a href="about.html" class="pill pill-lg">About me</a>
-      </div>
     </div>
   </div>
 
@@ -174,67 +189,70 @@
 
     <div class="work-list">
 
-      <a href="case-brinno.html" class="work-card featured" aria-labelledby="work-01-title">
-        <img class="work-cover cover-brinno" src="img/brinno.png" alt="Brinno camera management tool cover">
+      <a href="tricuss-password.html" class="work-card featured work-card--locked" aria-labelledby="work-01-title">
+        <!-- <div class="work-cover cover-placeholder" aria-hidden="true">
+          <span class="cover-placeholder__label">Case study in progress</span>
+        </div> -->
+        <img class="work-cover cover-tricuss" src="img/Tricuss.png" alt="Tricuss AI workspace cover">
         <div class="work-body">
           <div class="work-meta-row">
-            <!-- <span class="work-num">01</span> -->
-            <span class="where">01 台大 × Brinno 產學合作專案</span>
+            <span class="where">01 Tricuss AI</span>
+            <span class="lock-pill">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="10.5" width="16" height="10.5" rx="2.5" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              需要密碼
+            </span>
           </div>
-          <h3 class="work-title" id="work-01-title">設計協助營建團隊掌握拍攝狀況的設備管理平台</h3>
+          <h3 class="work-title" id="work-01-title">建立能降低研究人員與 AI 協作門檻的工作空間</h3>
           <p class="work-desc">
-            藉由深度訪談釐清利害關係人痛點，建立能有效降低現場監控與溝通成本的數位化相機管理流程
+            將對話為主的介面重構為資料夾結構為主的 AI 工作空間，整合原本分散的資料、對話與產出
           </p>
           <div class="tag-row">
-            <span class="tag-pill">Web Design</span>
-            <span class="tag-pill">UI/UX Design</span>
-            <span class="tag-pill">Construction</span>
+            <span class="tag-pill">Enterprise AI</span>
+            <span class="tag-pill">0→1 Product Design</span>
+            <span class="tag-pill">Work Project</span>
           </div>
-          <span class="work-link">Read case study →</span>
         </div>
       </a>
 
-      <a href="case-pdogs.html" class="work-card" aria-labelledby="work-02-title">
+      <a href="case-brinno.html" class="work-card" aria-labelledby="work-02-title">
+        <img class="work-cover cover-brinno" src="img/brinno.png" alt="Brinno camera management tool cover">
+        <div class="work-body">
+          <div class="work-meta-row">
+            <span class="where">02 台大 × Brinno 產學合作專案</span>
+          </div>
+          <h3 class="work-title" id="work-02-title">打造協助營建團隊掌握現場狀態的相機管理平台</h3>
+          <p class="work-desc">
+            透過深度訪談釐清利害關係人痛點，迭代 10+ 個 user flow，建立能降低現場監控與溝通成本的數位化管理流程
+          </p>
+          <div class="tag-row">
+            <span class="tag-pill">B2B SaaS</span>
+            <span class="tag-pill">Web Design</span>
+            <span class="tag-pill">Contract Project</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="case-pdogs.html" class="work-card" aria-labelledby="work-03-title">
         <img class="work-cover cover-pdogs" src="img/pdogs.png" alt="PDOGs redesign cover">
         <div class="work-body">
           <div class="work-meta-row">
             <!-- <span class="work-num">02</span> -->
-            <span class="where">02 PDOGs 平台專案</span>
+            <span class="where">03 PDOGs 平台專案</span>
           </div>
-          <h3 class="work-title" id="work-02-title">重新設計程式批改平台的作業繳交與管理體驗</h3>
+          <h3 class="work-title" id="work-03-title">優化程式批改平台作業繳交與管理體驗</h3>
           <p class="work-desc">
-            透過啟發式評估與用戶訪談洞察需求，重整資訊層級與系統操作，並導入響應式設計，打造順暢的使用體驗
+            藉由啟發式評估與用戶訪談洞察需求，重整資訊架構與操作流程，並以使用者測試驗證設計假設，縮短 28% 作業繳交時間
           </p>
           <div class="tag-row">
+            <span class="tag-pill">EdTech</span>
             <span class="tag-pill">RWD Design</span>
-            <span class="tag-pill">User Testing</span>
-            <span class="tag-pill">Education</span>
+            <span class="tag-pill">Volunteer Project</span>
           </div>
-          <span class="work-link">Read case study →</span>
         </div>
       </a>
-
-      <!-- <div class="work-card work-card--upcoming" aria-labelledby="work-03-title">
-        <div class="work-cover cover-placeholder" aria-hidden="true">
-          <span class="cover-placeholder__label">Case study in progress</span>
-        </div>
-        <div class="work-body">
-          <div class="work-meta-row">
-            <span class="work-num">03</span>
-            <span class="where">03 Tricuss AI</span>
-          </div>
-          <h3 class="work-title" id="work-03-title">從 0 到 1 建立能與資料協作的 AI Agent 工作空間</h3>
-          <p class="work-desc">
-            正在進行中的 B2B AI 產品設計，從零定義使用者流程、工作空間架構與設計系統，預計 2026 下半年釋出完整案例。
-          </p>
-          <div class="tag-row">
-            <span class="tag-pill">Web Design</span>
-            <span class="tag-pill">Design System</span>
-            <span class="tag-pill">AI Agent</span>
-          </div>
-          <span class="work-link work-link--coming" aria-disabled="true">Coming soon...</span>
-        </div>
-      </div> -->
 
 
     </div>
@@ -261,23 +279,44 @@
     <div class="links">
       <a href="mailto:pupss95315@gmail.com">Email</a>
       <a href="https://www.linkedin.com/in/chien-chi-hsu" target="_blank" rel="noreferrer">LinkedIn</a>
-      <!-- <a href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a> -->
+      <!-- <a href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a> -->
     </div>
   </div>
 </footer>
 
 <!-- ============================ View Project Cursor ============================ -->
 <div class="vp-cursor" id="vpCursor" aria-hidden="true">
-  <span>View project</span>
-  <span class="vp-eyes">
-    <svg viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="22" cy="25" rx="18" ry="22" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>
-      <ellipse cx="16" cy="22" rx="7" ry="9" fill="#1a1a1a"/>
-      <circle  cx="14" cy="19" r="1.8" fill="#fff"/>
-      <ellipse cx="58" cy="25" rx="18" ry="22" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>
-      <ellipse cx="52" cy="22" rx="7" ry="9" fill="#1a1a1a"/>
-      <circle  cx="50" cy="19" r="1.8" fill="#fff"/>
-    </svg>
+  <span class="vp-cursor-default">
+    <span>View project</span>
+    <span class="vp-eyes">
+      <svg viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="22" cy="25" rx="18" ry="22" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>
+        <ellipse cx="16" cy="22" rx="7" ry="9" fill="#1a1a1a"/>
+        <circle  cx="14" cy="19" r="1.8" fill="#fff"/>
+        <ellipse cx="58" cy="25" rx="18" ry="22" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>
+        <ellipse cx="52" cy="22" rx="7" ry="9" fill="#1a1a1a"/>
+        <circle  cx="50" cy="19" r="1.8" fill="#fff"/>
+      </svg>
+    </span>
+  </span>
+  <span class="vp-cursor-locked">
+    <span class="vp-lock">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="10.5" width="16" height="10.5" rx="2.5" stroke="currentColor" stroke-width="2"/>
+        <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="12" cy="15.5" r="1.5" fill="currentColor"/>
+      </svg>
+    </span>
+    <span>Password protected</span>
+  </span>
+  <span class="vp-cursor-coming">
+    <span>Coming soon</span>
+    <span class="vp-spinner">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="9" stroke="#B8B0A0" stroke-width="2.5"/>
+        <path d="M21 12a9 9 0 0 0-9-9" stroke="#4A4A52" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </span>
   </span>
 </div>
 
@@ -291,6 +330,7 @@
     btn.addEventListener('click', () => {
       const open = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!open));
+      btn.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
       menu.setAttribute('aria-hidden', String(open));
       menu.classList.toggle('is-open', !open);
     });
@@ -299,6 +339,7 @@
     menu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Open menu');
         menu.setAttribute('aria-hidden', 'true');
         menu.classList.remove('is-open');
       });
@@ -306,6 +347,7 @@
     document.addEventListener('click', (e) => {
       if (!btn.contains(e.target) && !menu.contains(e.target)) {
         btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Open menu');
         menu.setAttribute('aria-hidden', 'true');
         menu.classList.remove('is-open');
       }
@@ -318,7 +360,9 @@
     const cursor = document.getElementById('vpCursor');
     if (!cursor) return;
 
-    const targets = document.querySelectorAll('.work-card:not(.work-card--upcoming)');
+    const targets = document.querySelectorAll('.work-card:not(.work-card--upcoming):not(.work-card--locked)');
+    const comingTargets = document.querySelectorAll('.work-card--upcoming');
+    const lockedTargets = document.querySelectorAll('.work-card--locked');
     let mx = 0, my = 0, cx = 0, cy = 0;
 
     function tick() {
@@ -336,11 +380,29 @@
     });
 
     targets.forEach((el) => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('is-active'));
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.remove('is-coming');
+        cursor.classList.add('is-active');
+      });
       el.addEventListener('mouseleave', () => cursor.classList.remove('is-active'));
     });
 
-    document.addEventListener('mouseleave', () => cursor.classList.remove('is-active'));
+    comingTargets.forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('is-coming', 'is-active');
+      });
+      el.addEventListener('mouseleave', () => cursor.classList.remove('is-active', 'is-coming'));
+    });
+
+    lockedTargets.forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.remove('is-coming');
+        cursor.classList.add('is-locked', 'is-active');
+      });
+      el.addEventListener('mouseleave', () => cursor.classList.remove('is-active', 'is-locked'));
+    });
+
+    document.addEventListener('mouseleave', () => cursor.classList.remove('is-active', 'is-locked', 'is-coming'));
   })();
 </script>
 

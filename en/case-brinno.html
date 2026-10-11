@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Camera Management Tool · Brinno × NTU</title>
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body class="page-brinno">
+
+<nav class="top" aria-label="Primary">
+  <div class="wrap row">
+    <a href="index.html" class="wordmark">Chelsea Hsu</a>
+    
+    <ul class="nav-links">
+      <li><a class="link" href="index.html#work">Work</a></li>
+      <li><a class="link" href="about.html">About</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="../case-brinno.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+    </ul>
+    
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+  
+  <div class="nav-dropdown" id="navMenu" aria-hidden="true">
+    <div class="wrap">
+      <ul>
+        <li><a class="link" href="index.html#work">Work</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="../case-brinno.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero">
+  <div class="wrap">
+    <img class="case-hero-image" src="../img/Brinno/cover.png" alt="Brinno × NTU camera management tool cover">
+  </div>
+</header>
+
+<main class="case-main">
+  <div class="wrap case-grid">
+
+    <aside class="case-toc" aria-label="Section navigation">
+      <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#solution-overview">Solution Overview</a></li>
+        <li><a href="#research">Research</a></li>
+        
+        <li><a href="#opportunity">Design Opportunity</a></li>
+        <li><a href="#ideation">Ideation</a></li>
+        
+        <li><a href="#design-deliverable">Design</a></li>
+        
+        <li><a href="#outcome">Outcome</a></li>
+        <li><a href="#lessons">Lessons Learned</a></li>
+      </ul>
+    </aside>
+
+    <article class="case-content">
+
+      <section id="context">
+        <span class="case-eyebrow">Context</span>
+        <h1>Remote camera management for construction sites</h1>
+        <p>
+          In an industry–academia collaboration between National Taiwan University and Brinno, a time-lapse camera maker, I designed the Camera Management Tool. It lets construction photography teams check live footage and camera status across projects remotely, instead of spending time and labor on site visits.
+        </p>
+
+        <div class="case-meta-grid">
+          <div class="case-meta-card">
+            <h3 class="meta-title">Timeline</h3>
+            <p>8 months, Oct 2022 – Jun 2023</p>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">Team</h3>
+            <ul>
+              <li>Project lead × 1</li>
+              <li>Engineers × 2</li>
+              <li>UX/UI designers × 2 (incl. me)</li>
+            </ul>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">My role</h3>
+            <ul>
+              <li>Conducted interviews and synthesized research insights</li>
+              <li>Ideated and scoped platform features</li>
+              <li>Designed and iterated on wireframes and UI</li>
+            </ul>
+          </div>
+          <div class="case-meta-card highlight">
+            <h3 class="meta-title">Outcome</h3>
+            <p>Iterated through <strong>10+</strong> user flows to deliver an MVP that solves the pain points found in research and leaves room to grow</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="background">
+        <span class="case-eyebrow">Background</span>
+        <h2>Turning a manual, on-site process into a software service</h2>
+
+        <h3>What's broken in construction camera management today?</h3>
+        <p>
+          Construction projects rely on time-lapse cameras to document progress and site safety, and contractors usually hire professional photographers to manage them. But photographers have to visit each site in person to check on their cameras — if a camera fails and nobody notices in time, critical footage can be lost.
+        </p>
+
+        <h3>Who is Brinno, and what did they want?</h3>
+        <p>
+          Brinno makes time-lapse cameras. It wanted to extend the value of its hardware with software — making devices easier to manage, and raising customer satisfaction and purchase intent along the way.
+        </p>
+
+        <div class="callout callout--brinno">
+          <p><strong>Project goal:</strong> Build a camera management tool that lets construction photography teams monitor cameras in real time, saving the time and labor of site visits</p>
+        </div>
+
+        <div class="case-image"><img src="../img/Brinno/stakeholder.png" alt="Stakeholder map: the roles of photographers, contractors, and Brinno, and how information flows between them"></div>
+      </section>
+
+      <section id="solution-overview">
+        <span class="case-eyebrow">Solution Overview</span>
+        <h2>Three core features</h2>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">01</span>Live monitoring &amp; scheduling</h3>
+          <p>Check live footage and set capture schedules remotely — no trip to the site required.</p>
+          <div class="case-image case-image--flush"><img src="../img/Brinno/overview-1.webp" alt="Live dashboard and schedule settings screen"></div>
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">02</span>Batch upload &amp; sharing</h3>
+          <p>Upload large batches of time-lapse files and share view-only files with clients to align on deliverables early.</p>
+          <div class="case-image case-image--flush"><img src="../img/Brinno/overview-2.webp" alt="Batch file upload and sharing flow"></div>
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">03</span>Role-based permissions for construction teams</h3>
+          <p>Assign roles that match how construction projects are run, making internal management and client communication more efficient.</p>
+          <div class="case-image case-image--flush"><img src="../img/Brinno/overview-3.webp" alt="Role and permission assignment interface"></div>
+        </div>
+      </section>
+
+      <section id="research">
+        <span class="case-eyebrow">Research</span>
+        <h2>Interviewing stakeholders to understand who does what</h2>
+        <p>
+          We had one month to complete user research and an initial platform architecture. To quickly map stakeholders’ behaviors and pain points across each stage of camera management, we structured our interviews around a user journey map and spoke with:
+        </p>
+        <ul>
+          <li>2 employees at a photography company</li>
+          <li>1 freelance photographer</li>
+          <li>2 construction managers</li>
+        </ul>
+        <div class="case-image"><img src="../img/Brinno/interview.png" alt="User journey map: pain points of photographers and contractors during and after construction"></div>
+      </section>
+
+      <section id="insight">
+        <span class="case-eyebrow">Insight</span>
+        <h2>Finding the key pain points along the journey</h2>
+        <p>
+          I then focused on the two stages most relevant to camera management — <strong>during and after construction</strong> — and mapped the pain points of photographers, of contractors, and those they share.
+        </p>
+
+        <div class="case-image"><img src="../img/Brinno/user journey map.png" alt="User journey map: pain points of photographers and contractors during and after construction"></div>
+
+        <div class="callout">
+          <p><strong>Key insight:</strong> Photographers and contractors fall <strong>out of sync</strong> at every stage of a project. Neither has a consistent view of camera status, settings, or delivery requirements, which leads to rework and extra management overhead.</p>
+        </div>
+      </section>
+
+      <section id="opportunity">
+        <span class="case-eyebrow">Design Opportunity</span>
+        <h2>From pain points to design opportunities</h2>
+        <p>
+          Because photographers and contractors see devices and deliverables differently, managing them is inefficient. We saw an opportunity for the tool to connect photographers, contractors, and devices — <strong>so information flows freely among all three</strong>.
+        </p>
+
+        <div class="case-image-compare">
+          <div class="case-compare-side"><img src="../img/Brinno/as is.png" alt="As-is: information gaps between the three parties"></div>
+          <span class="case-compare-arrow" aria-hidden="true">→</span>
+          <div class="case-compare-side"><img src="../img/Brinno/to be.png" alt="To-be: the camera management tool as the information hub for all three parties"></div>
+        </div>
+
+        <div class="callout">
+          <p><strong>How might we</strong> help photographers &amp; contractors stay in sync, confidently and efficiently, while managing cameras across multiple projects?</p>
+        </div>
+      </section>
+
+      <section id="ideation">
+        <span class="case-eyebrow">Ideation</span>
+        <h2>Generating features from user needs</h2>
+        <p>
+          I looked to existing <strong>live camera platforms</strong> for inspiration, then mapped ideas back to our research insights to propose features that meet real user needs.
+        </p>
+        <div class="case-image case-image--small"><img src="../img/Brinno/ideation.png" alt="Feature ideation map: need → feature → reference"></div>
+      </section>
+
+      <section id="information-architecture">
+        <span class="case-eyebrow">Information Architecture</span>
+        <h2>Information architecture</h2>
+        <p>
+          Once the core features were set, I planned the information architecture. Users manage work by project, and each device produces a large volume of time-lapse files, so I organized the main flow as a <strong>project → device → file hierarchy</strong>.
+        </p>
+        <div class="case-image"><img src="../img/Brinno/information architecture.png" alt="IA tree: a three-level Project → Device → File structure, with the available actions listed under each level"></div>
+      </section>
+
+      <section id="design-deliverable">
+        <span class="case-eyebrow">Design Deliverable</span>
+        <h2>Four solutions for the key gaps in the journey</h2>
+        <p>
+          We first listed every usage scenario for the core pages so no part of the flow was missed, then turned early concepts into wireflows to share with the team and refine based on their feedback. Here’s the design after several rounds of iteration:
+        </p>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">01</span>Live camera view &amp; anomaly alerts</h3>
+          <p><strong>User need</strong> — Know what each camera is capturing, in real time</p>
+          <div class="case-image"><img src="../img/Brinno/solution-1.png" alt="Solution 1: live camera view and anomaly alerts"></div>
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">02</span>Remote scheduling</h3>
+          <p><strong>User need</strong> — Manage capture schedules across multiple projects</p>
+          <div class="case-image"><img src="../img/Brinno/solution-2.png" alt="Solution 2: remote schedule settings"></div>
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">03</span>File upload &amp; sharing</h3>
+          <p><strong>User need</strong> — Share capture status with confidence and align on deliverables</p>
+          <div class="case-image"><img src="../img/Brinno/solution-3-1.png" alt="Solution 3: batch file upload screen"></div>
+          <div class="case-image"><img src="../img/Brinno/solution-3-2.png" alt="Solution 3: file sharing settings screen"></div>
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">04</span>Permission management</h3>
+          <p><strong>User need</strong> — Give internal teams and clients the right level of access</p>
+          <div class="case-image"><img src="../img/Brinno/solution-4.png" alt="Solution 4: permission management settings"></div>
+        </div>
+      </section>
+
+      <section id="design-system">
+        <span class="case-eyebrow">Design System</span>
+        <h2>A design system for consistency and faster handoff</h2>
+        <p>
+          I defined shared guidelines for color, typography, and core UI components, speeding up developer handoff and giving future features a foundation to build on.
+        </p>
+        <div class="case-image"><img src="../img/Brinno/design system.png" alt="Design system for the Brinno camera management tool: color, typography, and core component guidelines"></div>
+      </section>
+
+      <section id="outcome">
+        <span class="case-eyebrow">Outcome</span>
+        <h2>An MVP that solves core pain points and sets up future development</h2>
+
+        <p>
+          After 10+ user-flow iterations, we delivered an MVP covering live monitoring, file management, and permissions. Photographers can track camera status in real time and make fewer site visits, and <strong>photographers and contractors now share one channel for keeping information in sync</strong>.
+        </p>
+
+      </section>
+
+      <section id="lessons">
+        <span class="case-eyebrow">Lessons Learned</span>
+        <h2>Reflections &amp; learnings</h2>
+
+        <h3><span class="h3-num">01</span>Identify every stakeholder early</h3>
+        <p>
+          I initially assumed contractors were the only ones managing construction cameras; the interviews shifted my focus to the photographers who actually do the work. In an unfamiliar domain, identifying every stakeholder early — and how they work together — is what lets you define the right users.
+        </p>
+
+        <h3><span class="h3-num">02</span>Use early hypotheses to build alignment</h3>
+        <p>
+          We had little time for research up front and later spent a long time confirming technical feasibility. I learned to form hypotheses from existing data, then test and refine them with the team. It meant working with more uncertainty, but we reached feedback and alignment much faster.
+        </p>
+
+        <h3><span class="h3-num">03</span>Domain knowledge is a shortcut to empathy</h3>
+        <p>
+          With limited access to interviewees, next time I’d invest more in desk research at the start. Understanding the industry makes it much easier to empathize with users.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="case-next" aria-labelledby="next-project-title">
+  <div class="wrap">
+    <span class="next-label">Next project</span>
+    <a href="case-pdogs.html" class="next-card">
+      <div class="next-card-body">
+        <span class="next-meta">02 · PDOGs</span>
+        <h3 class="next-title" id="next-project-title">Streamlining assignment submission and management on a code-grading platform</h3>
+      </div>
+      <span class="next-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <span class="copy">© 2026 Chelsea Hsu</span>
+    <div class="links">
+      <a href="mailto:pupss95315@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/chien-chi-hsu" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../scroll-spy.js" defer></script>
+
+<script>
+  (function () {
+    var btn  = document.getElementById('navMenuBtn');
+    var menu = document.getElementById('navMenu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function() {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('is-open', !open);
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      }
+    });
+  })();
+</script>
+
+</body>

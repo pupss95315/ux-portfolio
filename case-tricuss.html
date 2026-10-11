@@ -1,0 +1,1702 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tricuss AI · AI Workspace | Chelsea Hsu</title>
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+<!-- ============================ PASSWORD GATE ============================
+     沒有解鎖記錄就導回密碼頁；輸過一次之後就會直接放行。
+     在 <head> 執行，所以內容不會閃現。 -->
+<script src="tricuss-gate.js"></script>
+<script>
+  (function () {
+    if (!window.TricussGate || !window.TricussGate.isUnlocked()) {
+      location.replace('tricuss-password.html');
+    }
+  })();
+</script>
+</head>
+<body class="page-brinno page-tricuss">
+
+<!-- ============================ NAV ============================ -->
+<nav class="top" aria-label="Primary">
+  <div class="wrap row">
+    <a href="index.html" class="wordmark">Chelsea Hsu</a>
+    <!-- Desktop links -->
+    <ul class="nav-links" lang="en">
+      <li><a class="link" href="index.html#work">Work</a></li>
+      <li><a class="link" href="about.html">About</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="en/case-tricuss.html" hreflang="en" lang="en">EN</a></li>
+    </ul>
+    <!-- Mobile hamburger -->
+    <!-- The name says what the button controls; aria-expanded says which way
+         it will go. "開啟選單" was wrong half the time — it still said "開啟"
+         while the menu was open. -->
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="選單">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+  <!-- Mobile dropdown -->
+  <div class="nav-dropdown" id="navMenu" aria-hidden="true">
+    <div class="wrap">
+      <ul lang="en">
+        <li><a class="link" href="index.html#work">Work</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="en/case-tricuss.html" hreflang="en" lang="en">English</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="case-hero">
+  <div class="wrap">
+    <img class="case-hero-image" src="img/Tricuss/tricuss-hero.png" alt="Tricuss 工作站介面：左欄為資料夾與資料資產，中央為 AI agent 剛寫入「Key Findings」的研究報告（待接受），右欄為對話紀錄；兩側浮出 agent 執行步驟與本次對話引用的資料來源">
+  </div>
+</header>
+
+<!-- ============================ MAIN ============================ -->
+<main class="case-main">
+  <div class="wrap case-grid">
+
+    <!-- ---------- TOC ---------- -->
+    <aside class="case-toc" lang="en" aria-label="Section navigation">
+      <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#research">Problem</a></li>
+        <li><a href="#goals">Design Goals</a></li>
+        <li><a href="#insight">Design Process</a></li>
+        <li><a href="#design-deliverable">Final Design</a></li>
+        <li><a href="#design-system">Design System</a></li>
+        <li><a href="#outcome">Outcome</a></li>
+        <li><a href="#lessons">Lessons Learned</a></li>
+        <!-- Hidden while their sections are commented out:
+             #opportunity, #ideation, #information-architecture, #solution-overview -->
+      </ul>
+    </aside>
+
+    <!-- ---------- CONTENT ---------- -->
+    <article class="case-content">
+
+      <!-- ===== Context ===== -->
+      <section id="context">
+        <span class="case-eyebrow" lang="en">Context</span>
+        <!-- 舊版文案（保留）
+        <h1>建立能降低研究人員與 AI 協作門檻的工作空間</h1>
+        <p>
+          Tricuss 是一個專為研發團隊打造的企業級 AI Agent 平台，協助研發人員設計實驗、分析實驗數據並產出研究報告。
+        </p>
+        <p>
+          我從 0 到 1 打造了工作站（Workbench），將原本分散在平台各處的資料、對話與產出，整合進同一條工作流程中。
+        </p>
+        -->
+
+        <h1>建立能降低研究人員與 AI 協作門檻的工作空間</h1>
+        <p>
+          Tricuss 是一個專為<strong>研發團隊</strong>打造的企業級 AI Agent 平台，協助研究人員設計實驗、分析實驗數據並產出研究報告。
+        </p>
+        <p>
+          我<strong>從 0 到 1 打造了工作站（Workbench）</strong>，將原本分散在平台各處的<strong>資料、對話與產出</strong>整合進同一個工作空間。透過<strong> AI agent 設定模板</strong>降低設定門檻，並以<strong>清楚的狀態回饋</strong>讓 AI 的工作過程更透明可見。
+        </p>
+
+        <div class="case-meta-grid">
+          <div class="case-meta-card">
+            <h3 class="meta-title">專案時程</h3>
+            <p>2 個月，2026 年 4 月 - 2026 年 6 月</p>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">專案團隊</h3>
+            <ul>
+              <li>CEO × 1</li>
+              <li>專案經理 × 1</li>
+              <li>工程師 × 3</li>
+              <li>UX/UI 設計師 × 1 (我)</li>
+            </ul>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">我的角色</h3>
+            <ul>
+              <!-- <li>收斂痛點並訂定設計目標</li> -->
+              <li>規劃用戶流程與資訊架構</li>
+              <li>設計 UI 並透過內部測試迭代</li>
+              <li>建立可擴展的設計系統</li>
+            </ul>
+          </div>
+          <div class="case-meta-card highlight">
+            <h3 class="meta-title">成果與產出</h3>
+            <p><strong>2 個月</strong>完成設計至 MVP 釋出，將完成研究任務步驟<strong>縮減 43%</strong>，並建立可擴展至整個平台的設計系統</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Background ===== -->
+      <section id="background">
+        <span class="case-eyebrow" lang="en">Background</span>
+        <h2>隨著架構升級，重構更流暢的 AI agent 協作體驗</h2>
+        <!-- <h3>過去</h3> -->
+        <!-- <p>
+          在舊有架構下，agent 存在前置門檻高、產出不穩定的問題。團隊為此導入了新的 agent 架構，也將執行環境升級為獨立的沙盒，這代表每個 agent 都擁有獨立的檔案空間，運作上更穩定。
+        </p>
+        <p>
+          然而，技術升級並未反映在產品體驗上。當時在平台上，資料、對話與產出分散在不同功能中，使用者需在功能間來回切換，存在體驗上的斷點。
+        </p>
+        <p>
+          因此，CEO 希望能建立一個工作空間，將資料、對話與產出整合到同一個工作流程中。身為團隊中唯一的 UIUX 設計師，我開始著手重新定義使用者與 agent 在研究流程中的協作方式。
+        </p> -->
+
+        <!-- <h3>過去</h3> -->
+        <p>      
+          過去，使用者若想要在 Tricuss 平台上完成完整的研究流程，<strong>必須先理解複雜的前置設定，並在功能間來回切換</strong>。隨著團隊<strong>升級 AI agent 的架構與執行環境</strong>，也讓我們有機會思考如何設計更流暢的產品體驗。
+        </p>
+        <p>
+          因此，我開始著手定義使用者與 AI agent 在研究流程中的協作方式，希望能<strong>將原本分散的資料、對話與產出整合至同一個流程中</strong>，讓研究人員能更順暢地與 AI 協作完成研究任務。       
+        </p>
+
+        <div class="callout callout--brinno">
+          <p><strong>專案目標：</strong>建立一個整合資料、對話與產出的工作空間，讓研究人員能流暢地與 AI agent 協作完成任務</p>
+        </div>
+
+        <div class="case-image case-image--dgm case-image--white">
+          <svg class="dgm" viewBox="0 0 840 320" role="img" aria-label="架構升級前後對照：過去資料、對話與產出雖然存在，但串起它們的流程線是斷開的，使用者必須自行在功能間切換；現在同樣的三者被收進工作站裡，由一條連續的流程線串起">
+            <defs>
+              <!-- Open chevron rather than a filled triangle. markerUnits
+                   defaults to strokeWidth, so these coordinates are already
+                   scaled by the line's 1.5 stroke — the head stays in
+                   proportion with the shaft. -->
+              <marker id="dgm-ah-b" markerWidth="9" markerHeight="9" refX="6.4" refY="4" orient="auto">
+                <path d="M1.6 1.2 L6.4 4 L1.6 6.8"
+                      style="fill:none;stroke:rgba(136,136,136,0.5);stroke-width:1;stroke-linecap:round;stroke-linejoin:round"/>
+              </marker>
+              <g id="ic-data-b" class="dgm-icon">
+                <rect x="3" y="4" width="18" height="4.6" rx="1.4"/>
+                <rect x="3" y="9.7" width="18" height="4.6" rx="1.4"/>
+                <rect x="3" y="15.4" width="18" height="4.6" rx="1.4"/>
+              </g>
+              <g id="ic-chat-b" class="dgm-icon">
+                <path d="M21 15.2a1.8 1.8 0 0 1-1.8 1.8H7.6L4 20.6V4.8A1.8 1.8 0 0 1 5.8 3h13.4A1.8 1.8 0 0 1 21 4.8z"/>
+                <path d="M7.6 8.4h9.8M7.6 12h6.4"/>
+              </g>
+              <g id="ic-doc-b" class="dgm-icon">
+                <path d="M14 3H7.2A1.8 1.8 0 0 0 5.4 4.8v14.4A1.8 1.8 0 0 0 7.2 21h9.6a1.8 1.8 0 0 0 1.8-1.8V7.6z"/>
+                <path d="M13.8 3.2v4.6h4.6"/>
+              </g>
+            </defs>
+
+            <!-- Both halves are the same object: a rounded frame, a title
+                 inside it, and the same three cards at the same three y
+                 positions. The only difference is that the workbench half
+                 threads its cards onto one continuous spine. -->
+
+            <!-- Past — dashed outer border marks it as the "old/unsettled"
+                 state, contrasting with the workbench's solid border below.
+                 Same dashed convention as the ghost-paper cards inside it. -->
+            <rect class="dgm-panel" x="35" y="48" width="240" height="258" rx="8" style="fill:none;stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <text x="155" y="92" text-anchor="middle" class="dgm-label dgm-label--strong">過去</text>
+
+            <rect class="dgm-box--ghost-paper" x="90" y="111" width="130" height="40" rx="8" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <use href="#ic-data-b" transform="translate(127,122) scale(0.75)"/>
+            <text x="153" y="137" class="dgm-label">資料</text>
+            <rect class="dgm-box--ghost-paper" x="90" y="172" width="130" height="40" rx="8" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <use href="#ic-chat-b" transform="translate(127,183) scale(0.75)"/>
+            <text x="153" y="198" class="dgm-label">對話</text>
+            <rect class="dgm-box--ghost-paper" x="90" y="234" width="130" height="40" rx="8" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <use href="#ic-doc-b" transform="translate(127,245) scale(0.75)"/>
+            <text x="153" y="260" class="dgm-label">產出</text>
+
+            <!-- Transition. The past frame ends at x=275 and the workbench
+                 frame starts at x=525, so 330 -> 470 leaves 55px either side. -->
+            <text x="400" y="158" text-anchor="middle" class="dgm-caption">整合既有功能</text>
+            <path class="dgm-line" d="M330 176 L470 176" marker-end="url(#dgm-ah-b)" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+
+            <!-- Now — border matches the inner cards' own border color
+                 (var(--color-blue)), so the panel reads as one piece with
+                 what's inside it. -->
+            <rect class="dgm-box--accent" x="525" y="48" width="240" height="258" rx="8"/>
+            <text x="645" y="92" text-anchor="middle" class="dgm-label dgm-label--strong">工作站（Workbench）</text>
+
+            <!-- One continuous spine: into the top card, down, and out to the
+                 bottom card, with 8px rounded corners at both turns. Shifted
+                 +13 right of the node group's raw position so the bracket +
+                 cards' visual center lands on the panel's actual center
+                 (645) instead of reading right-heavy. -->
+            <path class="dgm-line dgm-line--accent" d="M593 131 H576 Q568 131 568 139 V246 Q568 254 576 254 H593"/>
+            <path class="dgm-line dgm-line--accent" d="M568 192 H593"/>
+
+            <rect class="dgm-node" x="593" y="111" width="130" height="40" rx="8"/>
+            <use href="#ic-data-b" transform="translate(630,122) scale(0.75)"/>
+            <text x="656" y="137" class="dgm-label">資料</text>
+            <rect class="dgm-node" x="593" y="172" width="130" height="40" rx="8"/>
+            <use href="#ic-chat-b" transform="translate(630,183) scale(0.75)"/>
+            <text x="656" y="198" class="dgm-label">對話</text>
+            <rect class="dgm-node" x="593" y="234" width="130" height="40" rx="8"/>
+            <use href="#ic-doc-b" transform="translate(630,245) scale(0.75)"/>
+            <text x="656" y="260" class="dgm-label">產出</text>
+
+          </svg>
+        </div>
+
+      </section>
+
+      <!-- ===== Solution Overview ===== -->
+      <!-- <section id="solution-overview">
+        <span class="case-eyebrow">Solution Overview</span>
+        <h2>相機管理工具的 3 個核心功能</h2>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">01</span>相機即時監控與排程設定</h3>
+          <p>使用者可以查看即時拍攝畫面並遠端設定排程，節省到工地現場的時間。</p>
+          <div class="case-image"><img src="img/Brinno/overview-1.webp" alt="即時 dashboard 與排程設定畫面"></div>
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">02</span>檔案批次上傳與分享</h3>
+          <p>使用者可以輕鬆上傳大量縮時攝影檔案，並分享僅供檢視的檔案給業主，方便快速對齊交付畫面的期待。</p>
+          <div class="case-image"><img src="img/Brinno/overview-2.webp" alt="檔案批次上傳與分享流程"></div>
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">03</span>符合營建情境的權限管理</h3>
+          <p>使用者可以將符合營建專案的角色權限分配給團隊成員，提升內部管理與外部溝通的效率。</p>
+          <div class="case-image"><img src="img/Brinno/overview-3.webp" alt="角色權限分配介面"></div>
+        </div>
+      </section> -->
+
+
+      <!-- ===== Research ===== -->
+      <section id="research">
+        <span class="case-eyebrow" lang="en">Problem</span>
+        <h2>複雜的操作流程，讓與 AI 協作變成一件需要學習的事</h2>
+        <p>
+          在開始設計前，我透過<strong>啟發式評估與客戶回饋</strong>，收斂出產品既有的 3 個痛點。
+        </p>
+
+        <div class="problem-showcase">
+          <div class="case-image case-image--flush case-image--dgm problem-showcase-frame">
+            <!-- One panel per problem card; the cards below toggle which is
+                 shown. Cards without a panel leave the frame unchanged. -->
+            <!-- All three panels share one grammar — a single wide export at
+                 the same width — so switching cards changes the evidence, not
+                 the visual register. The argument lives in the card text. -->
+            <div class="problem-panel problem-panel--steps is-active" data-panel="1" id="problem-panel-1">
+              <div class="pain-steps pain-steps--single">
+                <img src="img/Tricuss/Pain point 1.png"
+                     alt="開始對話前的三個設定階段：建立資料資產、執行資料轉換、設定 AI agent 節點">
+              </div>
+            </div>
+
+            <div class="problem-panel problem-panel--steps" data-panel="2" id="problem-panel-2">
+              <div class="pain-steps pain-steps--single">
+                <img src="img/Tricuss/Pain point 2.png"
+                     alt="功能切換操作不直覺：從同一個「Select an AI agent」彈窗選擇 agent 後，依該 agent 是否設置「文件撰寫」節點，分別走向 AI 對話或 AI 文件撰寫">
+              </div>
+            </div>
+
+            <div class="problem-panel problem-panel--steps" data-panel="3" id="problem-panel-3">
+              <div class="pain-steps pain-steps--single">
+                <img src="img/Tricuss/Pain point 3.png"
+                     alt="AI 工作過程缺乏透明度：使用者送出問題後只看得到等待狀態，看不到 agent 正在檢索或處理哪些資料">
+              </div>
+            </div>
+          </div>
+
+          <span class="problem-showcase-hint">點選卡片查看細節</span>
+
+          <div class="problem-cards">
+            <button type="button" class="problem-card is-active" aria-pressed="true" aria-controls="problem-panel-1">
+              <span class="problem-card-num">1</span>
+              <div class="problem-card-body">
+                <h4>過高的前置成本</h4>
+                <p>在一場面向企業客戶的工作坊中，我觀察到即使透過逐步引導，使用者仍容易<strong>在資料準備與 AI agent 設定階段卡關</strong>，還沒體會到產品價值前就放棄。</p>
+              </div>
+            </button>
+            <button type="button" class="problem-card" aria-pressed="false" aria-controls="problem-panel-2">
+              <span class="problem-card-num">2</span>
+              <div class="problem-card-body">
+                <!-- <h4>工作脈絡分散於不同功能</h4> -->
+                <h4>功能切換操作不直覺</h4>
+                <p>「AI 對話」與「AI 文件撰寫」功能由同一個入口進入，但需選擇有設定「文件撰寫」節點的 AI agent 才能使用「 文件撰寫」功能，<strong>操作方式不易理解</strong>。</p>
+              </div>
+            </button>
+            <button type="button" class="problem-card" aria-pressed="false" aria-controls="problem-panel-3">
+              <span class="problem-card-num">3</span>
+              <div class="problem-card-body">
+                <h4>AI 工作過程缺乏透明度</h4>
+                <p>客戶經常反應 agent 回覆速度慢，<strong>看不到思考過程也讓使用者難以信任產出的結果</strong>。</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Design Goals ===== -->
+      <section id="goals">
+        <span class="case-eyebrow" lang="en">Design Goals</span>
+        <h2>根據痛點與商業考量，訂定設計目標</h2>
+        <p>
+          除了上述痛點，我也將商業需求納入考量。由於客戶的試用期有限，設計上需要<strong>讓使用者更快感受到產品價值，進而提高後續採用的可能性</strong>。因此，我從使用者需求與商業目標出發，定義了以下三項設計目標。
+        </p>
+
+        <div class="goals-grid goals-grid--3col">
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            </span>
+            <h3 class="goal-title">縮短價值實現時間</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 20.5S3 15 3 8.8C3 5.6 5.5 3.5 8.2 3.5c1.7 0 3.2.9 3.8 2.3.6-1.4 2.1-2.3 3.8-2.3C18.5 3.5 21 5.6 21 8.8c0 6.2-9 11.7-9 11.7z"/></svg>
+            </span>
+            <h3 class="goal-title">打造符合心智模型的操作體驗</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+            <h3 class="goal-title">透過可見狀態建立信任</h3>
+          </div>
+        </div>
+
+        <!-- <div class="case-image"><img src="img/Brinno/interview.png" alt="使用者旅程地圖：攝影師與營建商在施工中/施工後各階段的痛點對照"></div> -->
+      </section>
+
+
+
+      <!-- ===== Insight ===== -->
+      <section id="insight">
+        <span class="case-eyebrow" lang="en">Design Process</span>
+        <h2>從研究者需求出發，規劃工作站流程與架構</h2>
+        <h3><span class="h3-num">01</span>設計輕鬆上手的工作站建立流程</h3>
+        <p>
+         為了降低工作站的前置門檻，我先與團隊同步，梳理現有流程，並重新評估可簡化或整合的步驟。我發現實務上 AI agent 多半由管理員（Admin）先設定好，成員（Member）則直接沿用既有設定。因此，我<strong>將 AI agent 建立與工作站建立流程整合</strong>，並<strong>設計 AI agent 模板</strong>，讓使用者可以直接套用既有設定，快速開始執行任務。
+        </p>
+
+        <!-- Two lanes as separate exports stacked in one frame. Each carries its
+             own outline and title, so the frame only supplies the gap; keeping
+             them in a single block is what makes the pair read as one
+             comparison rather than two diagrams that happen to be adjacent. -->
+        <div class="case-image case-image--white flow-stack">
+          <img src="img/Tricuss/Before.png"
+               alt="現有流程：資料準備、建立 AI agent、選擇 AI agent 之後才能 AI 對話；若要產出文件，需從選擇 AI agent 分岔到 AI 文件撰寫，再檢視產出。">
+          <img src="img/Tricuss/After.png"
+               alt="工作站流程：建立工作站時套用模板或建立 agent，接著在工作站內加入資料來源、AI 對話、檢視產出，全部在同一個地方完成。">
+        </div>
+
+        <!-- Hidden for now — 三種方案比較圖
+        <div class="case-image case-image--dgm">
+          <svg class="dgm" viewBox="0 0 840 290" role="img" aria-label="三種工作空間建立流程方案的比較：方案 A 先建 agent 再建工作空間、方案 B 先建工作空間再回頭設定 agent、方案 C 合併為單一流程並提供 agent 模板，最後採用方案 C">
+            <text x="0" y="24" class="dgm-tag">建立流程 · 三種方案</text>
+
+            <rect class="dgm-box" x="0" y="46" width="258" height="212" rx="8"/>
+            <text x="24" y="80" class="dgm-label">方案 A</text>
+            <text x="24" y="100" class="dgm-caption">兩段式，先 agent 後空間</text>
+            <rect class="dgm-box--muted" x="24" y="116" width="210" height="34" rx="8"/>
+            <text x="129" y="138" text-anchor="middle" class="dgm-caption">建立 agent</text>
+            <rect class="dgm-box--muted" x="24" y="158" width="210" height="34" rx="8"/>
+            <text x="129" y="180" text-anchor="middle" class="dgm-caption">完成 agent 設定</text>
+            <rect class="dgm-box--muted" x="24" y="200" width="210" height="34" rx="8"/>
+            <text x="129" y="222" text-anchor="middle" class="dgm-caption">建立工作空間</text>
+
+            <rect class="dgm-box" x="291" y="46" width="258" height="212" rx="8"/>
+            <text x="315" y="80" class="dgm-label">方案 B</text>
+            <text x="315" y="100" class="dgm-caption">先進空間，事後補設定</text>
+            <rect class="dgm-box--muted" x="315" y="116" width="210" height="34" rx="8"/>
+            <text x="420" y="138" text-anchor="middle" class="dgm-caption">建立工作空間</text>
+            <rect class="dgm-box--muted" x="315" y="158" width="210" height="34" rx="8"/>
+            <text x="420" y="180" text-anchor="middle" class="dgm-caption">回頭設定 agent</text>
+            <rect class="dgm-box--muted" x="315" y="200" width="210" height="34" rx="8"/>
+            <text x="420" y="222" text-anchor="middle" class="dgm-caption">開始任務</text>
+
+            <rect class="dgm-box--accent" x="582" y="46" width="258" height="212" rx="8"/>
+            <text x="606" y="80" class="dgm-label dgm-label--accent">方案 C</text>
+            <text x="816" y="80" text-anchor="end" class="dgm-tag dgm-tag--accent">採用</text>
+            <text x="606" y="100" class="dgm-caption">合併為單一流程</text>
+            <rect class="dgm-box" x="606" y="116" width="210" height="34" rx="8"/>
+            <text x="711" y="138" text-anchor="middle" class="dgm-caption">建立工作空間</text>
+            <rect class="dgm-box" x="606" y="158" width="210" height="34" rx="8"/>
+            <text x="711" y="180" text-anchor="middle" class="dgm-caption">套用 agent 模板</text>
+            <rect class="dgm-box" x="606" y="200" width="210" height="34" rx="8"/>
+            <text x="711" y="222" text-anchor="middle" class="dgm-caption">直接開始任務</text>
+          </svg>
+        </div>
+        -->
+
+        <!-- Superseded by the User Flow export above, which says the same thing
+             with the round trip drawn in. Hidden rather than deleted so it can
+             come back if the export changes. -->
+        <div style="display:none">
+        <!-- Before/after creation flow, read against a shared three-phase spine.
+             The phase band at the top names the coarse job (資料準備 → 建立 agent →
+             任務執行); both lanes sit in the same three columns, so the change is
+             read by position: the 建立 agent column holds two steps above and one
+             below, and everything after setup drops inside a single 工作站 region. -->
+        <div class="case-image case-image--dgm case-image--white">
+          <svg class="dgm" viewBox="0 0 840 330" role="img" aria-label="建立流程前後對照，兩條流程對齊到同樣三個階段：資料準備、建立 agent、任務執行。現行流程在資料準備階段需先建立資料資產，建立 agent 階段分為建置 AI agent（使用者卡點，以紅色虛線標示）與選擇 AI agent 兩段設定，需自行理解 agent 的節點與工具，最後才進入 AI 對話。工作站流程不需前置準備，建立 agent 階段合併為單一的建立工作站步驟，可套用模板或建立 agent，任務執行階段的加入資料與 AI 對話都在工作站內完成。">
+            <defs>
+              <marker id="dgm-ah-cf" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+                <path d="M0 0 L8 4 L0 8 Z" class="dgm-arrowhead"/>
+              </marker>
+              <marker id="dgm-ah-cf-accent" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+                <path d="M0 0 L8 4 L0 8 Z" class="dgm-arrowhead dgm-arrowhead--accent"/>
+              </marker>
+            </defs>
+
+            <!-- ── Phase band · the coarse spine both lanes are measured against ── -->
+            <rect class="dgm-phase-band" x="110" y="0" width="150" height="38" rx="8"/>
+            <text x="185" y="24" text-anchor="middle" class="dgm-phase"><tspan class="dgm-phase-num">01</tspan>　資料準備</text>
+
+            <rect class="dgm-phase-band" x="284" y="0" width="316" height="38" rx="8"/>
+            <text x="442" y="24" text-anchor="middle" class="dgm-phase"><tspan class="dgm-phase-num">02</tspan>　建立 agent</text>
+
+            <rect class="dgm-phase-band" x="624" y="0" width="216" height="38" rx="8"/>
+            <text x="732" y="24" text-anchor="middle" class="dgm-phase"><tspan class="dgm-phase-num">03</tspan>　任務執行</text>
+
+            <!-- Column rails: they carry the alignment, so no arrows are needed
+                 between the phase pills themselves. -->
+            <path class="dgm-line dgm-line--rule" style="stroke-dasharray:4 6" d="M272 48 V292"/>
+            <path class="dgm-line dgm-line--rule" style="stroke-dasharray:4 6" d="M612 48 V292"/>
+
+            <!-- ── Lane A · 現行流程 ───────────────────────────── -->
+            <text x="0" y="100" class="dgm-tag">現行流程</text>
+
+            <text x="442" y="60" text-anchor="middle" class="dgm-caption" style="fill:var(--color-coral)">兩段設定，需自行理解 agent 的節點與工具</text>
+
+            <rect class="dgm-box" x="110" y="70" width="150" height="52" rx="16"/>
+            <text x="185" y="102" text-anchor="middle" class="dgm-label" style="fill:var(--color-slate)">建立資料資產</text>
+            <path class="dgm-line" d="M262 96 L280 96" marker-end="url(#dgm-ah-cf)"/>
+
+            <rect class="dgm-box" x="284" y="70" width="146" height="52" rx="16" style="stroke:var(--color-coral);stroke-dasharray:7 5"/>
+            <text x="357" y="102" text-anchor="middle" class="dgm-label" style="fill:var(--color-coral);font-weight:700">建置 AI agent</text>
+            <path class="dgm-line" d="M432 96 L450 96" marker-end="url(#dgm-ah-cf)"/>
+
+            <rect class="dgm-box" x="454" y="70" width="146" height="52" rx="16"/>
+            <text x="527" y="102" text-anchor="middle" class="dgm-label" style="fill:var(--color-slate)">選擇 AI agent</text>
+            <path class="dgm-line" d="M602 96 L653 96" marker-end="url(#dgm-ah-cf)"/>
+
+            <rect class="dgm-box" x="657" y="70" width="150" height="52" rx="16"/>
+            <text x="732" y="102" text-anchor="middle" class="dgm-label" style="fill:var(--color-slate)">AI 對話</text>
+
+            <!-- ── The merge · two setup steps collapse into one ── -->
+            <path class="dgm-line dgm-line--accent dgm-line--dash" d="M357 122 V136 H527 V122"/>
+            <path class="dgm-line dgm-line--accent dgm-line--dash" d="M442 136 V184" marker-end="url(#dgm-ah-cf-accent)"/>
+            <text x="452" y="166" class="dgm-caption" style="fill:var(--color-blue-strong)">合併為一步</text>
+
+            <!-- ── Lane B · 工作站流程 ─────────────────────────── -->
+            <text x="0" y="238" class="dgm-tag dgm-tag--accent">工作站流程</text>
+
+            <rect class="dgm-box--ghost" x="110" y="208" width="150" height="52" rx="16"/>
+            <text x="185" y="240" text-anchor="middle" class="dgm-caption" style="fill:var(--color-stone)">免前置準備</text>
+            <path class="dgm-line" d="M262 234 L280 234" marker-end="url(#dgm-ah-cf)"/>
+
+            <rect class="dgm-box" x="284" y="190" width="316" height="88" rx="16" style="stroke:var(--color-blue)"/>
+            <text x="442" y="220" text-anchor="middle" class="dgm-label dgm-label--accent dgm-label--strong">建立工作站</text>
+            <rect class="dgm-box--accent" x="300" y="232" width="124" height="34" rx="16"/>
+            <text x="362" y="254" text-anchor="middle" class="dgm-caption">套用模板</text>
+            <text x="442" y="254" text-anchor="middle" class="dgm-caption" style="fill:var(--color-stone)">或</text>
+            <rect class="dgm-box--accent" x="460" y="232" width="124" height="34" rx="16"/>
+            <text x="522" y="254" text-anchor="middle" class="dgm-caption">建立 agent</text>
+            <path class="dgm-line" d="M602 234 L620 234" marker-end="url(#dgm-ah-cf)"/>
+
+            <!-- Everything after setup happens in one place. -->
+            <rect class="dgm-panel" x="624" y="182" width="216" height="104" rx="16" style="fill:var(--color-blue-wash);stroke:var(--color-blue)"/>
+            <text x="640" y="202" class="dgm-tag dgm-tag--accent">工作站內</text>
+            <rect class="dgm-box" x="640" y="212" width="86" height="52" rx="16"/>
+            <text x="683" y="244" text-anchor="middle" class="dgm-label">加入資料</text>
+            <path class="dgm-line" d="M726 238 L740 238" marker-end="url(#dgm-ah-cf)"/>
+            <rect class="dgm-box" x="746" y="212" width="86" height="52" rx="16"/>
+            <text x="789" y="244" text-anchor="middle" class="dgm-label">AI 對話</text>
+
+            <text x="442" y="312" text-anchor="middle" class="dgm-caption" style="fill:var(--color-blue-strong)">設定合併為一步，可直接套用團隊成員的 agent 模板</text>
+          </svg>
+        </div>
+        </div>
+
+        <div style="display:none">
+
+          <div class="case-image case-image--dgm case-image--white" style="margin:0">
+            <h3 class="dgm-variant-title" style="margin-top:0">現行流程</h3>
+            <svg class="dgm" viewBox="0 0 900 300" role="img" aria-label="現行流程：建立資料資產、建置 AI agent（紅色虛線框標示為使用者卡點）、選擇 AI agent、AI 對話；若對話後想產出報告，需回頭到建置 AI agent 設定文件撰寫節點，再重新選擇支援文件撰寫的 agent，才能進行 AI 文件撰寫並檢視產出">
+              <defs>
+                <marker id="dgm-ah-flow-loop" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+                  <path d="M0 0 L8 4 L0 8 Z" class="dgm-arrowhead"/>
+                </marker>
+              </defs>
+
+              <rect class="dgm-box" x="0" y="132" width="170" height="56" rx="16"/>
+              <text x="85" y="165" text-anchor="middle" class="dgm-label">建立資料資產</text>
+              <path class="dgm-line" d="M170 160 L190 160" marker-end="url(#dgm-ah-flow-loop)"/>
+
+              <rect class="dgm-box" x="190" y="132" width="170" height="56" rx="16" style="stroke:var(--color-coral);stroke-width:2.5;stroke-dasharray:7 5"/>
+              <text x="275" y="165" text-anchor="middle" class="dgm-label" style="fill:var(--color-coral);font-weight:700">建置 AI agent</text>
+              <path class="dgm-line" d="M360 160 L380 160" marker-end="url(#dgm-ah-flow-loop)"/>
+
+              <rect class="dgm-box" x="380" y="132" width="170" height="56" rx="16"/>
+              <text x="465" y="165" text-anchor="middle" class="dgm-label">選擇 AI agent</text>
+
+              <!-- Loop back: to write a doc after chatting, the user has to
+                   return to agent setup and add the doc-writing node, then
+                   pick an agent that has it — captioned so the loop reads
+                   as "why", not just a stray line. -->
+              <path class="dgm-line" d="M465 132 V50 H275 V132" marker-end="url(#dgm-ah-flow-loop)"/>
+              <text x="370" y="26" text-anchor="middle" class="dgm-caption">想產出報告，需回頭設定文件撰寫節點，</text>
+              <text x="370" y="40" text-anchor="middle" class="dgm-caption">並重新選擇支援該節點的 agent</text>
+
+              <path class="dgm-line" d="M550 160 C575 160 575 88 590 88" marker-end="url(#dgm-ah-flow-loop)"/>
+              <rect class="dgm-box" x="590" y="60" width="150" height="56" rx="16"/>
+              <text x="665" y="f93" text-anchor="middle" class="dgm-label">AI 對話</text>
+
+              <path class="dgm-line" d="M550 160 C575 160 575 232 590 232" marker-end="url(#dgm-ah-flow-loop)"/>
+              <rect class="dgm-box" x="590" y="204" width="150" height="56" rx="16"/>
+              <text x="665" y="237" text-anchor="middle" class="dgm-label">AI 文件撰寫</text>
+              <path class="dgm-line" d="M740 232 L760 232" marker-end="url(#dgm-ah-flow-loop)"/>
+              <rect class="dgm-box" x="760" y="204" width="120" height="56" rx="16"/>
+              <text x="820" y="237" text-anchor="middle" class="dgm-label">檢視產出</text>
+            </svg>
+          </div>
+
+          <div class="case-image case-image--dgm case-image--white" style="margin:0">
+            <h3 class="dgm-variant-title" style="margin-top:0">工作站流程</h3>
+            <svg class="dgm" viewBox="0 0 900 220" role="img" aria-label="工作站流程：建立資料資產、建立工作站（內建套用模板或建立 agent 兩種選擇）、進入工作站、加入資料來源、AI 對話、檢視產出">
+              <defs>
+                <marker id="dgm-ah-flow-wb" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+                  <path d="M0 0 L8 4 L0 8 Z" class="dgm-arrowhead"/>
+                </marker>
+              </defs>
+
+              <rect class="dgm-box" x="0" y="132" width="110" height="56" rx="16"/>
+              <text x="55" y="165" text-anchor="middle" class="dgm-label">建立資料資產</text>
+              <path class="dgm-line" d="M110 160 L122 160" marker-end="url(#dgm-ah-flow-wb)"/>
+
+              <rect class="dgm-box--muted" x="122" y="110" width="240" height="100" rx="16" style="stroke-width:2"/>
+              <text x="242" y="136" text-anchor="middle" class="dgm-label">建立工作站</text>
+              <rect class="dgm-box" x="138" y="150" width="95" height="46" rx="16"/>
+              <text x="185" y="178" text-anchor="middle" class="dgm-caption">套用模板</text>
+              <text x="242" y="178" text-anchor="middle" class="dgm-caption">或</text>
+              <rect class="dgm-box" x="251" y="150" width="95" height="46" rx="16"/>
+              <text x="298" y="178" text-anchor="middle" class="dgm-caption">建立 agent</text>
+
+              <path class="dgm-line" d="M362 160 L374 160" marker-end="url(#dgm-ah-flow-wb)"/>
+              <rect class="dgm-box" x="374" y="132" width="110" height="56" rx="16"/>
+              <text x="429" y="165" text-anchor="middle" class="dgm-label">進入工作站</text>
+              <path class="dgm-line" d="M484 160 L496 160" marker-end="url(#dgm-ah-flow-wb)"/>
+              <rect class="dgm-box" x="496" y="132" width="130" height="56" rx="16"/>
+              <text x="561" y="165" text-anchor="middle" class="dgm-label">加入資料來源</text>
+              <path class="dgm-line" d="M626 160 L638 160" marker-end="url(#dgm-ah-flow-wb)"/>
+              <rect class="dgm-box" x="638" y="132" width="90" height="56" rx="16"/>
+              <text x="683" y="165" text-anchor="middle" class="dgm-label">AI 對話</text>
+              <path class="dgm-line" d="M728 160 L740 160" marker-end="url(#dgm-ah-flow-wb)"/>
+              <rect class="dgm-box" x="740" y="132" width="110" height="56" rx="16"/>
+              <text x="795" y="165" text-anchor="middle" class="dgm-label">檢視產出</text>
+            </svg>
+          </div>
+
+        </div>
+
+        <h3><span class="h3-num">02</span>定義符合研究人員需求的介面架構</h3>
+        <p>
+          我針對市面上的 6 個<strong>「AI 原生工作空間」</strong>進行初步的競品分析，想要釐清他們<strong>如何組織工作空間</strong>，以及 <strong>AI 在工作流程中扮演的角色</strong>。我發現這些工具大致可分為 2 種類型：
+        </p>
+
+        <div class="case-image case-image--dgm case-image--white" style="display:none">
+          <svg class="dgm" viewBox="0 0 840 308" role="img" aria-label="兩種 AI 原生工作空間類型的版面對照：編輯導向由左至右為資料夾、文件、對話三個區塊，文件佔據中央主要工作區，對話固定在右側輔助，代表產品為 VS Code 搭配 Claude Code、KUSE、Fabric；對話導向由左至右為資料夾、對話、產出三個區塊，對話佔據中央成為主要入口，產出顯示於右側，代表產品為 NotebookLM、Prism、Cowork">
+            <!-- ── 編輯導向 ── -->
+            <text x="195" y="24" text-anchor="middle" class="dgm-label">編輯導向</text>
+
+            <!-- 代表產品。Logos are 28px-tall source lockups drawn at h=30;
+                 each width comes from the source aspect ratio so nothing
+                 stretches. The row is centred under the title. -->
+            <image href="img/Tricuss/logos/VS%20Code.png" x="93" y="38" width="77" height="30" preserveAspectRatio="xMidYMid meet"/>
+            <image href="img/Tricuss/logos/KUSE.png" x="190" y="38" width="30" height="30" preserveAspectRatio="xMidYMid meet"/>
+            <image href="img/Tricuss/logos/Fabric.png" x="240" y="38" width="57" height="30" preserveAspectRatio="xMidYMid meet"/>
+
+            <rect class="dgm-box" x="0" y="84" width="390" height="170" rx="8"/>
+            <path class="dgm-line dgm-line--rule" d="M0 110 L390 110"/>
+            <circle class="dgm-dot--open" cx="16" cy="97" r="3.5"/>
+            <circle class="dgm-dot--open" cx="28" cy="97" r="3.5"/>
+            <circle class="dgm-dot--open" cx="40" cy="97" r="3.5"/>
+
+            <!-- 資料夾 -->
+            <rect class="dgm-box--muted" x="10" y="122" width="78" height="118" rx="6"/>
+            <text x="49" y="146" text-anchor="middle" class="dgm-caption">資料夾</text>
+            <rect class="dgm-zone" x="20" y="162" width="58" height="8" rx="4"/>
+            <rect class="dgm-zone" x="20" y="180" width="58" height="8" rx="4"/>
+            <rect class="dgm-zone" x="20" y="198" width="42" height="8" rx="4"/>
+
+            <!-- 文件（主要工作區） -->
+            <rect class="dgm-box--muted" x="96" y="122" width="166" height="118" rx="6"/>
+            <text x="179" y="146" text-anchor="middle" class="dgm-caption">文件</text>
+            <rect class="dgm-zone" x="106" y="162" width="146" height="8" rx="4"/>
+            <rect class="dgm-zone" x="106" y="178" width="146" height="8" rx="4"/>
+            <rect class="dgm-zone" x="106" y="194" width="112" height="8" rx="4"/>
+            <rect class="dgm-zone" x="106" y="210" width="146" height="8" rx="4"/>
+
+            <!-- 對話（右側輔助） -->
+            <rect class="dgm-box--muted" x="270" y="122" width="110" height="118" rx="6"/>
+            <text x="325" y="146" text-anchor="middle" class="dgm-caption">對話</text>
+            <rect class="dgm-zone" x="280" y="160" width="70" height="16" rx="8"/>
+            <rect class="dgm-zone" x="300" y="184" width="70" height="16" rx="8"/>
+            <rect class="dgm-zone" x="280" y="208" width="54" height="16" rx="8"/>
+
+            <text x="0" y="278" class="dgm-caption">以文件或程式碼為主要工作空間，AI 作為輔助工具，</text>
+            <text x="0" y="298" class="dgm-caption">由使用者主動觸發。</text>
+
+            <!-- ── 對話導向 ── -->
+            <text x="645" y="24" text-anchor="middle" class="dgm-label">對話導向</text>
+
+            <!-- 代表產品 -->
+            <image href="img/Tricuss/logos/NotebookLM.png" x="580" y="38" width="30" height="30" preserveAspectRatio="xMidYMid meet"/>
+            <image href="img/Tricuss/logos/Prism.png" x="630" y="38" width="30" height="30" preserveAspectRatio="xMidYMid meet"/>
+            <image href="img/Tricuss/logos/Cowork.png" x="680" y="38" width="30" height="30" preserveAspectRatio="xMidYMid meet"/>
+
+            <rect class="dgm-box" x="450" y="84" width="390" height="170" rx="8"/>
+            <path class="dgm-line dgm-line--rule" d="M450 110 L840 110"/>
+            <circle class="dgm-dot--open" cx="466" cy="97" r="3.5"/>
+            <circle class="dgm-dot--open" cx="478" cy="97" r="3.5"/>
+            <circle class="dgm-dot--open" cx="490" cy="97" r="3.5"/>
+
+            <!-- 資料夾 -->
+            <rect class="dgm-box--muted" x="460" y="122" width="78" height="118" rx="6"/>
+            <text x="499" y="146" text-anchor="middle" class="dgm-caption">資料夾</text>
+            <rect class="dgm-zone" x="470" y="162" width="58" height="8" rx="4"/>
+            <rect class="dgm-zone" x="470" y="180" width="58" height="8" rx="4"/>
+            <rect class="dgm-zone" x="470" y="198" width="42" height="8" rx="4"/>
+
+            <!-- 對話（主要入口） -->
+            <rect class="dgm-box--muted" x="546" y="122" width="176" height="118" rx="6"/>
+            <text x="634" y="146" text-anchor="middle" class="dgm-caption">對話</text>
+            <rect class="dgm-zone" x="556" y="160" width="110" height="18" rx="9"/>
+            <rect class="dgm-zone" x="602" y="186" width="110" height="18" rx="9"/>
+            <rect class="dgm-zone" x="556" y="212" width="86" height="18" rx="9"/>
+
+            <!-- 產出 -->
+            <rect class="dgm-box--muted" x="730" y="122" width="100" height="118" rx="6"/>
+            <text x="780" y="146" text-anchor="middle" class="dgm-caption">產出</text>
+            <rect class="dgm-zone" x="740" y="160" width="80" height="40" rx="4"/>
+            <rect class="dgm-zone" x="740" y="208" width="80" height="8" rx="4"/>
+            <rect class="dgm-zone" x="740" y="222" width="56" height="8" rx="4"/>
+
+            <text x="450" y="278" class="dgm-caption">以對話作為主要入口，AI 主動分析資料並提供建議，</text>
+            <text x="450" y="298" class="dgm-caption">使用者透過對話推進工作。</text>
+          </svg>
+        </div>
+
+        <div class="case-image case-image--white">
+          <img src="img/Tricuss/Step 2.png" alt="介面架構定義：以檔案作為主要工作區，AI 對話固定於右側的三欄式結構">
+        </div>
+
+        <div class="callout callout--brinno">
+          <p><strong>關鍵洞察：</strong>「編輯導向」的競品恰好對應到研究者需要閱讀大量資料，並持續與 AI 協作的需求，因此我決定採取「以檔案作為主要工作區，並將 AI 對話固定於右側」的架構。</p>
+        </div>
+
+        <!-- Three phases read straight down the page: 互動前 → 互動中 → 互動後.
+             Nothing is hidden behind an interaction — the only enhancement is
+             the stepper below, which says which of the three you are reading.
+
+             The heading, its lede and the stepper live inside .phases and pin
+             together as one block, so the claim being argued stays on screen
+             next to the progress through it. The stepper replaces the three
+             sticky phase headings; each step is also a seek control. The h4s
+             stay in the markup (visually hidden) so the heading outline and
+             the #phase-* anchors survive. scroll-spy.js lights the steps. -->
+        <div class="phases">
+
+              <div class="phase-lede">
+                <h3><span class="h3-num">03</span>建立可被信任的 AI 協作過程</h3>
+                <p>
+                  我在使用者與 AI agent 互動的各階段都<strong>設計可見的狀態回饋</strong>，讓使用者能夠掌握處理進度與結果，逐步建立信任。
+                </p>
+                <p>
+                  以下分互動前、互動中、互動後三個階段說明：
+                </p>
+              </div>
+
+              <!-- A direct child of .phases, not of the lede: a sticky element
+                   is released by its own containing block, so inside the lede
+                   it would unpin the moment the intro scrolled past — long
+                   before the phases it is tracking are done. -->
+              <nav class="phase-stepper" aria-label="互動階段進度">
+                <ol class="phase-steps">
+                  <li class="phase-step" data-target="phase-pre">
+                    <button class="phase-step-btn" type="button"><span class="phase-step-num">1</span><span class="phase-step-label">互動前</span></button>
+                  </li>
+                  <li class="phase-step" data-target="phase-during">
+                    <button class="phase-step-btn" type="button"><span class="phase-step-num">2</span><span class="phase-step-label">互動中</span></button>
+                  </li>
+                  <li class="phase-step" data-target="phase-post">
+                    <button class="phase-step-btn" type="button"><span class="phase-step-num">3</span><span class="phase-step-label">互動後</span></button>
+                  </li>
+                </ol>
+              </nav>
+
+              <!-- Pinned stage. scroll-spy.js adds .is-staged to .phases only
+                   when the tallest phase fits under the pinned lede; without
+                   it (no JS, a short viewport, reduced motion, narrow screens)
+                   these stay three ordinary blocks that read straight down. -->
+              <div class="phase-track">
+                <div class="phase-stage">
+              <section class="phase-block" aria-labelledby="phase-pre">
+                <h4 id="phase-pre"><span class="h3-num">01</span>互動前</h4>
+                <p>
+                  使用者將資料匯入到工作空間後需要時間同步，而完成前 AI agent 無法完整讀取檔案。因此，我<strong>針對不同檔案同步狀態設計對應的 UI 與系統提示</strong>，讓使用者能即時掌握同步進度與可讀取狀態。
+                </p>
+                <!-- <p>
+                  使用者將資料匯入到工作空間後需要時間同步，而完成前 AI agent 無法完整讀取檔案。我先釐清檔案同步與 AI agent 讀取之間的關係，並針對不同同步狀態設計 UI 與系統提示，讓使用者能即時掌握資料同步進度與狀態。
+                </p> -->
+
+                <div class="case-image case-image--white case-image--states">
+                  <div class="img-cols">
+                    <figure class="img-col">
+                      <figcaption class="img-col-title">上傳中</figcaption>
+                      <img src="img/Tricuss/uploading.png" alt="上傳中：檔案卡片顯示同步圖示且內容為淺灰，下方提示資料仍在同步，完成後才可使用">
+                    </figure>
+                    <figure class="img-col">
+                      <figcaption class="img-col-title">上傳完成</figcaption>
+                      <img src="img/Tricuss/uploaded.png" alt="上傳完成：檔案卡片恢復正常顏色，可直接開啟使用">
+                    </figure>
+                    <figure class="img-col">
+                      <figcaption class="img-col-title">上傳失敗</figcaption>
+                      <img src="img/Tricuss/upload fail.png" alt="上傳失敗：檔案卡片標示錯誤圖示，下方紅色訊息說明有 3 筆資料同步失敗，並提供 Resync 重新同步與前往 agent settings 的連結">
+                    </figure>
+                  </div>
+                </div>
+              </section>
+
+              <section class="phase-block" aria-labelledby="phase-during">
+                <h4 id="phase-during"><span class="h3-num">02</span>互動中</h4>
+                <p>
+                  我梳理 AI agent 從接收到指令到產出回覆所經歷的步驟，並與 AI 工程師確認後，<strong>設計各階段相應思考過程的呈現方式</strong>，讓使用者在等待期間能掌握 AI 的處理進度，<strong>降低等待的不確定感</strong>。
+                </p>
+
+        <span class="tp-hint">點擊標籤可跳至該步驟</span>
+
+        <div class="case-image case-image--white case-image--tp">
+          <div class="tp" id="tpTimeline" aria-label="Agent 執行階段與對應的思考過程訊息">
+            <!-- Each tag is a seek control: clicking it jumps the run below to
+                 that step. --on / --off stay on the li so the button inherits
+                 them for its own lit/idle animation. -->
+            <ol class="tp-steps">
+              <li style="--on:0.3s; --off:2.2s"><button class="tp-step" type="button"><span class="tp-num">1</span>接收指令</button></li>
+              <li style="--on:2.2s; --off:4.1s"><button class="tp-step" type="button"><span class="tp-num">2</span>環境啟動</button></li>
+              <li style="--on:4.1s; --off:6.0s"><button class="tp-step" type="button"><span class="tp-num">3</span>模型理解</button></li>
+              <li style="--on:6.0s; --off:8.1s"><button class="tp-step" type="button"><span class="tp-num">4</span>執行工具</button></li>
+              <li style="--on:8.1s"><button class="tp-step tp-step--last" type="button"><span class="tp-num">5</span>執行完成</button></li>
+            </ol>
+
+            <div class="tp-chat">
+              <div class="tp-user">檔案與程式碼探索</div>
+
+              <div class="tp-stage">
+                <!-- 0 · 短等待：只給動態，不說話 -->
+                <div class="tp-phase" style="--d:0.3s; --out:2.1s">
+                  <span class="tp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                </div>
+
+                <!-- 1 · 環境啟動 -->
+                <div class="tp-phase" style="--d:2.2s; --out:4.0s">
+                  <span class="tp-pulse" aria-hidden="true"></span>
+                  <span class="tp-txt">Initializing…</span>
+                </div>
+
+                <!-- 2 · 模型理解 -->
+                <div class="tp-phase" style="--d:4.1s; --out:5.0s">
+                  <span class="tp-pulse" aria-hidden="true"></span>
+                  <span class="tp-txt">Thinking…</span>
+                </div>
+
+                <!-- 3 · 拆解任務 -->
+                <div class="tp-phase" style="--d:5.1s; --out:5.9s">
+                  <span class="tp-pulse" aria-hidden="true"></span>
+                  <span class="tp-txt">Breaking it down…</span>
+                </div>
+
+                <!-- 4 · 執行工具 -->
+                <div class="tp-phase tp-phase--exec" style="--d:6.0s; --out:8.0s">
+                  <ol class="tp-exec-list">
+                    <li class="tp-exec" style="--d:6.05s; --act:6.05s; --done:6.6s">
+                      <span class="tp-exec-ico">
+                        <span class="tp-spin" aria-hidden="true"></span>
+                        <svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4"/><path d="M9.5 9.5 12 12"/></svg>
+                      </span>
+                      <span class="tp-exec-label">Find all project files</span>
+                      <svg class="tp-chev tp-chev--step" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
+                    </li>
+
+                    <li class="tp-exec" style="--d:6.65s; --act:6.65s; --done:7.5s">
+                      <span class="tp-exec-ico">
+                        <span class="tp-spin" aria-hidden="true"></span>
+                        <svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2h5l3 3v7H2z"/><path d="M7 2v3h3"/></svg>
+                      </span>
+                      <span class="tp-exec-label">Read log files</span>
+                      <svg class="tp-chev tp-chev--step tp-chev--up" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 7.5 6 4.5 9 7.5"/></svg>
+                      <ul class="tp-tools">
+                        <li class="tp-tool" style="--d:6.8s; --done:7.1s">
+                          <svg class="tp-glyph tp-glyph--tool" viewBox="0 0 12 12" aria-hidden="true"><circle cx="5.5" cy="5.5" r="3.5"/><path d="M8.5 8.5 11 11"/></svg>
+                          <span class="tp-tool-name">tool-Find Files</span>
+                          <span class="tp-spin tp-spin--sm" aria-hidden="true"></span>
+                          <span class="tp-tool-status">Completed</span>
+                        </li>
+                        <li class="tp-tool" style="--d:7.15s; --done:7.5s">
+                          <svg class="tp-glyph tp-glyph--tool" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1.5h5l3 3v6H2z"/><path d="M7 1.5v3h3"/><path d="M4 7h4M4 9h3"/></svg>
+                          <span class="tp-tool-name">tool-Read File</span>
+                          <span class="tp-spin tp-spin--sm" aria-hidden="true"></span>
+                          <span class="tp-tool-status">Completed</span>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li class="tp-exec" style="--d:6.65s; --act:7.6s; --done:8.0s">
+                      <span class="tp-exec-ico">
+                        <span class="tp-spin" aria-hidden="true"></span>
+                        <svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 7S3.5 3.5 7 3.5 12.5 7 12.5 7 10.5 10.5 7 10.5 1.5 7 1.5 7z"/><circle cx="7" cy="7" r="1.5"/></svg>
+                      </span>
+                      <span class="tp-exec-label">Inspect dependencies</span>
+                    </li>
+                  </ol>
+                </div>
+
+                <!-- 5 · 執行完成 -->
+                <div class="tp-phase tp-phase--last" style="--d:8.1s">
+                  <details class="tp-done">
+                    <summary>
+                      <span>Completed 3 steps</span>
+                      <svg class="tp-chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
+                    </summary>
+                    <ul class="tp-done-list">
+                      <li><svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4"/><path d="M9.5 9.5 12 12"/></svg><span>Find all project files</span></li>
+                      <li><svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2h5l3 3v7H2z"/><path d="M7 2v3h3"/></svg><span>Read log files</span></li>
+                      <li><svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 7S3.5 3.5 7 3.5 12.5 7 12.5 7 10.5 10.5 7 10.5 1.5 7 1.5 7z"/><circle cx="7" cy="7" r="1.5"/></svg><span>Inspect dependencies</span></li>
+                    </ul>
+                  </details>
+                  <p class="tp-answer">工作區內共找到 <strong>24 個檔案</strong>，主要為環境設定與依賴項目，未發現業務程式碼。日誌格式為 JSON，量測檔為 CSV。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+              </section>
+
+              <section class="phase-block" aria-labelledby="phase-post">
+                <h4 id="phase-post"><span class="h3-num">03</span>互動後</h4>
+                <p>
+                  使用者與 AI agent 協作時會產生大量檔案、圖表與紀錄，但原先這些內容未經分類，使用者不易找到所需資料，也難以判斷哪些可以編輯。因此，我<strong>先依能否編輯劃分檔案結構，再將可編輯的檔案依用途歸入對應的語意化資料夾</strong>，讓使用者<strong>一眼就能分辨檔案用途與可進行的操作</strong>。
+                </p>
+
+                <!-- Folder structure, before and after. The plate colour in both
+                     shots encodes PERMISSION, not file type — blue editable,
+                     amber read-only, grey never shown — which is what makes the
+                     pair read as "the same items, sorted" with no legend. -->
+                <div class="case-image case-image--white case-image--states">
+                  <div class="folder-pair">
+                    <figure class="folder-col folder-col--before">
+                      <figcaption class="folder-head">
+                        <span class="folder-title" lang="en">Before</span>
+                        <span class="folder-sub">無分類</span>
+                      </figcaption>
+                      <img src="img/Tricuss/Folder (Before).png" alt="重整前：所有檔案平鋪在同一層，agent 筆記、使用者上傳文件與 AI 產出混在一起，難以判斷用途與權限">
+                    </figure>
+                    <figure class="folder-col folder-col--after">
+                      <figcaption class="folder-head">
+                        <span class="folder-title" lang="en">After</span>
+                        <span class="folder-sub">依編輯權限分類</span>
+                        <span class="pick-badge" role="img" aria-label="採用的方案">
+                          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                            <circle cx="10" cy="10" r="10" fill="currentColor"/>
+                            <path d="M5.8 10.3 8.6 13l5.6-5.6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </figcaption>
+                      <img src="img/Tricuss/Folder (After).png" alt="重整後：依語意化資料夾分成個人檔案、資料來源與暫存三區，agent 筆記、上傳文件與 AI 產出各有對應資料夾">
+                    </figure>
+                  </div>
+                </div>
+
+                <!-- Redesign draft of the folder pair above, kept alongside it for
+                     comparison. Every Before item carries a data-k that matches
+                     its After counterpart; the script below draws a link between
+                     each pair so the reader sees the same items being sorted
+                     rather than two unrelated lists. Plate colour still encodes
+                     permission, now with a legend. -->
+                <!-- Hidden for now — uncomment to show the folder map.
+                <div class="case-image case-image--white fm" id="folder-map">
+                  <svg class="fm-sprite" aria-hidden="true" focusable="false">
+                    <symbol id="fm-folder" viewBox="0 0 16 16"><path d="M1.75 4.25c0-.55.45-1 1-1h3.4l1.5 1.5h5.6c.55 0 1 .45 1 1v6.5c0 .55-.45 1-1 1H2.75c-.55 0-1-.45-1-1z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+                    <symbol id="fm-data" viewBox="0 0 16 16"><rect x="2" y="2.5" width="12" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.2h12M2 9.8h12M5.6 2.5v11" stroke="currentColor" stroke-width="1.3"/></symbol>
+                    <symbol id="fm-chart" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 11V8.5M8 11V5.5M10.5 11V7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+                    <symbol id="fm-doc" viewBox="0 0 16 16"><rect x="2.5" y="2" width="11" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M5 5.5h6M5 8h6M5 10.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+                    <symbol id="fm-edit" viewBox="0 0 16 16"><path d="M10.5 2.5l3 3L6 13H3v-3z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+                    <symbol id="fm-view" viewBox="0 0 16 16"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+                    <symbol id="fm-hide" viewBox="0 0 16 16"><path d="M2.5 5.5C4 4.2 5.8 3.5 8 3.5c4 0 6.5 4.5 6.5 4.5s-.7 1.3-2 2.5M9.5 12.3c-.5.1-1 .2-1.5.2-4 0-6.5-4.5-6.5-4.5s.5-.9 1.4-1.9M2 2l12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+                  </svg>
+
+                  <ul class="fm-legend" aria-label="色塊代表的權限">
+                    <li><span class="fm-swatch" data-p="edit"></span>可編輯</li>
+                    <li><span class="fm-swatch" data-p="view"></span>僅供檢視</li>
+                    <li><span class="fm-swatch" data-p="hide"></span>暫存，不顯示</li>
+                  </ul>
+
+                  <div class="fm-grid">
+                    <svg class="fm-links" aria-hidden="true"></svg>
+
+                    <section class="fm-side fm-side--before" aria-label="重整前">
+                      <header class="fm-head">
+                        <span class="fm-title" lang="en">Before</span>
+                        <span class="fm-sub">9 個項目平鋪在同一層</span>
+                      </header>
+                      <ul class="fm-list">
+                        <li class="fm-item" data-k="att" data-p="edit"><svg><use href="#fm-folder"/></svg>attachments</li>
+                        <li class="fm-item" data-k="d1" data-p="view"><svg><use href="#fm-data"/></svg>data asset</li>
+                        <li class="fm-item" data-k="d2" data-p="view"><svg><use href="#fm-data"/></svg>data asset</li>
+                        <li class="fm-item" data-k="d3" data-p="view"><svg><use href="#fm-data"/></svg>data asset</li>
+                        <li class="fm-item" data-k="out" data-p="edit"><svg><use href="#fm-folder"/></svg>outputs</li>
+                        <li class="fm-item" data-k="cache" data-p="hide"><svg><use href="#fm-folder"/></svg>cache</li>
+                        <li class="fm-item" data-k="ch1" data-p="edit"><svg><use href="#fm-chart"/></svg>chart</li>
+                        <li class="fm-item" data-k="ch2" data-p="edit"><svg><use href="#fm-chart"/></svg>chart</li>
+                        <li class="fm-item" data-k="notes" data-p="edit"><svg><use href="#fm-doc"/></svg>session notes.md</li>
+                      </ul>
+                    </section>
+
+                    <section class="fm-side fm-side--after" aria-label="重整後">
+                      <header class="fm-head">
+                        <span class="fm-title" lang="en">After</span>
+                        <span class="fm-sub">依用途分成 3 區</span>
+                        <span class="pick-badge" role="img" aria-label="採用的方案">
+                          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                            <circle cx="10" cy="10" r="10" fill="currentColor"/>
+                            <path d="M5.8 10.3 8.6 13l5.6-5.6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </header>
+
+                      <div class="fm-zone" data-p="edit">
+                        <div class="fm-zone-head"><span lang="en">Personal Files</span><span class="fm-tag"><svg><use href="#fm-edit"/></svg>可編輯</span></div>
+                        <ul class="fm-tree">
+                          <li><span class="fm-folder"><svg><use href="#fm-folder"/></svg>agentic notes</span>
+                            <ul>
+                              <li class="fm-item" data-k="notes" data-p="edit"><svg><use href="#fm-doc"/></svg>session notes.md</li>
+                              <li class="fm-item" data-k="att" data-p="edit"><svg><use href="#fm-folder"/></svg>attachments</li>
+                            </ul>
+                          </li>
+                          <li><span class="fm-folder"><svg><use href="#fm-folder"/></svg>documents</span>
+                            <ul>
+                              <li class="fm-item" data-k="out" data-p="edit"><svg><use href="#fm-folder"/></svg>outputs</li>
+                            </ul>
+                          </li>
+                          <li><span class="fm-folder"><svg><use href="#fm-folder"/></svg>charts</span>
+                            <ul>
+                              <li class="fm-item" data-k="ch1" data-p="edit"><svg><use href="#fm-chart"/></svg>chart</li>
+                              <li class="fm-item" data-k="ch2" data-p="edit"><svg><use href="#fm-chart"/></svg>chart</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="fm-zone" data-p="view">
+                        <div class="fm-zone-head"><span lang="en">Data Assets</span><span class="fm-tag"><svg><use href="#fm-view"/></svg>僅供檢視</span></div>
+                        <ul class="fm-list">
+                          <li class="fm-item" data-k="d1" data-p="view"><svg><use href="#fm-data"/></svg>data asset</li>
+                          <li class="fm-item" data-k="d2" data-p="view"><svg><use href="#fm-data"/></svg>data asset</li>
+                          <li class="fm-item" data-k="d3" data-p="view"><svg><use href="#fm-data"/></svg>data asset</li>
+                        </ul>
+                      </div>
+
+                      <div class="fm-zone" data-p="hide">
+                        <div class="fm-zone-head"><span lang="en">Temp</span><span class="fm-tag"><svg><use href="#fm-hide"/></svg>暫存，不顯示</span></div>
+                        <ul class="fm-list">
+                          <li class="fm-item" data-k="cache" data-p="hide"><svg><use href="#fm-folder"/></svg>cache</li>
+                        </ul>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+                <script>
+                  (function () {
+                    var root = document.getElementById('folder-map');
+                    if (!root) return;
+                    var grid = root.querySelector('.fm-grid');
+                    var svg = root.querySelector('.fm-links');
+                    var NS = 'http://www.w3.org/2000/svg';
+                    var before = root.querySelectorAll('.fm-side--before .fm-item');
+
+                    function draw() {
+                      svg.textContent = '';
+                      var g = grid.getBoundingClientRect();
+                      // Stacked on narrow screens: the sides no longer face each other.
+                      if (getComputedStyle(svg).display === 'none' || !g.width) return;
+                      svg.setAttribute('viewBox', '0 0 ' + g.width + ' ' + g.height);
+                      before.forEach(function (a) {
+                        var b = root.querySelector('.fm-side--after .fm-item[data-k="' + a.dataset.k + '"]');
+                        if (!b) return;
+                        var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+                        var x1 = ra.right - g.left, y1 = ra.top + ra.height / 2 - g.top;
+                        var x2 = rb.left - g.left, y2 = rb.top + rb.height / 2 - g.top;
+                        var dx = (x2 - x1) * 0.55;
+                        var p = document.createElementNS(NS, 'path');
+                        p.setAttribute('d', 'M' + x1 + ' ' + y1 + ' C' + (x1 + dx) + ' ' + y1 + ' ' + (x2 - dx) + ' ' + y2 + ' ' + x2 + ' ' + y2);
+                        p.setAttribute('class', 'fm-link');
+                        p.dataset.p = a.dataset.p;
+                        p.dataset.k = a.dataset.k;
+                        svg.appendChild(p);
+                      });
+                    }
+
+                    // Hovering either end of a pair lights up the pair and its link.
+                    root.addEventListener('mouseover', function (e) {
+                      var item = e.target.closest('.fm-item');
+                      var k = item ? item.dataset.k : null;
+                      root.classList.toggle('is-focus', !!k);
+                      root.querySelectorAll('[data-k]').forEach(function (el) {
+                        el.classList.toggle('is-on', el.dataset.k === k);
+                      });
+                    });
+                    root.addEventListener('mouseleave', function () {
+                      root.classList.remove('is-focus');
+                    });
+
+                    new ResizeObserver(draw).observe(grid);
+                    if (document.fonts) document.fonts.ready.then(draw);
+                  })();
+                </script>
+                -->
+              </section>
+                </div>
+              </div>
+
+        </div>
+
+        <!-- <div class="case-image"><img src="img/Brinno/user journey map.png" alt="使用者旅程地圖：攝影師與營建商在施工中/施工後各階段的痛點對照"></div>
+
+        <div class="callout">
+          <p><strong>關鍵洞察：</strong>攝影師與營建商在營建專案各個階段存在<strong>資訊同步的斷點</strong>，導致對相機狀態、設定與交付要求的掌握不一致，增加反覆修改與額外管理的成本。</p>
+        </div> -->
+
+        <h3><span class="h3-num">04</span>內部測試驗證</h3>
+        <!-- <p>
+          我進行了 3 場內部測試，希望在功能上線前找出易用性問題並持續迭代。其中最關鍵的發現是，所有使用者都無法立即透過資料夾命名找到自己上傳或 AI 生成的檔案。這讓我意識到未來或許我們需要重新設計更符合使用者預期的資訊架構，並透過即時互動主動引導，來降低使用者摸索的成本。
+        </p> -->
+        <p>
+          我進行了 <strong>5 場內部測試</strong>，其中最關鍵的發現是<strong>使用者難以理解檔案分類，因此無法立即找到上傳與生成的檔案</strong>。 與開發團隊討論後，考量到架構重構成本較高，決定先透過<strong>上傳後自動開啟檔案的互動引導</strong>，驗證是否能降低尋找成本，再評估是否需要進一步調整架構。
+        </p>
+
+        <div class="quote-grid">
+          <blockquote class="case-quote">
+            <p>「覺得使用久了會記得資料夾的用途，但一開始用會覺得怪怪的。」</p>
+            <cite>— 受測者 1</cite>
+          </blockquote>
+          <blockquote class="case-quote">
+            <p>「為什麼是 attachment？我在想 attachment 跟 document 的分別是什麼。」</p>
+            <cite>— 受測者 2</cite>
+          </blockquote>
+          <blockquote class="case-quote">
+            <p>「想要找上傳的檔案，直覺會放在 data asset 區塊中。」</p>
+            <cite>— 受測者 3</cite>
+          </blockquote>
+        </div>
+
+      </section>
+
+      
+
+      <!-- ===== Design Opportunity ===== -->
+      <!-- <section id="opportunity">
+        <span class="case-eyebrow">Design Opportunity</span>
+        <h2>將痛點轉化為需求，找出設計機會點</h2>
+        <p>
+          攝影師與營建商對設備及交付資訊的掌握不一致，導致管理效率低落。
+          因此，我們希望透過相機管理工具串聯攝影師、營建商與設備，<strong>確保資訊在三方間無障礙地流通</strong>。
+        </p>
+
+        <div class="case-image-compare">
+          <div class="case-compare-side"><img src="img/Brinno/as is.png" alt="現況：三方資訊斷點"></div>
+          <span class="case-compare-arrow" aria-hidden="true">→</span>
+          <div class="case-compare-side"><img src="img/Brinno/to be.png" alt="機會點：相機管理工具作為三方資訊中樞"></div>
+        </div>
+
+        <div class="callout">
+          <p><strong>How might we</strong> 幫助攝影師 &amp; 營建商在管理多個專案攝影機的同時，能安心且有效率地同步資訊？</p>
+        </div>
+      </section> -->
+
+      <!-- ===== Define user flow & UI structure ===== -->
+      <!-- <section id="ideation">
+        <span class="case-eyebrow">Define user flow & UI structure</span>
+        <h2>根據使用者需求，發想相應平台功能</h2>
+        <p>
+          我開始規劃核心的用戶流程，我探索了三種不同的架構
+        </p> -->
+        <!-- <div class="case-image case-image--small"><img src="img/Brinno/ideation.png" alt="Feature ideation map：需求 → 對應功能 → 參考案例"></div> -->
+      <!-- </section> -->
+
+      <!-- ===== Information Architecture ===== -->
+      <!-- <section id="information-architecture">
+        <span class="case-eyebrow">Information Architecture</span>
+        <h2>資訊架構</h2>
+        <p>
+          確立大致功能後，我開始規劃平台的資訊架構。考量到使用者通常以專案為單位管理，且同一台設備會產生大量縮時檔案，因此將主要流程設計成以<strong>「專案 → 設備 → 檔案」為層級展開</strong>。
+        </p> -->
+        <!-- <div class="case-image"><img src="img/Brinno/information architecture.png" alt="IA tree：Project → Device → File 三層結構，每層下方列出可執行動作"></div> -->
+      <!-- </section> -->
+
+      <!-- ===== Design Deliverable ===== -->
+      <section id="design-deliverable">
+        <span class="case-eyebrow" lang="en">Final Design</span>
+        <h2>整合資料、對話與產出的工作站</h2>
+        <!-- <p>
+          工作站把原本分散在平台各處的資料、對話與產出收進同一個空間，讓一項研究任務從頭到尾都在同一個畫面裡完成。以下三個部分分別回應前面的三個痛點。
+        </p> -->
+
+        <div class="solution-group">
+          <h3><span class="h3-num">01</span>套用模板快速創建</h3>
+          <p>
+            整合 AI agent 與工作站建立流程，<strong>精簡必要設定並設計模板</strong>，讓使用者能套用團隊既有設定快速開始工作
+          </p>
+
+          <div class="case-image case-image--flush gif-frame">
+            <img class="lazy-gif" data-src="img/Tricuss/solution-1.gif" width="1902" height="992" alt="套用模板快速創建流程">
+            <button type="button" class="gif-replay" aria-label="重新播放：套用模板快速創建流程">
+              <svg class="gif-replay-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 2.5a5.5 5.5 0 1 0 5.32 4.13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M8 .6 5.4 2.5 8 4.4z" fill="currentColor"/>
+              </svg>
+              <span>重新播放</span>
+            </button>
+          </div>
+          <!-- <p><strong></strong> — 即時掌握相機拍攝情形</p> -->
+          <!-- <div class="case-image"><img src="img/Brinno/solution-1.png" alt="解方一介面：相機即時檢視與異常通知"></div> -->
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">02</span>以檔案為主，對話為輔的三欄式結構</h3>
+          <p>
+            <strong>以檔案瀏覽作為主要工作區，AI 對話固定在右側</strong>，滿足研究人員要同時閱讀大量資料，並與 AI 討論的需求
+          </p>
+
+          <div class="case-image case-image--flush gif-frame">
+            <img class="lazy-gif" data-src="img/Tricuss/solution-2.gif" width="1902" height="992" alt="三欄式結構操作">
+            <button type="button" class="gif-replay" aria-label="重新播放：三欄式結構操作">
+              <svg class="gif-replay-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 2.5a5.5 5.5 0 1 0 5.32 4.13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M8 .6 5.4 2.5 8 4.4z" fill="currentColor"/>
+              </svg>
+              <span>重新播放</span>
+            </button>
+          </div>
+          <span class="case-image-note">※ 畫面中的檔案與內容皆為示意資料，非真實客戶資料。</span>
+          <!-- <p><strong>回應需求</strong> — 方便管理多個專案的排程設定</p> -->
+          <!-- <div class="case-image"><img src="img/Brinno/solution-2.png" alt="解方二介面：遠端排程設定"></div> -->
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">03</span>可見的檔案與 AI 回覆狀態</h3>
+          <p>
+            <!-- 從資料匯入、AI agent 回覆到檔案查找，與 AI agent 互動的各個環節都有對應的狀態回饋。使用者看得到過程，才有辦法判斷產出可不可信。 -->
+            從資料匯入、AI 回覆到檔案查找，<strong>設計對應的狀態回饋</strong>，讓使用者能掌握系統進度與結果，<strong>建立對產出的信任</strong>
+          </p>
+
+          <div class="case-image case-image--flush gif-frame">
+            <img class="lazy-gif" data-src="img/Tricuss/solution-3.gif" width="1902" height="992" alt="檔案與 AI 狀態變化">
+            <button type="button" class="gif-replay" aria-label="重新播放：檔案與 AI 狀態變化">
+              <svg class="gif-replay-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 2.5a5.5 5.5 0 1 0 5.32 4.13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M8 .6 5.4 2.5 8 4.4z" fill="currentColor"/>
+              </svg>
+              <span>重新播放</span>
+            </button>
+          </div>
+          <span class="case-image-note">※ 畫面中的檔案與內容皆為示意資料，非真實客戶資料。</span>
+          <!-- <p><strong>回應需求</strong> — 安心地同步拍攝狀況並對齊交付畫面的期待</p>
+          <div class="case-image"><img src="img/Brinno/solution-3-1.png" alt="解方三介面：檔案批次上傳畫面"></div>
+          <div class="case-image"><img src="img/Brinno/solution-3-2.png" alt="解方三介面：檔案分享設定畫面"></div> -->
+        </div>
+
+        <!-- <div class="solution-group">
+          <h3><span class="h3-num">04</span>權限管理</h3>
+          <p><strong>回應需求</strong> — 安心地同步拍攝狀況並對齊交付畫面的期待</p>
+          <div class="case-image"><img src="img/Brinno/solution-4.png" alt="解方四介面：權限管理設定"></div>
+        </div> -->
+      </section>
+
+      <!-- ===== Design System ===== -->
+      <section id="design-system">
+        <span class="case-eyebrow" lang="en">Design System</span>
+        <h2>設計系統</h2>
+
+        <!-- Hand-picked excerpt of the Figma spec sheet, rebuilt in markup
+             rather than exported as a flat image, and laid out as one wide
+             board (~16:9) so the whole system reads at a glance instead of
+             scrolling past. The full sheet is 1501x2332. -->
+        <!-- Hidden: the full spec-sheet image below now stands in for this.
+             Kept in place — remove the hidden attribute to bring it back. -->
+        <div class="case-image case-image--white ds ds--board" hidden>
+
+          <!-- ---------- Colour ---------- -->
+          <div class="ds-block ds-block--color">
+            <h4 class="ds-h">色彩<span lang="en">Color</span></h4>
+
+            <!-- Four of the nine primary steps: the ones the UI actually
+                 uses — wash, border, the primary itself, and its pressed
+                 state. The rest of the ramp exists but says nothing here.
+                 Neutral and functional below are trimmed to four the same
+                 way, so all three rows read at one size. -->
+            <div class="ds-ramp ds-ramp--steps">
+              <span class="ds-ramp-label" lang="en">Primary</span>
+              <ol class="ds-chips ds-chips--quad">
+                <li><i style="--c:#EFF6FF"></i><b>100</b><code>#EFF6FF</code></li>
+                <li><i style="--c:#BFDBFE"></i><b>300</b><code>#BFDBFE</code></li>
+                <li><i style="--c:#2563EB"></i><b>500</b><code>#2563EB</code></li>
+                <li><i style="--c:#1D4ED8"></i><b>600</b><code>#1D4ED8</code></li>
+              </ol>
+            </div>
+
+            <!-- Four of the nine neutral steps, same rule as the primary ramp:
+                 surface, border, secondary text, primary text. -->
+            <div class="ds-ramp ds-ramp--steps">
+              <span class="ds-ramp-label" lang="en">Neutral</span>
+              <ol class="ds-chips ds-chips--quad">
+                <li><i style="--c:#F9FAFB"></i><b>200</b><code>#F9FAFB</code></li>
+                <li><i style="--c:#E5E7EB"></i><b>300</b><code>#E5E7EB</code></li>
+                <li><i style="--c:#6B7280"></i><b>600</b><code>#6B7280</code></li>
+                <li><i style="--c:#111827"></i><b>900</b><code>#111827</code></li>
+              </ol>
+            </div>
+
+            <div class="ds-ramp">
+              <span class="ds-ramp-label" lang="en">Functional</span>
+              <ol class="ds-chips ds-chips--fn ds-chips--quad">
+                <li><i style="--c:#16A34A"></i><b lang="en">success</b><code>#16A34A</code></li>
+                <li><i style="--c:#EAB308"></i><b lang="en">warning</b><code>#EAB308</code></li>
+                <li><i style="--c:#EF4444"></i><b lang="en">danger</b><code>#EF4444</code></li>
+                <li><i style="--c:#347397"></i><b lang="en">info</b><code>#347397</code></li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- ---------- Type ---------- -->
+          <div class="ds-block ds-block--type">
+            <h4 class="ds-h">字級<span lang="en">Type scale</span></h4>
+
+            <dl class="ds-type">
+              <div class="ds-type-row">
+                <dt style="font-size:22px;font-weight:700;">設計系統 Aa</dt>
+                <dd lang="en">Title/H2 · 28 · Bold</dd>
+              </div>
+              <div class="ds-type-row">
+                <dt style="font-size:16px;font-weight:500;">設計系統 Aa</dt>
+                <dd lang="en">Title/H4 · 20 · Medium</dd>
+              </div>
+              <div class="ds-type-row">
+                <dt style="font-size:14px;font-weight:400;">設計系統 Aa</dt>
+                <dd lang="en">Text/03 · 16 · Regular</dd>
+              </div>
+              <div class="ds-type-row">
+                <dt style="font-size:12px;font-weight:500;">設計系統 Aa</dt>
+                <dd lang="en">Label/03 · 12 · Medium</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- ---------- Components ---------- -->
+          <div class="ds-block ds-block--comps">
+            <h4 class="ds-h">元件摘錄<span lang="en">Components</span></h4>
+
+            <div class="ds-specs ds-ui">
+
+              <!-- Data asset card — the one component specific to this product:
+                   it exists to make the agent's sync progress visible instead
+                   of hiding it behind a spinner. -->
+              <div class="ds-spec">
+                <p class="ds-spec-title">資料資產卡片<span lang="en"> · Data asset card</span></p>
+                <div class="ds-rows">
+                  <div class="ds-asset">
+                    <span class="ds-asset-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2.2h6l3 3v8.6h-9V2.2Z" stroke-linejoin="round"/><path d="M9.3 2.4v3.1h3.1M5.6 8.4h4.8M5.6 10.7h3.2" stroke-linecap="round"/></svg></span><span class="ds-asset-name" lang="en">FDC Data</span>
+                    <span class="ds-pill ds-pill--ok" lang="en">Synced</span>
+                  </div>
+                  <div class="ds-asset">
+                    <span class="ds-asset-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2.2h6l3 3v8.6h-9V2.2Z" stroke-linejoin="round"/><path d="M9.3 2.4v3.1h3.1M5.6 8.4h4.8M5.6 10.7h3.2" stroke-linecap="round"/></svg></span><span class="ds-asset-name" lang="en">FDC Data</span>
+                    <span class="ds-pill ds-pill--busy" lang="en">Syncing</span>
+                  </div>
+                  <div class="ds-asset">
+                    <span class="ds-asset-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 2.2h6l3 3v8.6h-9V2.2Z" stroke-linejoin="round"/><path d="M9.3 2.4v3.1h3.1M5.6 8.4h4.8M5.6 10.7h3.2" stroke-linecap="round"/></svg></span><span class="ds-asset-name" lang="en">FDC Data</span>
+                    <span class="ds-pill ds-pill--warn" lang="en">Sync timeout</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Alert — one severity shown; the action is what makes it an
+                   alert and not a toast. Buttons ride along underneath. -->
+              <div class="ds-spec">
+                <p class="ds-spec-title">警告提示與按鈕<span lang="en"> · Alert / Button</span></p>
+                <div class="ds-rows">
+                  <div class="ds-alert ds-alert--error">
+                    <span class="ds-alert-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6.4"/><path d="M10 6 6 10M6 6l4 4" stroke-linecap="round"/></svg></span>
+                    <span class="ds-alert-body"><strong lang="en">Failed to sync 3 data assets</strong><span lang="en">Please try again or check the agent settings.</span></span>
+                    <span class="ds-alert-act" lang="en">Resync</span>
+                  </div>
+                </div>
+                <div class="ds-btns">
+                  <span class="ds-btn ds-btn--primary" lang="en">+ Button</span>
+                  <span class="ds-btn ds-btn--secondary" lang="en">+ Button</span>
+                  <span class="ds-btn ds-btn--text" lang="en">+ Button</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Full Figma spec sheet, below the curated board above. -->
+        <div class="case-image case-image--flush">
+          <img src="img/Tricuss/design%20system.png" width="4284" height="2253" loading="lazy" decoding="async" alt="Tricuss 設計系統規範頁：色彩、字級、間距與元件樣式的完整定義">
+        </div>
+
+      </section>
+
+
+      <!-- ===== Outcome ===== -->
+      <section id="outcome">
+        <span class="case-eyebrow" lang="en">Outcome</span>
+        <h2>2 個月完成 MVP 並上線</h2>
+
+        <p>
+          我負責從規劃 user flow、繪製 UI 到建立 design system 的 <strong>end-to-end 設計</strong>，並與工程團隊<strong>在 2 個月內完成 MVP</strong>。團隊與 CEO 都認同它有效整合了原先散落於平台各處的資料、AI 對話與文件產出流程。
+        </p>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-num" lang="en">2 mon</span>
+            <span class="stat-label">從設計到 MVP 釋出</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">&darr;43%</span>
+            <span class="stat-label">完成一次研究任務的步驟</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">30+</span>
+            <span class="stat-label">元件可擴展至整個平台</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===== Lessons ===== -->
+      <section id="lessons">
+        <span class="case-eyebrow" lang="en">Lessons Learned</span>
+        <h2>專案中的反思 & 學習</h2>
+
+        <h3><span class="h3-num">01</span>在工程導向、資源有限的團隊中推動改進</h3>
+        <p>
+          在我加入團隊前，產品設計主要由 CEO 與工程師主導，因此，產品介面與操作體驗多是以技術角度出發，加上既有架構已成形，難以大幅度改動。在這樣的限制下，我學會<strong>在使用者體驗與開發資源間取得平衡</strong>，從低成本、可快速落地的優化，到需要長期投入的架構性改變，<strong>分階段推動改進</strong>。
+        </p>
+
+        <h3><span class="h3-num">02</span>內部測試無法取代真實使用者回饋</h3>
+        <p>
+          即便透過內部測試找出操作不順暢之處，但<strong>仍須進一步了解這套流程是否符合研究人員的實際工作方式</strong>。下一步，希望透過真實客戶的使用行為與回饋，持續了解工作站如何融入他們的工作流程，並根據實際使用情況迭代。
+        </p>
+
+        <!-- <h3><span class="h3-num">03</span>對 AI 產品的信任，是靠「看得見的過程」建立的</h3>
+        <p>
+          過去我認為好的 AI 體驗是把過程隱藏、只呈現結果，但這次專案讓我發現，當使用者不清楚 agent 在做什麼時，反而更難信任結果。把處理狀態、檔案異動等過程攤開讓使用者看見，才是建立信任更有效的方式。
+        </p> -->
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<!-- ============================ NEXT PROJECT ============================ -->
+<section class="case-next" aria-labelledby="next-project-title">
+  <div class="wrap">
+    <span class="next-label" lang="en">Next project</span>
+    <a href="case-pdogs.html" class="next-card">
+      <div class="next-card-body">
+        <span class="next-meta">02 · PDOGs 平台專案</span>
+        <h3 class="next-title" id="next-project-title">重新設計程式批改平台的作業繳交與管理體驗</h3>
+      </div>
+      <span class="next-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap row">
+    <span class="copy">© 2026 Chelsea Hsu</span>
+    <div class="links" lang="en">
+      <a href="mailto:pupss95315@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/chien-chi-hsu" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script src="scroll-spy.js" defer></script>
+
+<script>
+  (function () {
+    var btn  = document.getElementById('navMenuBtn');
+    var menu = document.getElementById('navMenu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function() {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('is-open', !open);
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      }
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    document.querySelectorAll('.problem-cards').forEach(function(group) {
+      var cards = group.querySelectorAll('.problem-card');
+      var showcase = group.closest('.problem-showcase');
+      var panels = showcase ? showcase.querySelectorAll('.problem-panel') : [];
+      cards.forEach(function(card, i) {
+        card.addEventListener('click', function() {
+          /* aria-pressed alongside the class: the class is what the eye
+             reads, this is what a screen reader reads. Without it the
+             selected card is announced exactly like the other two. */
+          cards.forEach(function(c) {
+            c.classList.remove('is-active');
+            c.setAttribute('aria-pressed', 'false');
+          });
+          card.classList.add('is-active');
+          card.setAttribute('aria-pressed', 'true');
+
+          /* Swap the framed visual, but only if this card has one —
+             otherwise the previous panel stays put. */
+          var next = null;
+          Array.prototype.forEach.call(panels, function(p) {
+            if (p.getAttribute('data-panel') === String(i + 1)) next = p;
+          });
+          if (!next) return;
+          Array.prototype.forEach.call(panels, function(p) {
+            p.classList.toggle('is-active', p === next);
+          });
+        });
+      });
+    });
+  })();
+</script>
+
+<script>
+  /* Before/After toggle — swaps the two flow exports in place. Buttons and
+     panels are matched on data-flow, so the markup order does not matter and
+     a third state could be added without touching this. */
+  (function () {
+    document.querySelectorAll('.flow-compare').forEach(function (scope) {
+      var btns = scope.querySelectorAll('.flow-toggle-btn');
+      var panels = scope.querySelectorAll('.flow-panel');
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var key = btn.getAttribute('data-flow');
+          btns.forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('is-active', on);
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            p.classList.toggle('is-active', p.getAttribute('data-flow') === key);
+          });
+        });
+      });
+    });
+  })();
+</script>
+
+<script>
+  /* Thinking Process timeline — arm it (hide the end state), then loop it
+     automatically while it is on screen. Clicking a step tag seeks the whole
+     run to that step's start time. */
+  (function () {
+    var tp = document.getElementById('tpTimeline');
+    if (!tp) return;
+
+    var HOLD = 2600;                // time the finished state stays up
+    var timer = null;
+    var playing = false;
+
+    tp.classList.add('is-armed');
+
+    var runLength = function () {
+      var dur = parseFloat(getComputedStyle(tp).getPropertyValue('--tp-dur'));
+      return (isNaN(dur) ? 10 : dur) * 1000 + HOLD;
+    };
+
+    /* Restart the CSS timeline, then — because every animation in the subtree
+       shares the same start — scrub them all to `ms` so the run continues from
+       that point instead of the top. */
+    var playFrom = function (ms) {
+      clearTimeout(timer);
+      tp.classList.remove('is-playing');
+      void tp.offsetWidth;          // force reflow so the animations restart
+      tp.classList.add('is-playing');
+      playing = true;
+
+      if (ms > 0 && tp.getAnimations) {
+        tp.getAnimations({ subtree: true }).forEach(function (a) {
+          try { a.currentTime = ms; } catch (e) {}
+        });
+      }
+      timer = setTimeout(function () { playFrom(0); },
+                         Math.max(runLength() - ms, 800));
+    };
+
+    var start = function () { if (!playing) playFrom(0); };
+
+    var stop = function () {
+      clearTimeout(timer);
+      timer = null;
+      playing = false;
+    };
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    /* Seek controls. The step's start time lives on its li as --on. */
+    tp.querySelectorAll('.tp-steps > li').forEach(function (li) {
+      var btn = li.querySelector('.tp-step');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var on = parseFloat(getComputedStyle(li).getPropertyValue('--on'));
+        playFrom(isNaN(on) ? 0 : on * 1000);
+      });
+    });
+
+    /* When the phases share one pinned stage, this timeline is inside the
+       viewport for the whole run whether or not it is the phase on show —
+       so geometry stops being a usable signal and scroll-spy.js tells us
+       instead. The first such event switches the observer off for good.
+       Entering replays from the top: arriving mid-run would waste the one
+       thing the animation is there to show. */
+    var host = tp.closest('.phase-block');
+    var driven = false;
+    if (host) {
+      host.addEventListener('phase:enter', function () { driven = true; playFrom(0); });
+      host.addEventListener('phase:leave', function () { driven = true; stop(); });
+    }
+
+    if (!('IntersectionObserver' in window)) { start(); return; }
+
+    /* Only animate while visible — off-screen loops just burn battery. */
+    var io = new IntersectionObserver(function (entries) {
+      if (driven) return;
+      entries.forEach(function (e) {
+        if (e.isIntersecting) start(); else stop();
+      });
+    }, { threshold: 0.3 });
+
+    io.observe(tp);
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stop(); return; }
+      // Staged, "on screen" is not the question — whether this phase holds
+      // the stage is, and that is what the data attribute records.
+      if (driven) { if (host && host.dataset.phaseActive) playFrom(0); return; }
+      var box = tp.getBoundingClientRect();
+      if (box.top < window.innerHeight && box.bottom > 0) start();
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var gifs = document.querySelectorAll('img.lazy-gif[data-src]');
+    if (!gifs.length) return;
+
+    function load(img) {
+      if (img.dataset.loaded) return;
+      img.dataset.loaded = '1';
+      img.src = img.dataset.src;
+      var frame = img.closest('.gif-frame');
+      if (frame) frame.classList.add('is-loaded');
+    }
+
+    // Replay. A GIF restarts at frame 0 only when the img gets a genuinely NEW
+    // url, and re-assigning the same path is not reliably treated as one. A
+    // cache-busting query would be, but at the cost of re-downloading megabytes
+    // per click. So the bytes are fetched once (served from HTTP cache, since
+    // the url matches the one already displayed), kept as a Blob, and each
+    // replay mints a fresh object url from it — new url, no network.
+    var blobs = new WeakMap();
+
+    function restart(img) {
+      var url = URL.createObjectURL(blobs.get(img));
+      var previous = img.dataset.objectUrl;
+      img.src = url;
+      img.dataset.objectUrl = url;
+      if (previous) URL.revokeObjectURL(previous);
+    }
+
+    function replay(img) {
+      if (blobs.has(img)) { restart(img); return; }
+      fetch(img.dataset.src)
+        .then(function (res) { return res.ok ? res.blob() : Promise.reject(res.status); })
+        .then(function (blob) { blobs.set(img, blob); restart(img); })
+        .catch(function () {
+          // Blob path unavailable (file:// origin, network error) — fall back
+          // to a cache-busting url, which always restarts even if it costs a
+          // fetch. Better a slow replay than a dead button.
+          img.src = img.dataset.src + '?replay=' + Date.now();
+        });
+    }
+
+    document.querySelectorAll('.gif-frame .gif-replay').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var frame = btn.closest('.gif-frame');
+        var img = frame && frame.querySelector('img.lazy-gif');
+        if (!img || !img.dataset.loaded) return;
+        replay(img);
+        btn.classList.remove('is-spinning');
+        void btn.offsetWidth; // restart the icon animation on rapid clicks
+        btn.classList.add('is-spinning');
+      });
+      btn.addEventListener('animationend', function () {
+        btn.classList.remove('is-spinning');
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      gifs.forEach(load);
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          load(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.25 });
+
+    gifs.forEach(function (img) { io.observe(img); });
+  })();
+</script>
+
+</body>
+</html>

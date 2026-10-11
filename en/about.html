@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>About · Chelsea Hsu</title>
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="wrap row">
+    <a href="index.html" class="wordmark">Chelsea Hsu</a>
+    
+    <ul class="nav-links">
+      <li><a class="link" href="index.html#work">Work</a></li>
+      <li><a class="link" href="about.html" aria-current="page">About</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="../about.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+    </ul>
+    
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+  
+  <div class="nav-dropdown" id="navMenu" aria-hidden="true">
+    <div class="wrap">
+      <ul>
+        <li><a class="link" href="index.html#work">Work</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="../about.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section aria-labelledby="about-heading">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text">
+        <h1 id="about-heading" class="about-headline">
+          Hi. I'm Chelsea Hsu.
+        </h1>
+
+        <p>
+          I'm a UX/UI designer with a background in frontend development. I've designed an enterprise AI platform from 0 to 1, improved the usability of a device management platform, built a construction monitoring platform, and redesigned an education platform.
+        </p>
+        <p>
+          I start with user research: I find the real problem in ambiguous situations and turn insights into designs that are feasible to build and enjoyable to use.
+        </p>
+        <p>
+          On teams, I balance user experience, technical constraints, and product goals, aligning different perspectives so designs make it to launch.
+        </p>
+        
+      </div>
+      <div class="about-portrait">
+        <img src="../img/chelsea.jpg" alt="Chelsea Hsu portrait">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="exp-heading">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="exp-heading">Experience</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <span class="tl-year">2026 —</span>
+        <span class="tl-where">Tricuss Co., LTD.</span>
+        <span class="tl-role">UI / UX Designer</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-year">2024 - 2025</span>
+        <span class="tl-where">BenQ Corp.</span>
+        <span class="tl-role">UX Design Intern</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-year">2022 - 2025</span>
+        <span class="tl-where">National Taiwan University</span>
+        <span class="tl-role">M.S. Information Management</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-year">2018 - 2022</span>
+        <span class="tl-where">National Taiwan University</span>
+        <span class="tl-role">B.S. Information Management</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="outside-heading">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="outside-heading">Outside of work</h2>
+    </div>
+
+    <p class="outside-desc">Outside of work, you'll find me exploring the city by bike, cooking simple meals, or photographing everyday moments :)</p>
+    <div class="outside-grid">
+      <div class="outside-photo">
+        <img src="../img/about-1.JPG" alt="Everyday life photo 1">
+      </div>
+      <div class="outside-photo">
+        <img src="../img/about-2.avif" alt="Everyday life photo 2">
+      </div>
+      <div class="outside-photo">
+        <img src="../img/about-3.jpg" alt="Everyday life photo 3">
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <span class="copy">© 2026 Chelsea Hsu</span>
+    <div class="links">
+      <a href="mailto:pupss95315@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/chien-chi-hsu" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn  = document.getElementById('navMenuBtn');
+    var menu = document.getElementById('navMenu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function() {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('is-open', !open);
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

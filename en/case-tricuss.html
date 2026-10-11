@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tricuss AI · AI Workspace | Chelsea Hsu</title>
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+
+<script src="../tricuss-gate.js"></script>
+<script>
+  (function () {
+    if (!window.TricussGate || !window.TricussGate.isUnlocked()) {
+      location.replace('tricuss-password.html');
+    }
+  })();
+</script>
+</head>
+<body class="page-brinno page-tricuss">
+
+<nav class="top" aria-label="Primary">
+  <div class="wrap row">
+    <a href="index.html" class="wordmark">Chelsea Hsu</a>
+    
+    <ul class="nav-links" lang="en">
+      <li><a class="link" href="index.html#work">Work</a></li>
+      <li><a class="link" href="about.html">About</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="../case-tricuss.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+    </ul>
+
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+  
+  <div class="nav-dropdown" id="navMenu" aria-hidden="true">
+    <div class="wrap">
+      <ul lang="en">
+        <li><a class="link" href="index.html#work">Work</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="../case-tricuss.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero">
+  <div class="wrap">
+    <img class="case-hero-image" src="../img/Tricuss/tricuss-hero.png" alt="Tricuss Workbench interface: folders and data assets in the left column; in the center, a research report where the AI agent has just written a “Key Findings” section (pending acceptance); the conversation in the right column; floating on either side, the agent’s execution steps and the data sources cited in this conversation">
+  </div>
+</header>
+
+<main class="case-main">
+  <div class="wrap case-grid">
+
+    <aside class="case-toc" lang="en" aria-label="Section navigation">
+      <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#research">Problem</a></li>
+        <li><a href="#goals">Design Goals</a></li>
+        <li><a href="#insight">Design Process</a></li>
+        <li><a href="#design-deliverable">Final Design</a></li>
+        <li><a href="#design-system">Design System</a></li>
+        <li><a href="#outcome">Outcome</a></li>
+        <li><a href="#lessons">Lessons Learned</a></li>
+        
+      </ul>
+    </aside>
+
+    <article class="case-content">
+
+      <section id="context">
+        <span class="case-eyebrow" lang="en">Context</span>
+
+        <h1>Build a workspace that lowers the barrier for researchers to work with AI</h1>
+        <p>
+          Tricuss is an enterprise AI agent platform for <strong>R&amp;D teams</strong>. It helps researchers design experiments, analyze data, and write research reports.
+        </p>
+        <p>
+          Researchers used to jump between scattered <strong>data, AI chats, and outputs</strong> to get one task done. I <strong>designed Workbench from 0 to 1</strong> to bring everything into a single workspace, with <strong>AI agent templates</strong> that make it easy to get started and <strong>clear status feedback</strong> that shows what the AI is doing at every step.
+        </p>
+
+        <div class="case-meta-grid">
+          <div class="case-meta-card">
+            <h3 class="meta-title">Timeline</h3>
+            <p>2 months, Apr 2026 – Jun 2026</p>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">Team</h3>
+            <ul>
+              <li>CEO × 1</li>
+              <li>Project manager × 1</li>
+              <li>Engineers × 3</li>
+              <li>UX/UI designer × 1 (me)</li>
+            </ul>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">My role</h3>
+            <ul>
+              
+              <li>Planned user flows and information architecture</li>
+              <li>Designed the UI and iterated through internal testing</li>
+              <li>Built a scalable design system</li>
+            </ul>
+          </div>
+          <div class="case-meta-card highlight">
+            <h3 class="meta-title">Outcome</h3>
+            <p>Shipped the MVP in <strong>2 months</strong>, <strong>cut the steps to complete a research task by 43%</strong>, and built a design system that scales across the platform.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="background">
+        <span class="case-eyebrow" lang="en">Background</span>
+        <h2>Redesigning AI agent workflows for a new architecture</h2>
+
+        <p>      
+          Previously, finishing a research task on Tricuss meant <strong>working through a complex setup and switching between features</strong>. When the team <strong>upgraded the AI agent architecture and the execution environment</strong>, we had an opportunity to rethink the product experience.
+        </p>
+        <p>
+          I took this as a chance to <strong>redefine how researchers collaborate with AI</strong>, turning a fragmented process into a simpler, more cohesive workflow.
+        </p>
+
+        <div class="callout callout--brinno">
+          <p><strong>Project goal:</strong> Bring data, AI chats, and outputs into one workspace for seamless AI collaboration</p>
+        </div>
+
+        <div class="case-image case-image--dgm case-image--white">
+          <svg class="dgm" viewBox="0 0 840 320" role="img" aria-label="Before and after the architecture upgrade: before, data, conversations, and outputs all existed, but the flow connecting them was broken and users had to switch between features themselves; now the same three live inside the Workbench, joined by one continuous flow">
+            <defs>
+              
+              <marker id="dgm-ah-b" markerWidth="9" markerHeight="9" refX="6.4" refY="4" orient="auto">
+                <path d="M1.6 1.2 L6.4 4 L1.6 6.8"
+                      style="fill:none;stroke:rgba(136,136,136,0.5);stroke-width:1;stroke-linecap:round;stroke-linejoin:round"/>
+              </marker>
+              <g id="ic-data-b" class="dgm-icon">
+                <rect x="3" y="4" width="18" height="4.6" rx="1.4"/>
+                <rect x="3" y="9.7" width="18" height="4.6" rx="1.4"/>
+                <rect x="3" y="15.4" width="18" height="4.6" rx="1.4"/>
+              </g>
+              <g id="ic-chat-b" class="dgm-icon">
+                <path d="M21 15.2a1.8 1.8 0 0 1-1.8 1.8H7.6L4 20.6V4.8A1.8 1.8 0 0 1 5.8 3h13.4A1.8 1.8 0 0 1 21 4.8z"/>
+                <path d="M7.6 8.4h9.8M7.6 12h6.4"/>
+              </g>
+              <g id="ic-doc-b" class="dgm-icon">
+                <path d="M14 3H7.2A1.8 1.8 0 0 0 5.4 4.8v14.4A1.8 1.8 0 0 0 7.2 21h9.6a1.8 1.8 0 0 0 1.8-1.8V7.6z"/>
+                <path d="M13.8 3.2v4.6h4.6"/>
+              </g>
+            </defs>
+
+            <rect class="dgm-panel" x="35" y="48" width="240" height="258" rx="8" style="fill:none;stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <text x="155" y="92" text-anchor="middle" class="dgm-label dgm-label--strong">Before</text>
+
+            <rect class="dgm-box--ghost-paper" x="90" y="111" width="130" height="40" rx="8" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <use href="#ic-data-b" transform="translate(127,122) scale(0.75)"/>
+            <text x="153" y="137" class="dgm-label">Data</text>
+            <rect class="dgm-box--ghost-paper" x="90" y="172" width="130" height="40" rx="8" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <use href="#ic-chat-b" transform="translate(127,183) scale(0.75)"/>
+            <text x="153" y="198" class="dgm-label">Chat</text>
+            <rect class="dgm-box--ghost-paper" x="90" y="234" width="130" height="40" rx="8" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+            <use href="#ic-doc-b" transform="translate(127,245) scale(0.75)"/>
+            <text x="153" y="260" class="dgm-label">Outputs</text>
+
+            <text x="400" y="158" text-anchor="middle" class="dgm-caption">Integrate existing features</text>
+            <path class="dgm-line" d="M330 176 L470 176" marker-end="url(#dgm-ah-b)" style="stroke:rgba(136,136,136,0.5);stroke-width:2"/>
+
+            <rect class="dgm-box--accent" x="525" y="48" width="240" height="258" rx="8"/>
+            <text x="645" y="92" text-anchor="middle" class="dgm-label dgm-label--strong">Workbench</text>
+
+            <path class="dgm-line dgm-line--accent" d="M593 131 H576 Q568 131 568 139 V246 Q568 254 576 254 H593"/>
+            <path class="dgm-line dgm-line--accent" d="M568 192 H593"/>
+
+            <rect class="dgm-node" x="593" y="111" width="130" height="40" rx="8"/>
+            <use href="#ic-data-b" transform="translate(630,122) scale(0.75)"/>
+            <text x="656" y="137" class="dgm-label">Data</text>
+            <rect class="dgm-node" x="593" y="172" width="130" height="40" rx="8"/>
+            <use href="#ic-chat-b" transform="translate(630,183) scale(0.75)"/>
+            <text x="656" y="198" class="dgm-label">Chat</text>
+            <rect class="dgm-node" x="593" y="234" width="130" height="40" rx="8"/>
+            <use href="#ic-doc-b" transform="translate(630,245) scale(0.75)"/>
+            <text x="656" y="260" class="dgm-label">Outputs</text>
+
+          </svg>
+        </div>
+
+      </section>
+
+      <section id="research">
+        <span class="case-eyebrow" lang="en">Problem</span>
+        <h2>Complex workflows made it hard for researchers to configure, navigate, and trust AI agents</h2>
+        <p>
+          Before designing, I identified 3 key pain points through <strong>heuristic evaluation and customer feedback</strong>.
+        </p>
+
+        <div class="problem-showcase">
+          <div class="case-image case-image--flush case-image--dgm problem-showcase-frame">
+
+            <div class="problem-panel problem-panel--steps is-active" data-panel="1" id="problem-panel-1">
+              <div class="pain-steps pain-steps--single">
+                <img src="../img/Tricuss/Pain point 1.png"
+                     alt="Three setup stages before a conversation can begin: creating data assets, running data transformation, and configuring AI agent nodes">
+              </div>
+            </div>
+
+            <div class="problem-panel problem-panel--steps" data-panel="2" id="problem-panel-2">
+              <div class="pain-steps pain-steps--single">
+                <img src="../img/Tricuss/Pain point 2.png"
+                     alt="Unintuitive feature switching: after picking an agent in the same “Select an AI agent” dialog, users land in either AI chat or AI document writing, depending on whether that agent has a document-writing node">
+              </div>
+            </div>
+
+            <div class="problem-panel problem-panel--steps" data-panel="3" id="problem-panel-3">
+              <div class="pain-steps pain-steps--single">
+                <img src="../img/Tricuss/Pain point 3.png"
+                     alt="Opaque AI process: after sending a question, users only see a waiting state and can’t tell what data the agent is retrieving or processing">
+              </div>
+            </div>
+          </div>
+
+          <span class="problem-showcase-hint">Click to see details</span>
+
+          <div class="problem-cards">
+            <button type="button" class="problem-card is-active" aria-pressed="true" aria-controls="problem-panel-1">
+              <span class="problem-card-num">1</span>
+              <div class="problem-card-body">
+                <h4>High setup cost</h4>
+                <p>During an enterprise client workshop, I noticed that users often <strong>got stuck on data preparation and agent setup</strong>, even with step-by-step guidance. Many struggled to get started before they could experience the product’s value.</p>
+              </div>
+            </button>
+            <button type="button" class="problem-card" aria-pressed="false" aria-controls="problem-panel-2">
+              <span class="problem-card-num">2</span>
+              <div class="problem-card-body">
+                
+                <h4>Confusing feature switching</h4>
+                <p>AI chat and AI document writing share one entry point, but document writing only works if you pick an agent with a document-writing node — <strong>a rule users struggled to understand</strong>.</p>
+              </div>
+            </button>
+            <button type="button" class="problem-card" aria-pressed="false" aria-controls="problem-panel-3">
+              <span class="problem-card-num">3</span>
+              <div class="problem-card-body">
+                <h4>An opaque AI process</h4>
+                <p>Clients often said agents were slow to respond, and <strong>with no visibility into the AI’s process, they found it hard to trust the results</strong>.</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="goals">
+        <span class="case-eyebrow" lang="en">Design Goals</span>
+        <h2>Defining design goals around user pain points and business needs</h2>
+        <p>
+          I also factored in the business context. Client trials are short, so the design needed to <strong>deliver value quickly and make adoption more likely</strong>. With both user needs and business goals in mind, I defined three design goals:
+        </p>
+
+        <div class="goals-grid goals-grid--3col">
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            </span>
+            <h3 class="goal-title">Shorten time to value</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 20.5S3 15 3 8.8C3 5.6 5.5 3.5 8.2 3.5c1.7 0 3.2.9 3.8 2.3.6-1.4 2.1-2.3 3.8-2.3C18.5 3.5 21 5.6 21 8.8c0 6.2-9 11.7-9 11.7z"/></svg>
+            </span>
+            <h3 class="goal-title">Match users’ mental models</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+            <h3 class="goal-title">Build trust through visible status</h3>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="insight">
+        <span class="case-eyebrow" lang="en">Design Process</span>
+        <h2>Designing the Workbench flow and structure around how researchers work</h2>
+        <h3><span class="h3-num">01</span>Making Workbench setup easy</h3>
+        <p>
+         To lower the barrier to setup, I mapped the existing flow with the team and looked for steps to simplify or merge. In practice, Admins usually configure AI agents and Members reuse their settings. So I <strong>merged agent creation into Workbench setup</strong> and <strong>designed AI agent templates</strong>, letting users apply existing settings and start working right away.
+        </p>
+
+        <div class="case-image case-image--white flow-stack">
+          <img src="../img/Tricuss/Before.png"
+               alt="Existing flow: AI chat is only available after preparing data, creating an AI agent, and selecting an AI agent; to produce a document, users branch from agent selection to AI document writing, then review the output.">
+          <img src="../img/Tricuss/After.png"
+               alt="Workbench flow: when creating a Workbench, users apply a template or create an agent, then add data sources, chat with AI, and review outputs inside the Workbench — all in one place.">
+        </div>
+
+        <h3><span class="h3-num">02</span>Choosing a layout that fits how researchers work</h3>
+        <p>
+          I analyzed 6 <strong>AI-native workspaces</strong> to understand <strong>how they organize work</strong> and <strong>what role AI plays in the workflow</strong>. They fell into two broad types:
+        </p>
+
+        <div class="case-image case-image--white">
+          <img src="../img/Tricuss/Step 2.png" alt="Interface structure: a three-column layout with files as the main workspace and AI chat pinned to the right">
+        </div>
+
+        <div class="callout callout--brinno">
+          <p><strong>Key insight:</strong> Editing-oriented tools match how researchers work — reading large volumes of material while collaborating with AI throughout. So I chose a layout with files as the main workspace and AI chat pinned to the right.</p>
+        </div>
+
+        <div class="phases">
+
+              <div class="phase-lede">
+                <h3><span class="h3-num">03</span>Making AI collaboration trustworthy</h3>
+                <p>
+                  I <strong>designed visible status feedback</strong> for each stage of interacting with an AI agent, so users always know what’s happening and can build trust over time.
+                </p>
+                <p>
+                  Here’s how it works before, during, and after an interaction:
+                </p>
+              </div>
+
+              <nav class="phase-stepper" aria-label="Interaction stage progress">
+                <ol class="phase-steps">
+                  <li class="phase-step" data-target="phase-pre">
+                    <button class="phase-step-btn" type="button"><span class="phase-step-num">1</span><span class="phase-step-label">Before</span></button>
+                  </li>
+                  <li class="phase-step" data-target="phase-during">
+                    <button class="phase-step-btn" type="button"><span class="phase-step-num">2</span><span class="phase-step-label">During</span></button>
+                  </li>
+                  <li class="phase-step" data-target="phase-post">
+                    <button class="phase-step-btn" type="button"><span class="phase-step-num">3</span><span class="phase-step-label">After</span></button>
+                  </li>
+                </ol>
+              </nav>
+
+              <div class="phase-track">
+                <div class="phase-stage">
+              <section class="phase-block" aria-labelledby="phase-pre">
+                <h4 id="phase-pre"><span class="h3-num">01</span>Before an interaction</h4>
+                <p>
+                  Imported data takes time to sync, and until it finishes, the AI agent can’t fully read the files. I <strong>designed UI and system messages for each sync state</strong>, so users can see sync progress and know when files are ready to use.
+                </p>
+
+                <div class="case-image case-image--white case-image--states">
+                  <div class="img-cols">
+                    <figure class="img-col">
+                      <figcaption class="img-col-title">Uploading</figcaption>
+                      <img src="../img/Tricuss/uploading.png" alt="Uploading: the file card shows a sync icon with grayed-out content, and a note below says the data is still syncing and can be used once done">
+                    </figure>
+                    <figure class="img-col">
+                      <figcaption class="img-col-title">Uploaded</figcaption>
+                      <img src="../img/Tricuss/uploaded.png" alt="Uploaded: the file card returns to its normal color and can be opened right away">
+                    </figure>
+                    <figure class="img-col">
+                      <figcaption class="img-col-title">Upload failed</figcaption>
+                      <img src="../img/Tricuss/upload fail.png" alt="Upload failed: the file card shows an error icon, and a red message below says 3 data items failed to sync, with links to Resync and to agent settings">
+                    </figure>
+                  </div>
+                </div>
+              </section>
+
+              <section class="phase-block" aria-labelledby="phase-during">
+                <h4 id="phase-during"><span class="h3-num">02</span>During an interaction</h4>
+                <p>
+                  I mapped each step the AI agent takes from receiving an instruction to replying, confirmed the steps with our AI engineers, and <strong>designed how the AI’s thinking appears at each stage</strong>. Users can follow its progress while they wait, <strong>which takes the uncertainty out of waiting</strong>.
+                </p>
+
+        <span class="tp-hint">Click a tag to jump to that step</span>
+
+        <div class="case-image case-image--white case-image--tp">
+          <div class="tp" id="tpTimeline" aria-label="Agent execution stages and the thinking-process message shown for each">
+            
+            <ol class="tp-steps">
+              <li style="--on:0.3s; --off:2.2s"><button class="tp-step" type="button"><span class="tp-num">1</span>Receive prompt</button></li>
+              <li style="--on:2.2s; --off:4.1s"><button class="tp-step" type="button"><span class="tp-num">2</span>Start up</button></li>
+              <li style="--on:4.1s; --off:6.0s"><button class="tp-step" type="button"><span class="tp-num">3</span>Reason</button></li>
+              <li style="--on:6.0s; --off:8.1s"><button class="tp-step" type="button"><span class="tp-num">4</span>Run tools</button></li>
+              <li style="--on:8.1s"><button class="tp-step tp-step--last" type="button"><span class="tp-num">5</span>Done</button></li>
+            </ol>
+
+            <div class="tp-chat">
+              <div class="tp-user">Explore the files and code</div>
+
+              <div class="tp-stage">
+                
+                <div class="tp-phase" style="--d:0.3s; --out:2.1s">
+                  <span class="tp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                </div>
+
+                <div class="tp-phase" style="--d:2.2s; --out:4.0s">
+                  <span class="tp-pulse" aria-hidden="true"></span>
+                  <span class="tp-txt">Initializing…</span>
+                </div>
+
+                <div class="tp-phase" style="--d:4.1s; --out:5.0s">
+                  <span class="tp-pulse" aria-hidden="true"></span>
+                  <span class="tp-txt">Thinking…</span>
+                </div>
+
+                <div class="tp-phase" style="--d:5.1s; --out:5.9s">
+                  <span class="tp-pulse" aria-hidden="true"></span>
+                  <span class="tp-txt">Breaking it down…</span>
+                </div>
+
+                <div class="tp-phase tp-phase--exec" style="--d:6.0s; --out:8.0s">
+                  <ol class="tp-exec-list">
+                    <li class="tp-exec" style="--d:6.05s; --act:6.05s; --done:6.6s">
+                      <span class="tp-exec-ico">
+                        <span class="tp-spin" aria-hidden="true"></span>
+                        <svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4"/><path d="M9.5 9.5 12 12"/></svg>
+                      </span>
+                      <span class="tp-exec-label">Find all project files</span>
+                      <svg class="tp-chev tp-chev--step" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
+                    </li>
+
+                    <li class="tp-exec" style="--d:6.65s; --act:6.65s; --done:7.5s">
+                      <span class="tp-exec-ico">
+                        <span class="tp-spin" aria-hidden="true"></span>
+                        <svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2h5l3 3v7H2z"/><path d="M7 2v3h3"/></svg>
+                      </span>
+                      <span class="tp-exec-label">Read log files</span>
+                      <svg class="tp-chev tp-chev--step tp-chev--up" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 7.5 6 4.5 9 7.5"/></svg>
+                      <ul class="tp-tools">
+                        <li class="tp-tool" style="--d:6.8s; --done:7.1s">
+                          <svg class="tp-glyph tp-glyph--tool" viewBox="0 0 12 12" aria-hidden="true"><circle cx="5.5" cy="5.5" r="3.5"/><path d="M8.5 8.5 11 11"/></svg>
+                          <span class="tp-tool-name">tool-Find Files</span>
+                          <span class="tp-spin tp-spin--sm" aria-hidden="true"></span>
+                          <span class="tp-tool-status">Completed</span>
+                        </li>
+                        <li class="tp-tool" style="--d:7.15s; --done:7.5s">
+                          <svg class="tp-glyph tp-glyph--tool" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1.5h5l3 3v6H2z"/><path d="M7 1.5v3h3"/><path d="M4 7h4M4 9h3"/></svg>
+                          <span class="tp-tool-name">tool-Read File</span>
+                          <span class="tp-spin tp-spin--sm" aria-hidden="true"></span>
+                          <span class="tp-tool-status">Completed</span>
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li class="tp-exec" style="--d:6.65s; --act:7.6s; --done:8.0s">
+                      <span class="tp-exec-ico">
+                        <span class="tp-spin" aria-hidden="true"></span>
+                        <svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 7S3.5 3.5 7 3.5 12.5 7 12.5 7 10.5 10.5 7 10.5 1.5 7 1.5 7z"/><circle cx="7" cy="7" r="1.5"/></svg>
+                      </span>
+                      <span class="tp-exec-label">Inspect dependencies</span>
+                    </li>
+                  </ol>
+                </div>
+
+                <div class="tp-phase tp-phase--last" style="--d:8.1s">
+                  <details class="tp-done">
+                    <summary>
+                      <span>Completed 3 steps</span>
+                      <svg class="tp-chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
+                    </summary>
+                    <ul class="tp-done-list">
+                      <li><svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4"/><path d="M9.5 9.5 12 12"/></svg><span>Find all project files</span></li>
+                      <li><svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2h5l3 3v7H2z"/><path d="M7 2v3h3"/></svg><span>Read log files</span></li>
+                      <li><svg class="tp-glyph" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 7S3.5 3.5 7 3.5 12.5 7 12.5 7 10.5 10.5 7 10.5 1.5 7 1.5 7z"/><circle cx="7" cy="7" r="1.5"/></svg><span>Inspect dependencies</span></li>
+                    </ul>
+                  </details>
+                  <p class="tp-answer">Found <strong>24 files</strong> in the workspace, mostly environment config and dependencies — no application code. Logs are JSON; measurement files are CSV.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+              </section>
+
+              <section class="phase-block" aria-labelledby="phase-post">
+                <h4 id="phase-post"><span class="h3-num">03</span>After an interaction</h4>
+                <p>
+                  Working with an AI agent generates many files, charts, and logs. They used to be unorganized, so users struggled to find what they needed or tell what they could edit. I <strong>first separated files by whether they can be edited, then grouped editable files into folders named for their purpose</strong>, so users can <strong>see at a glance what each file is for and what they can do with it</strong>.
+                </p>
+
+                <div class="case-image case-image--white case-image--states">
+                  <div class="folder-pair">
+                    <figure class="folder-col folder-col--before">
+                      <figcaption class="folder-head">
+                        <span class="folder-title" lang="en">Before</span>
+                        <span class="folder-sub">Unsorted</span>
+                      </figcaption>
+                      <img src="../img/Tricuss/Folder (Before).png" alt="Before: every file sits flat at one level — agent notes, user uploads, and AI outputs mixed together, making purpose and permissions hard to tell">
+                    </figure>
+                    <figure class="folder-col folder-col--after">
+                      <figcaption class="folder-head">
+                        <span class="folder-title" lang="en">After</span>
+                        <span class="folder-sub">Sorted by edit permission</span>
+                        <span class="pick-badge" role="img" aria-label="Chosen option">
+                          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                            <circle cx="10" cy="10" r="10" fill="currentColor"/>
+                            <path d="M5.8 10.3 8.6 13l5.6-5.6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </figcaption>
+                      <img src="../img/Tricuss/Folder (After).png" alt="After: semantic folders in three areas — personal files, data sources, and temp — with dedicated folders for agent notes, uploads, and AI outputs">
+                    </figure>
+                  </div>
+                </div>
+
+              </section>
+                </div>
+              </div>
+
+        </div>
+
+        <h3><span class="h3-num">04</span>Validating with internal testing</h3>
+        
+        <p>
+          I ran <strong>5 internal usability tests</strong>. The key finding: <strong>users didn’t understand the folder structure, so they couldn’t immediately find files they had uploaded or generated</strong>. Restructuring would be costly, so after discussing with the developers, we first tried <strong>automatically opening files after upload</strong> to see whether that made files easier to find, before committing to structural changes.
+        </p>
+
+        <div class="quote-grid">
+          <blockquote class="case-quote">
+            <p>“I think I’d remember what each folder is for after a while, but at first it feels a bit odd.”</p>
+            <cite>— Participant 1</cite>
+          </blockquote>
+          <blockquote class="case-quote">
+            <p>“Why ‘attachment’? I’m trying to work out the difference between attachment and document.”</p>
+            <cite>— Participant 2</cite>
+          </blockquote>
+          <blockquote class="case-quote">
+            <p>“When I look for a file I uploaded, I instinctively expect it in the data asset section.”</p>
+            <cite>— Participant 3</cite>
+          </blockquote>
+        </div>
+
+      </section>
+
+      <section id="design-deliverable">
+        <span class="case-eyebrow" lang="en">Final Design</span>
+        <h2>The Workbench: data, conversations, and outputs in one place</h2>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">01</span>Quick setup with templates</h3>
+          <p>
+            Merged AI agent and Workbench setup into one flow, <strong>cut setup down to the essentials, and added templates</strong> so users can reuse their team’s settings and start working right away
+          </p>
+
+          <div class="case-image case-image--flush gif-frame">
+            <img class="lazy-gif" data-src="../img/Tricuss/solution-1.gif" width="1902" height="992" alt="Creating a Workbench quickly from a template">
+            <button type="button" class="gif-replay" aria-label="Replay: creating a Workbench quickly from a template">
+              <svg class="gif-replay-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 2.5a5.5 5.5 0 1 0 5.32 4.13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M8 .6 5.4 2.5 8 4.4z" fill="currentColor"/>
+              </svg>
+              <span>Replay</span>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">02</span>Three columns: files first, chat alongside</h3>
+          <p>
+            <strong>Files are the main workspace and AI chat stays pinned to the right</strong>, so researchers can read through large amounts of material while discussing it with AI
+          </p>
+
+          <div class="case-image case-image--flush gif-frame">
+            <img class="lazy-gif" data-src="../img/Tricuss/solution-2.gif" width="1902" height="992" alt="Working in the three-column layout">
+            <button type="button" class="gif-replay" aria-label="Replay: working in the three-column layout">
+              <svg class="gif-replay-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 2.5a5.5 5.5 0 1 0 5.32 4.13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M8 .6 5.4 2.5 8 4.4z" fill="currentColor"/>
+              </svg>
+              <span>Replay</span>
+            </button>
+          </div>
+          <span class="case-image-note">※ All files and content shown are sample data, not real customer data.</span>
+
+        </div>
+
+        <div class="solution-group">
+          <h3><span class="h3-num">03</span>Visible file and AI status</h3>
+          <p>
+            
+            From importing data to getting AI replies and finding files, <strong>every step gives clear status feedback</strong>, so users can follow progress and <strong>trust the results</strong>
+          </p>
+
+          <div class="case-image case-image--flush gif-frame">
+            <img class="lazy-gif" data-src="../img/Tricuss/solution-3.gif" width="1902" height="992" alt="File and AI status changes">
+            <button type="button" class="gif-replay" aria-label="Replay: file and AI status changes">
+              <svg class="gif-replay-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 2.5a5.5 5.5 0 1 0 5.32 4.13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M8 .6 5.4 2.5 8 4.4z" fill="currentColor"/>
+              </svg>
+              <span>Replay</span>
+            </button>
+          </div>
+          <span class="case-image-note">※ All files and content shown are sample data, not real customer data.</span>
+          
+        </div>
+
+      </section>
+
+      <section id="design-system">
+        <span class="case-eyebrow" lang="en">Design System</span>
+        <h2>Design system</h2>
+
+        <div class="case-image case-image--flush">
+          <img src="../img/Tricuss/design%20system.png" width="4284" height="2253" loading="lazy" decoding="async" alt="Tricuss design system guidelines: complete definitions of color, type scale, spacing, and component styles">
+        </div>
+
+      </section>
+
+      <section id="outcome">
+        <span class="case-eyebrow" lang="en">Outcome</span>
+        <h2>From design to MVP launch in 2 months</h2>
+
+        <p>
+          I owned the <strong>end-to-end design</strong>, from user flows and UI to the design system, and worked with engineering to <strong>ship the MVP in 2 months</strong>. The team and CEO agreed it successfully brought together the data, AI conversations, and document outputs that had been scattered across the platform.
+        </p>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-num">2 mo</span>
+            <span class="stat-label">From design to MVP release</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">&darr;43%</span>
+            <span class="stat-label">Fewer steps to complete a research task</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">30+</span>
+            <span class="stat-label">Components that scale across the platform</span>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="lessons">
+        <span class="case-eyebrow" lang="en">Lessons Learned</span>
+        <h2>Reflections &amp; learnings</h2>
+
+        <h3><span class="h3-num">01</span>Driving change on an engineering-led team with limited resources</h3>
+        <p>
+          Before I joined, the CEO and engineers led product design, so the interface reflected a technical perspective — and the existing architecture made big changes hard. Within those constraints, I learned to <strong>balance user experience against development resources</strong> and <strong>improve the product in phases</strong>, from quick, low-cost wins to structural changes that need longer-term investment.
+        </p>
+
+        <h3><span class="h3-num">02</span>Internal testing can’t replace real user feedback</h3>
+        <p>
+          Internal testing revealed friction in the flow, but <strong>we still need to confirm it fits how researchers actually work</strong>. Next, I want to learn from real customers’ behavior and feedback how the Workbench fits into their workflows, and keep iterating based on actual use.
+        </p>
+
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="case-next" aria-labelledby="next-project-title">
+  <div class="wrap">
+    <span class="next-label" lang="en">Next project</span>
+    <a href="case-pdogs.html" class="next-card">
+      <div class="next-card-body">
+        <span class="next-meta">02 · PDOGs</span>
+        <h3 class="next-title" id="next-project-title">Streamlining assignment submission and management on a code-grading platform</h3>
+      </div>
+      <span class="next-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <span class="copy">© 2026 Chelsea Hsu</span>
+    <div class="links" lang="en">
+      <a href="mailto:pupss95315@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/chien-chi-hsu" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../scroll-spy.js" defer></script>
+
+<script>
+  (function () {
+    var btn  = document.getElementById('navMenuBtn');
+    var menu = document.getElementById('navMenu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function() {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('is-open', !open);
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      }
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    document.querySelectorAll('.problem-cards').forEach(function(group) {
+      var cards = group.querySelectorAll('.problem-card');
+      var showcase = group.closest('.problem-showcase');
+      var panels = showcase ? showcase.querySelectorAll('.problem-panel') : [];
+      cards.forEach(function(card, i) {
+        card.addEventListener('click', function() {
+          /* aria-pressed alongside the class: the class is what the eye
+             reads, this is what a screen reader reads. Without it the
+             selected card is announced exactly like the other two. */
+          cards.forEach(function(c) {
+            c.classList.remove('is-active');
+            c.setAttribute('aria-pressed', 'false');
+          });
+          card.classList.add('is-active');
+          card.setAttribute('aria-pressed', 'true');
+
+          /* Swap the framed visual, but only if this card has one —
+             otherwise the previous panel stays put. */
+          var next = null;
+          Array.prototype.forEach.call(panels, function(p) {
+            if (p.getAttribute('data-panel') === String(i + 1)) next = p;
+          });
+          if (!next) return;
+          Array.prototype.forEach.call(panels, function(p) {
+            p.classList.toggle('is-active', p === next);
+          });
+        });
+      });
+    });
+  })();
+</script>
+
+<script>
+  /* Before/After toggle — swaps the two flow exports in place. Buttons and
+     panels are matched on data-flow, so the markup order does not matter and
+     a third state could be added without touching this. */
+  (function () {
+    document.querySelectorAll('.flow-compare').forEach(function (scope) {
+      var btns = scope.querySelectorAll('.flow-toggle-btn');
+      var panels = scope.querySelectorAll('.flow-panel');
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var key = btn.getAttribute('data-flow');
+          btns.forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('is-active', on);
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            p.classList.toggle('is-active', p.getAttribute('data-flow') === key);
+          });
+        });
+      });
+    });
+  })();
+</script>
+
+<script>
+  /* Thinking Process timeline — arm it (hide the end state), then loop it
+     automatically while it is on screen. Clicking a step tag seeks the whole
+     run to that step's start time. */
+  (function () {
+    var tp = document.getElementById('tpTimeline');
+    if (!tp) return;
+
+    var HOLD = 2600;                // time the finished state stays up
+    var timer = null;
+    var playing = false;
+
+    tp.classList.add('is-armed');
+
+    var runLength = function () {
+      var dur = parseFloat(getComputedStyle(tp).getPropertyValue('--tp-dur'));
+      return (isNaN(dur) ? 10 : dur) * 1000 + HOLD;
+    };
+
+    /* Restart the CSS timeline, then — because every animation in the subtree
+       shares the same start — scrub them all to `ms` so the run continues from
+       that point instead of the top. */
+    var playFrom = function (ms) {
+      clearTimeout(timer);
+      tp.classList.remove('is-playing');
+      void tp.offsetWidth;          // force reflow so the animations restart
+      tp.classList.add('is-playing');
+      playing = true;
+
+      if (ms > 0 && tp.getAnimations) {
+        tp.getAnimations({ subtree: true }).forEach(function (a) {
+          try { a.currentTime = ms; } catch (e) {}
+        });
+      }
+      timer = setTimeout(function () { playFrom(0); },
+                         Math.max(runLength() - ms, 800));
+    };
+
+    var start = function () { if (!playing) playFrom(0); };
+
+    var stop = function () {
+      clearTimeout(timer);
+      timer = null;
+      playing = false;
+    };
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    /* Seek controls. The step's start time lives on its li as --on. */
+    tp.querySelectorAll('.tp-steps > li').forEach(function (li) {
+      var btn = li.querySelector('.tp-step');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var on = parseFloat(getComputedStyle(li).getPropertyValue('--on'));
+        playFrom(isNaN(on) ? 0 : on * 1000);
+      });
+    });
+
+    /* When the phases share one pinned stage, this timeline is inside the
+       viewport for the whole run whether or not it is the phase on show —
+       so geometry stops being a usable signal and scroll-spy.js tells us
+       instead. The first such event switches the observer off for good.
+       Entering replays from the top: arriving mid-run would waste the one
+       thing the animation is there to show. */
+    var host = tp.closest('.phase-block');
+    var driven = false;
+    if (host) {
+      host.addEventListener('phase:enter', function () { driven = true; playFrom(0); });
+      host.addEventListener('phase:leave', function () { driven = true; stop(); });
+    }
+
+    if (!('IntersectionObserver' in window)) { start(); return; }
+
+    /* Only animate while visible — off-screen loops just burn battery. */
+    var io = new IntersectionObserver(function (entries) {
+      if (driven) return;
+      entries.forEach(function (e) {
+        if (e.isIntersecting) start(); else stop();
+      });
+    }, { threshold: 0.3 });
+
+    io.observe(tp);
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stop(); return; }
+      // Staged, "on screen" is not the question — whether this phase holds
+      // the stage is, and that is what the data attribute records.
+      if (driven) { if (host && host.dataset.phaseActive) playFrom(0); return; }
+      var box = tp.getBoundingClientRect();
+      if (box.top < window.innerHeight && box.bottom > 0) start();
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var gifs = document.querySelectorAll('img.lazy-gif[data-src]');
+    if (!gifs.length) return;
+
+    function load(img) {
+      if (img.dataset.loaded) return;
+      img.dataset.loaded = '1';
+      img.src = img.dataset.src;
+      var frame = img.closest('.gif-frame');
+      if (frame) frame.classList.add('is-loaded');
+    }
+
+    // Replay. A GIF restarts at frame 0 only when the img gets a genuinely NEW
+    // url, and re-assigning the same path is not reliably treated as one. A
+    // cache-busting query would be, but at the cost of re-downloading megabytes
+    // per click. So the bytes are fetched once (served from HTTP cache, since
+    // the url matches the one already displayed), kept as a Blob, and each
+    // replay mints a fresh object url from it — new url, no network.
+    var blobs = new WeakMap();
+
+    function restart(img) {
+      var url = URL.createObjectURL(blobs.get(img));
+      var previous = img.dataset.objectUrl;
+      img.src = url;
+      img.dataset.objectUrl = url;
+      if (previous) URL.revokeObjectURL(previous);
+    }
+
+    function replay(img) {
+      if (blobs.has(img)) { restart(img); return; }
+      fetch(img.dataset.src)
+        .then(function (res) { return res.ok ? res.blob() : Promise.reject(res.status); })
+        .then(function (blob) { blobs.set(img, blob); restart(img); })
+        .catch(function () {
+          // Blob path unavailable (file:// origin, network error) — fall back
+          // to a cache-busting url, which always restarts even if it costs a
+          // fetch. Better a slow replay than a dead button.
+          img.src = img.dataset.src + '?replay=' + Date.now();
+        });
+    }
+
+    document.querySelectorAll('.gif-frame .gif-replay').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var frame = btn.closest('.gif-frame');
+        var img = frame && frame.querySelector('img.lazy-gif');
+        if (!img || !img.dataset.loaded) return;
+        replay(img);
+        btn.classList.remove('is-spinning');
+        void btn.offsetWidth; // restart the icon animation on rapid clicks
+        btn.classList.add('is-spinning');
+      });
+      btn.addEventListener('animationend', function () {
+        btn.classList.remove('is-spinning');
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      gifs.forEach(load);
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          load(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.25 });
+
+    gifs.forEach(function (img) { io.observe(img); });
+  })();
+</script>
+
+</body>
+</html>

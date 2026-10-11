@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Camera Management Tool · Brinno × NTU</title>
 <meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page-brinno">
@@ -20,7 +21,8 @@
     <ul class="nav-links">
       <li><a class="link" href="index.html#work">Work</a></li>
       <li><a class="link" href="about.html">About</a></li>
-      <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="en/case-brinno.html" hreflang="en" lang="en">EN</a></li>
     </ul>
     <!-- Mobile hamburger -->
     <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="開啟選單">
@@ -35,7 +37,8 @@
       <ul>
         <li><a class="link" href="index.html#work">Work</a></li>
         <li><a class="link" href="about.html">About</a></li>
-        <li><a class="link" href="https://drive.google.com/file/d/119Evie5k4AZPMpLB6r1P2DneSpHSILGC/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="en/case-brinno.html" hreflang="en" lang="en">English</a></li>
       </ul>
     </div>
   </div>
@@ -59,9 +62,12 @@
         <li><a href="#background">Background</a></li>
         <li><a href="#solution-overview">Solution Overview</a></li>
         <li><a href="#research">Research</a></li>
+        <!-- <li><a href="#insight">Insight</a></li> -->
         <li><a href="#opportunity">Design Opportunity</a></li>
         <li><a href="#ideation">Ideation</a></li>
-        <li><a href="#design-deliverable">Design Deliverable</a></li>
+        <!-- <li><a href="#information-architecture">Information Architecture</a></li> -->
+        <li><a href="#design-deliverable">Design</a></li>
+        <!-- <li><a href="#design-system">Design System</a></li> -->
         <li><a href="#outcome">Outcome</a></li>
         <li><a href="#lessons">Lessons Learned</a></li>
       </ul>
@@ -73,18 +79,18 @@
       <!-- ===== Context ===== -->
       <section id="context">
         <span class="case-eyebrow">Context</span>
-        <h1>協助營建攝影團隊掌握現場的設備管理平台</h1>
+        <h1>協助營建攝影團隊掌握現場狀態的相機管理平台</h1>
         <p>
           我在台大與縮時攝影設備公司 Brinno 的產學合作專案中打造了 Camera Management Tool，我們的目標是協助營建攝影團隊即時掌握多個專案中相機的畫面與狀況，節省過去需到現場檢視的人力與時間。
         </p>
 
         <div class="case-meta-grid">
           <div class="case-meta-card">
-            <h3 class="meta-title"><span class="h3-num">01</span>專案時程</h3>
+            <h3 class="meta-title">專案時程</h3>
             <p>8 個月，2022 年 10 月 - 2023 年 6 月</p>
           </div>
           <div class="case-meta-card">
-            <h3 class="meta-title"><span class="h3-num">02</span>專案團隊</h3>
+            <h3 class="meta-title">專案團隊</h3>
             <ul>
               <li>專案負責人 × 1</li>
               <li>工程師 × 2</li>
@@ -92,7 +98,7 @@
             </ul>
           </div>
           <div class="case-meta-card">
-            <h3 class="meta-title"><span class="h3-num">03</span>我的角色</h3>
+            <h3 class="meta-title">我的角色</h3>
             <ul>
               <li>執行訪談並梳理研究洞察</li>
               <li>發想與規劃平台功能</li>
@@ -100,7 +106,7 @@
             </ul>
           </div>
           <div class="case-meta-card highlight">
-            <h3 class="meta-title"><span class="h3-num h3-num--brinno">04</span>成果與產出</h3>
+            <h3 class="meta-title">成果與產出</h3>
             <p>經過 <strong>10+ 個</strong> user flow 的迭代，產出初步 MVP，解決前期研究發現的使用者痛點，並提供未來擴充的基礎</p>
           </div>
         </div>
@@ -141,7 +147,7 @@
 
         <div class="solution-group">
           <h3><span class="h3-num">02</span>檔案批次上傳與分享</h3>
-          <p>使用者可以輕鬆上傳大量縮時攝影檔案，並分享僅供檢視的檔案給業主，方便快速對齊對交付畫面的期待。</p>
+          <p>使用者可以輕鬆上傳大量縮時攝影檔案，並分享僅供檢視的檔案給業主，方便快速對齊交付畫面的期待。</p>
           <div class="case-image case-image--flush"><img src="img/Brinno/overview-2.webp" alt="檔案批次上傳與分享流程"></div>
         </div>
 
@@ -188,9 +194,6 @@
         <span class="case-eyebrow">Design Opportunity</span>
         <h2>將痛點轉化為需求，找出設計機會點</h2>
         <p>
-          <strong></strong>
-        </p>
-        <p>
           攝影師與營建商對設備及交付資訊的掌握不一致，導致管理效率低落。
           因此，我們希望透過相機管理工具串聯攝影師、營建商與設備，<strong>確保資訊在三方間無障礙地流通</strong>。
         </p>
@@ -219,7 +222,7 @@
       <!-- ===== Information Architecture ===== -->
       <section id="information-architecture">
         <span class="case-eyebrow">Information Architecture</span>
-        <h2>以專案為單位的三層資訊架構</h2>
+        <h2>資訊架構</h2>
         <p>
           確立大致功能後，我開始規劃平台的資訊架構。考量到使用者通常以專案為單位管理，且同一台設備會產生大量縮時檔案，因此將主要流程設計成以<strong>「專案 → 設備 → 檔案」為層級展開</strong>。
         </p>
@@ -229,7 +232,7 @@
       <!-- ===== Design Deliverable ===== -->
       <section id="design-deliverable">
         <span class="case-eyebrow">Design Deliverable</span>
-        <h2>四個解方對應使用者旅程的關鍵斷點</h2>
+        <h2>對應使用者旅程關鍵斷點的 4 個解方</h2>
         <p>
           在設計過程中，我們先盤點了核心頁面的所有使用情境，確保將完整流程納入考量。接著將初步構想轉化為 wireflow，方便快速與團隊同步，並根據回饋進行改進。以下是經歷多輪迭代後的設計產出：
         </p>
@@ -237,26 +240,26 @@
         <div class="solution-group">
           <h3><span class="h3-num">01</span>相機即時檢視與異常通知</h3>
           <p><strong>回應需求</strong> — 即時掌握相機拍攝情形</p>
-          <div class="case-image"><img src="img/Brinno/solution-1.png"></div>
+          <div class="case-image"><img src="img/Brinno/solution-1.png" alt="解方一介面：相機即時檢視與異常通知"></div>
         </div>
 
         <div class="solution-group">
           <h3><span class="h3-num">02</span>遠端排程設定</h3>
           <p><strong>回應需求</strong> — 方便管理多個專案的排程設定</p>
-          <div class="case-image"><img src="img/Brinno/solution-2.png"></div>
+          <div class="case-image"><img src="img/Brinno/solution-2.png" alt="解方二介面：遠端排程設定"></div>
         </div>
 
         <div class="solution-group">
           <h3><span class="h3-num">03</span>檔案上傳與分享</h3>
-          <p><strong>回應需求</strong> — 安心地同步拍攝狀況並對齊對交付的期待</p>
-          <div class="case-image"><img src="img/Brinno/solution-3-1.png"></div>
-          <div class="case-image"><img src="img/Brinno/solution-3-2.png"></div>
+          <p><strong>回應需求</strong> — 安心地同步拍攝狀況並對齊交付畫面的期待</p>
+          <div class="case-image"><img src="img/Brinno/solution-3-1.png" alt="解方三介面：檔案批次上傳畫面"></div>
+          <div class="case-image"><img src="img/Brinno/solution-3-2.png" alt="解方三介面：檔案分享設定畫面"></div>
         </div>
 
         <div class="solution-group">
           <h3><span class="h3-num">04</span>權限管理</h3>
-          <p><strong>回應需求</strong> — 安心地同步拍攝狀況並對齊對交付的期待</p>
-          <div class="case-image"><img src="img/Brinno/solution-4.png"></div>
+          <p><strong>回應需求</strong> — 安心地同步拍攝狀況並對齊交付畫面的期待</p>
+          <div class="case-image"><img src="img/Brinno/solution-4.png" alt="解方四介面：權限管理設定"></div>
         </div>
       </section>
 
@@ -267,7 +270,7 @@
         <p>
           我為平台的色彩、字型與核心 UI 元件制定了統一的設計規範，提升開發交付效率，並提供未來功能擴充的基礎。
         </p>
-        <div class="case-image"><img src="img/Brinno/design system.png"></div>
+        <div class="case-image"><img src="img/Brinno/design system.png" alt="Brinno 相機管理工具的設計系統：色彩、字型與核心元件規範"></div>
       </section>
 
 
@@ -286,7 +289,7 @@
       <!-- ===== Lessons ===== -->
       <section id="lessons">
         <span class="case-eyebrow">Lessons Learned</span>
-        <h2>專案中的反思 & 學習  </h2>
+        <h2>專案中的反思 & 學習</h2>
 
         <h3><span class="h3-num">01</span>識別關鍵利害關係人的重要性</h3>
         <p>
@@ -301,6 +304,7 @@
         <h3><span class="h3-num">03</span>領域知識是同理使用者的捷徑</h3>
         <p>
           如果知道我們並沒有太多資源可以訪談，我會想要在一開始花多一點時間做桌面研究，對於產業有更全面的理解後，對同理使用者也有一定的幫助。
+        </p>
       </section>
 
     </article>

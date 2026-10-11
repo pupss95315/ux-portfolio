@@ -42,6 +42,12 @@
   --color-stone:      #7A7A80;
   --color-muted:      #9A9AA0;
 
+  /* ---- Color · tag ---- */
+  /* Outline + label of the Figma-spec pill tags (thinking-process steps and
+     any caption that deliberately matches them). */
+  --tp-tag-border: #888888;
+  --tp-tag-text:   #424242;
+
   /* ---- Color · border ---- */
   --color-border:        #D8D2C6;
   --color-border-soft:   #E5DFD2;
@@ -95,6 +101,15 @@
   --r-4: 16px;
   --r-5: 28px;
   --r-full: 9999px;
+
+  /* ---- Block geometry (single source of truth for every framed block) ----
+     Every card / row / image frame uses the SAME corner radius and the SAME
+     padding on all four sides. Overridden once at <=720px below — never
+     per component. */
+  --r-block:        20px;   /* cards, rows, image frames, hero image */
+  --r-block-inner:  12px;   /* elements nested inside a block */
+  --pad-block:       28px;
+  --pad-block-inner: 20px;
 
   /* ---- Spacing (4-step base) ---- */
   --s-1:  4px;
@@ -168,6 +183,30 @@ button:focus-visible,
   border-radius: var(--r-3);
 }
 
+/* Skip-to-content link — visually hidden until keyboard focus */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: var(--s-4);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 var(--s-5);
+  background: var(--color-ink);
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: var(--t-caption);
+  font-weight: 600;
+  border-radius: var(--r-full);
+  transition: top var(--dur-fast) var(--ease);
+}
+.skip-link:focus-visible {
+  top: var(--s-4);
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+}
+
 
 /* ============================================================
    [04] LAYOUT
@@ -235,7 +274,7 @@ button:focus-visible,
               border-top-width 0.1s;
 }
 .nav-dropdown.is-open {
-  max-height: 240px;
+  max-height: 300px;
   opacity: 1;
   border-top: 1px solid var(--color-border-soft);
 }
@@ -317,6 +356,14 @@ nav.top a.link[aria-current="page"] {
   color: var(--color-ink);
   background: var(--color-surface);
 }
+/* Language switch — last item in the desktop nav, set apart by a hairline */
+nav.top .nav-links a.lang-switch {
+  margin-left: var(--s-2);
+  font-size: var(--t-label);
+  border: 1px solid var(--color-border);
+}
+/* Temporarily hidden — remove this rule to bring the switch back */
+.nav-lang { display: none !important; }
 
 
 /* ============================================================
@@ -356,8 +403,8 @@ footer .links a {
               border-color var(--dur-fast) var(--ease);
 }
 footer .links a:hover {
-  color: #5A4BB8;
-  border-bottom-color: #5A4BB8;
+  color: var(--color-blue);
+  border-bottom-color: var(--color-blue);
 }
 footer .star-mark {
   color: var(--color-blue);
@@ -377,10 +424,10 @@ footer .star-mark {
   font-weight: 500;
   letter-spacing: -0.005em;
   color: var(--color-ink);
-  background: transparent;
-  border: 1.5px solid var(--color-ink);
+  background: var(--color-surface);
+  border: none;
   border-radius: var(--r-full);
-  box-shadow: 0 0 0 var(--color-ink);
+  box-shadow: none;
   transition: color var(--dur-fast) var(--ease),
               background-color var(--dur-fast) var(--ease),
               border-color var(--dur-fast) var(--ease),
@@ -388,23 +435,25 @@ footer .star-mark {
               transform var(--dur-fast) var(--ease);
 }
 .pill:hover {
-  color: #FFFFFF;
-  border-color: var(--color-ink);
-  background: var(--color-ink);
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  color: var(--color-blue);
+  background: var(--color-blue-pale);
+}
+.pill:active {
+  color: var(--color-blue-strong);
+  background: var(--color-blue-soft);
 }
 .pill.solid {
   background: var(--color-ink);
   color: #FFFFFF;
-  border-color: var(--color-ink);
+  border: none;
 }
 .pill.solid:hover {
   background: var(--color-blue);
-  border-color: var(--color-ink);
   color: #FFFFFF;
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+}
+.pill.solid:active {
+  background: var(--color-blue-strong);
+  color: #FFFFFF;
 }
 .pill .arr {
   font-family: var(--font-display);
@@ -467,6 +516,10 @@ section { padding: var(--s-10) 0; }
   display: flex; flex-wrap: wrap; gap: var(--s-2);
   margin-bottom: var(--s-6);
 }
+.work-card .tag-row {
+  margin-top: auto;
+  margin-bottom: 0;
+}
 .tag-pill {
   display: inline-flex; align-items: center;
   height: 30px; padding: 0 14px;
@@ -503,7 +556,7 @@ h1.display em,
    ============================================================ */
 header.hero {
   min-height: auto;
-  padding: var(--s-11) 0 var(--s-6);
+  padding: var(--s-11) 0 var(--s-10);
   background: var(--color-canvas);
   position: relative;
   overflow: hidden;
@@ -621,6 +674,14 @@ h1.display .star {
   transform: rotate(-8deg);
   transform-origin: 50% 50%;
 }
+.hero-portrait {
+  position: absolute;
+  top: 190px;
+  right: 9%;
+  width: clamp(150px, 16vw, 190px);
+  height: auto;
+  z-index: 1;
+}
 
 /* Pill modifier — bigger size used by the hero */
 .pill.pill-lg {
@@ -689,21 +750,16 @@ h1.display .star {
   display: grid;
   grid-template-columns: 1.05fr 1fr;
   gap: var(--s-8);
-  padding: var(--s-7);
+  padding: var(--pad-block);
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: var(--r-5);
-  align-items: center;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  align-items: stretch;
   color: inherit;
   text-decoration: none;
   position: relative;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
-}
-.work-card:hover {
-  box-shadow: 6px 6px 0 var(--color-ink);
-  transform: translate(-3px, -3px);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 /* Project number — sits inline with meta row, no longer absolute */
 .work-card .work-num {
@@ -718,28 +774,34 @@ h1.display .star {
   border: 1px solid var(--color-ink);
   border-radius: var(--r-full);
 }
-.work-card:hover .work-cover-img {
-  transform: scale(1.02);
+.work-card:hover {
+  box-shadow: var(--shadow-3);
 }
-.work-card:hover .work-title em {
-  color: var(--color-ink);
+.work-card.featured {
+  box-shadow: var(--shadow-2);
 }
-.work-card:hover .work-link {
-  color: var(--color-blue);
-  border-bottom-color: var(--color-blue);
-  gap: var(--s-3);
+.work-card.featured:hover {
+  box-shadow: var(--shadow-3);
 }
-.work-card:hover .work-link .arrow {
-  transform: translate(3px, -3px);
+.featured-badge {
+  display: inline-flex; align-items: center;
+  height: 26px; padding: 0 var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-overline);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-blue-strong);
+  background: var(--color-blue-pale);
+  border-radius: var(--r-full);
 }
-.work-card.featured { padding: var(--s-7); }
 
 .work-cover {
   aspect-ratio: 4 / 3;
   border-radius: var(--r-4);
   overflow: hidden;
   position: relative;
-  border: 1.5px solid var(--color-ink);
+  border: 1.5px solid var(--color-border-strong);
   background: var(--color-surface);
   box-shadow: none;
   transition: transform var(--dur-base) var(--ease);
@@ -752,9 +814,6 @@ h1.display .star {
 img.work-cover {
   /* When the cover IS the image directly */
   transition: transform var(--dur-base) var(--ease);
-}
-.work-card:hover img.work-cover {
-  transform: scale(1.015);
 }
 .work-cover .num {
   position: absolute;
@@ -908,28 +967,41 @@ img.work-cover {
   border-radius: var(--r-full);
 }
 
+/* Locked card — password protected variant */
+.work-card--locked .lock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-overline);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-slate);
+  background: var(--color-surface-elev);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--r-full);
+  white-space: nowrap;
+}
+.work-card--locked .lock-pill svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+.work-card--locked:hover .lock-pill {
+  color: var(--color-ink);
+  border-color: var(--color-border-strong);
+}
+
 /* Upcoming card — non-interactive variant */
 .work-card--upcoming { cursor: default; }
 .work-card--upcoming:hover {
   transform: none;
-  box-shadow: 0 0 0 var(--color-ink);
-  border-color: var(--color-ink);
+  box-shadow: none;
+  border-color: var(--color-border-strong);
 }
 .work-card--upcoming:hover .work-cover-img { transform: none; }
 .work-card--upcoming:hover img.work-cover { transform: none; }
-
-/* Coming-soon label — non-interactive, kept quiet next to active text links */
-.work-link.work-link--coming {
-  color: var(--color-stone);
-  border-bottom: 1.5px dashed var(--color-border);
-  cursor: default;
-  pointer-events: none;
-}
-.work-card--upcoming:hover .work-link.work-link--coming {
-  color: var(--color-stone);
-  border-bottom-color: var(--color-border);
-  gap: var(--s-2);
-}
 
 /* Body */
 .work-body {
@@ -968,17 +1040,19 @@ img.work-cover {
   font-weight: 700;
   font-size: clamp(28px, 3vw, 40px);
   line-height: 1.15;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.025em;
   color: var(--color-ink);
   margin: 0 0 var(--s-5);
 }
 .work-title em {
-  font-family: var(--font-serif);
+  font-family: inherit;
   font-style: italic;
-  font-weight: 400;
+  font-weight: inherit;
   color: var(--color-ink);
   transition: color var(--dur-base) var(--ease);
 }
+.work-title em.accent-brinno { color: #C46B3A; }
+.work-title em.accent-pdogs { color: #6B5235; }
 
 .work-desc {
   font-size: var(--t-body-lg);
@@ -987,30 +1061,6 @@ img.work-cover {
   margin-bottom: var(--s-6);
   max-width: 56ch;
 }
-
-.work-link {
-  display: inline-flex; align-items: center; gap: var(--s-2);
-  align-self: flex-start;
-  font-family: var(--font-display);
-  font-size: var(--t-body);
-  font-weight: 500;
-  color: var(--color-ink);
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid var(--color-ink);
-  border-radius: 0;
-  padding: 0 0 4px;
-  margin-top: var(--s-2);
-  transition: color var(--dur-fast) var(--ease),
-              border-color var(--dur-fast) var(--ease),
-              gap var(--dur-fast) var(--ease);
-}
-.work-link .arrow {
-  font-style: normal;
-  display: inline-block;
-  transition: transform var(--dur-base) var(--ease);
-}
-
 
 /* ============================================================
    [12.5] HOME · CONTACT CTA
@@ -1134,16 +1184,14 @@ img.work-cover {
 }
 .outside-card {
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .outside-card:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-blue);
 }
 .outside-card .interest-icon {
   display: block;
@@ -1175,7 +1223,7 @@ img.work-cover {
 .outside-photo {
   border-radius: var(--r-4);
   overflow: hidden;
-  border: 1.5px solid var(--color-ink);
+  border: 1.5px solid var(--color-border-strong);
   aspect-ratio: 4 / 3;
 }
 .outside-photo img {
@@ -1218,7 +1266,7 @@ img.work-cover {
   border-radius: var(--r-4);
   overflow: hidden;
   background: linear-gradient(135deg, var(--color-surface), var(--color-yellow-wash));
-  border: 1.5px solid var(--color-ink);
+  border: 1.5px solid var(--color-border-strong);
   justify-self: end;
 }
 .about-portrait img {
@@ -1256,8 +1304,8 @@ img.work-cover {
   width: 100%;
   height: auto;
   display: block;
-  border: 1.5px solid var(--color-ink);
-  border-radius: 28px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
 }
 
 .case-main { padding-bottom: var(--s-8); }
@@ -1308,16 +1356,21 @@ img.work-cover {
   font-weight: 600;
 }
 
-/* ---------- Section structure ---------- */
-.case-content section {
+/* ---------- Section structure ----------
+   Direct children only. These are the page's top-level chapters — the
+   48px pad and the divider rule between them belong to that level. A
+   nested <section> (Tricuss's .phase-block) is a sub-part of a chapter
+   and sets its own rhythm; inheriting a chapter's padding and divider
+   there put a 48px hole and a stray rule inside the phase run. */
+.case-content > section {
   scroll-margin-top: 96px;
   padding-bottom: var(--s-9);
 }
-.case-content section + section {
+.case-content > section + section {
   border-top: 1px solid var(--color-border);
   padding-top: var(--s-9);
 }
-.case-content section:last-child {
+.case-content > section:last-child {
   padding-bottom: 0;
   margin-bottom: 0;
 }
@@ -1420,17 +1473,16 @@ img.work-cover {
 }
 .case-meta-card {
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 24px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
   cursor: default;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .case-meta-card:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-brinno, var(--color-blue));
+  box-shadow: 4px 4px 0 var(--color-brinno, var(--color-blue));
 }
 .case-meta-card .meta-title {
   font-family: var(--font-display);
@@ -1449,6 +1501,58 @@ img.work-cover {
 }
 .case-meta-card ul { margin: 0; padding-left: 16px; }
 
+/* Brinno, Tricuss (also .page-brinno) + PDOGs case studies: flat label/value card style (no border, mono uppercase labels) */
+.page-brinno .case-meta-grid,
+.page-pdogs .case-meta-grid {
+  gap: 0;
+  border-radius: var(--r-block);
+  overflow: hidden;
+}
+.page-brinno .case-meta-card,
+.page-pdogs .case-meta-card {
+  background: var(--color-surface);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.page-brinno .case-meta-card:hover,
+.page-pdogs .case-meta-card:hover {
+  box-shadow: none;
+  border-color: transparent;
+}
+.page-brinno .case-meta-card .meta-title,
+.page-pdogs .case-meta-card .meta-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  opacity: 0.55;
+  margin-bottom: 10px;
+}
+.page-brinno .case-meta-card p,
+.page-pdogs .case-meta-card p,
+.page-brinno .case-meta-card li,
+.page-pdogs .case-meta-card li {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+.page-brinno .case-meta-card.highlight,
+.page-pdogs .case-meta-card.highlight {
+  background: var(--color-surface);
+  border-color: transparent;
+}
+.page-brinno .case-meta-card.highlight:hover,
+.page-pdogs .case-meta-card.highlight:hover {
+  box-shadow: none;
+}
+.page-brinno .case-meta-card.highlight strong,
+.page-pdogs .case-meta-card.highlight strong {
+  color: var(--color-brinno-strong, var(--color-blue-strong));
+}
+
 /* ---------- Solution row (Solution Overview · text left / image right) ----------
    Each item in the "Solution Overview" section is wrapped in a bordered
    card with 40% text on the left and 60% image on the right. Reuses the
@@ -1460,17 +1564,15 @@ img.work-cover {
   gap: 32px;
   align-items: center;
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 32px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
   margin-top: 32px;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .solution-row:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-blue);
 }
 .solution-row .solution-row-text { min-width: 0; }
 .solution-row .solution-row-text h3 { margin-top: 0; }
@@ -1493,8 +1595,6 @@ img.work-cover {
   .solution-row {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 24px;
-    border-radius: 16px;
     margin-top: 24px;
   }
 }
@@ -1509,22 +1609,23 @@ img.work-cover {
   gap: 16px;
   margin-top: 32px;
 }
+.goals-grid.goals-grid--3col {
+  grid-template-columns: repeat(3, 1fr);
+}
 .goal-card {
   position: relative;
   background: var(--color-blue-wash);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 24px;
-  padding: 24px 24px 24px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
   display: flex;
   flex-direction: column;
   color: var(--color-ink);
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .goal-card:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-blue);
 }
 .goal-icon {
   display: inline-flex;
@@ -1532,7 +1633,7 @@ img.work-cover {
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: var(--r-block-inner);
   background: var(--color-blue-soft);
   color: var(--color-blue-strong);
   margin-bottom: 12px;
@@ -1563,9 +1664,11 @@ img.work-cover {
   color: var(--color-ink-soft);
   margin: 0;
 }
+
+
 @media (max-width: 720px) {
-  .goals-grid { grid-template-columns: 1fr; gap: 12px; }
-  .goal-card { padding: 24px; border-radius: 20px; }
+  .goals-grid,
+  .goals-grid.goals-grid--3col { grid-template-columns: 1fr; gap: 12px; }
   .goal-icon { margin-bottom: 10px; }
 }
 
@@ -1585,10 +1688,10 @@ img.work-cover {
 /* ---------- Callout ---------- */
 .callout {
   background: var(--color-blue-wash);
-  border: 1.5px solid var(--color-ink);
+  border: 1.5px solid var(--color-border-strong);
   border-left: 5px solid var(--color-blue);
-  border-radius: 4px 18px 18px 4px;
-  padding: 20px 24px;
+  border-radius: var(--r-1) var(--r-block) var(--r-block) var(--r-1);
+  padding: var(--pad-block);
   margin: 28px 0;
 }
 .callout p {
@@ -1612,18 +1715,65 @@ img.work-cover {
    differentiation even when the default accent is also orange) */
 .callout.callout--brinno {
   background: var(--color-brinno-wash, var(--color-blue-wash));
-  border-color: var(--color-ink);
+  border-color: var(--color-border-strong);
   border-left-color: var(--color-brinno, var(--color-blue));
 }
 .callout.callout--brinno p strong {
   color: var(--color-brinno-strong, var(--color-blue-strong));
 }
 
+/* ---------- Verbatim quote card (user testing / interviews) ----------
+   Neutral surface, serif-italic quote, mono attribution. Used to let a
+   participant speak in their own voice without the emphasis of .callout. */
+.case-quote {
+  background: var(--color-surface);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
+  margin: 24px 0;
+}
+.case-quote p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-ink);
+  max-width: none;
+}
+.case-quote cite + p { margin-top: 22px; }
+.case-quote cite {
+  display: block;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: var(--color-ink-muted, var(--color-ink-soft));
+  opacity: 0.75;
+}
+
+/* Three participant quotes side by side; stacks below the grid minimum. */
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.quote-grid .case-quote {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 22px;
+}
+.quote-grid .case-quote p { font-size: 16px; }
+.quote-grid .case-quote cite { margin-top: 18px; }
+
 /* ---------- Case image (figure) ---------- */
 .case-image {
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
   margin: 24px 0;
   overflow: hidden;
 }
@@ -1631,7 +1781,7 @@ img.work-cover {
    Frame height naturally wraps image's intrinsic height + padding. */
 .case-image:has(img) {
   display: block;
-  padding: clamp(20px, 2.5vw, 36px) clamp(24px, 3vw, 44px);
+  padding: var(--pad-block);
   aspect-ratio: auto;
 }
 .case-image img {
@@ -1646,7 +1796,7 @@ img.work-cover {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: var(--pad-block);
   min-height: 200px;
   text-align: center;
   font-family: var(--font-mono);
@@ -1664,12 +1814,180 @@ img.work-cover {
   min-height: 160px;
 }
 
+/* Lazy GIF — no src until it scrolls into view, so it starts playing from the
+   first frame. The width/height attributes reserve the box in the meantime. */
+.case-image img.lazy-gif:not([src]) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* ---------- GIF replay control (.gif-frame) ----------
+   A GIF only plays once per load, so a demo the reader scrolls past mid-loop
+   is otherwise unrecoverable. The button sits inside the flush frame, over the
+   artwork's bottom-right corner, and is revealed on hover / keyboard focus so
+   it never competes with the screenshot at rest. Pointers that cannot hover
+   (touch) get it permanently, since there is no reveal gesture there. */
+.gif-frame { position: relative; }
+
+.gif-replay {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  min-height: 36px;
+  appearance: none;
+  cursor: pointer;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-paper);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-ink);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+/* Only offered once there is something to replay. */
+.gif-frame:not(.is-loaded) .gif-replay {
+  display: none;
+}
+.gif-frame:hover .gif-replay,
+.gif-frame:focus-within .gif-replay {
+  opacity: 1;
+  transform: none;
+}
+.gif-replay:hover { background: var(--color-border); }
+.gif-replay:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+.gif-frame .gif-replay:active { transform: translateY(1px); }
+
+.gif-replay-icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.gif-replay.is-spinning .gif-replay-icon {
+  animation: gif-replay-spin 500ms var(--ease);
+}
+@keyframes gif-replay-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (hover: none) {
+  .gif-frame .gif-replay { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gif-replay { transition: none; }
+  .gif-replay.is-spinning .gif-replay-icon { animation: none; }
+}
+
 /* Small variant — narrower FRAME (centered) for diagrams or screenshots
    that don't need full content-width. Image inside fills the smaller frame. */
 .case-image.case-image--small {
   max-width: 640px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Two flow exports stacked in one frame. Each already carries its own outline
+   and lane title, so all the frame adds is the gap between them. */
+.flow-stack img + img { margin-top: clamp(16px, 2vw, 28px); }
+
+/* ---------- Before/After toggle (.flow-compare) ----------
+   One .case-image frame holding the toggle and both exports, so the control
+   sits inside the same white card as the artwork it switches. Panels are shown
+   by class rather than [hidden], which the UA stylesheet applies too weakly to
+   survive the rules around it. */
+.flow-compare { margin: 24px 0; }
+.flow-toggle {
+  /* flex + max-content rather than inline-flex, so margin-inline centres it
+     without setting text-align on the whole block. */
+  display: flex;
+  width: max-content;
+  gap: 4px;
+  padding: 4px;
+  margin: 0 auto 12px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-paper);
+}
+.flow-toggle-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  min-height: var(--hit);
+  padding: 0 22px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  transition: background var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+.flow-toggle-btn:hover { color: var(--color-ink); }
+.flow-toggle-btn.is-active {
+  background: var(--color-border);
+  color: var(--color-ink);
+}
+.flow-toggle-btn:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+.flow-panel { display: none; }
+.flow-panel.is-active { display: block; }
+/* A <span>, like .problem-showcase-hint: as a <p> the ".case-content p" rule
+   would override the size and colour set here. */
+.flow-panel-title {
+  display: block;
+  margin: 0 0 16px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+/* Frame fills the content column, artwork does not. The default rule stretches
+   an image to the frame's width, which blows up a squarish diagram; this keeps
+   the artwork at a readable size and lets the white frame carry the full-width
+   rhythm of the other blocks around it. */
+.case-image.case-image--fit img {
+  width: auto;
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+/* Full container width — pulls back across the sticky TOC column so a wide
+   diagram renders at the 1120px container width rather than the 892px text
+   column. Wide flow charts were scaling down far enough to drop their label
+   type near 10px; this buys back ~28%. Below 960px the sidebar has already
+   collapsed to a top bar, so the pull-back is dropped. */
+.case-image.case-image--bleed {
+  margin-left: calc(-1 * (var(--sidebar-w) + var(--s-9)));
+  width: calc(100% + var(--sidebar-w) + var(--s-9));
+  max-width: none;
+}
+@media (max-width: 960px) {
+  .case-image.case-image--bleed {
+    margin-left: 0;
+    width: auto;
+  }
 }
 
 /* Side-by-side pair (e.g. Before/After) — two separate framed images */
@@ -1680,6 +1998,358 @@ img.work-cover {
   margin: 24px 0;
 }
 .case-image-pair > .case-image { margin: 0; }
+
+/* ---------- Section diagrams (dgm-*) ----------
+   One shared vocabulary for every inline-SVG explanatory diagram in a
+   case study, so all sections read as the same system. Diagrams are
+   authored on a 840-unit-wide viewBox — that is roughly the rendered
+   width of the case content column minus frame padding, so font sizes
+   inside the SVG land near their literal pixel values on desktop and
+   scale down proportionally on narrow screens.
+   Accent colours come from the per-page theme tokens, so a diagram
+   picks up the project's palette automatically. */
+.case-image--dgm { background: var(--color-surface); border-radius: var(--r-block); }
+.case-image.case-image--dgm:not(:has(img)) {
+  display: block;
+  padding: var(--pad-block);
+  min-height: 0;
+  text-align: left;
+}
+/* Bare variant — no frame at all: the diagram sits directly on the page
+   surface, unboxed. Keeps only the vertical rhythm a .case-image would
+   have had. */
+.case-image.case-image--bare {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+.case-image.case-image--bare:not(:has(img)) {
+  display: block;
+  min-height: 0;
+  text-align: left;
+}
+.dgm {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.dgm text {
+  font-family: var(--font-sans);
+  fill: var(--color-ink);
+}
+
+/* Containers */
+.dgm-box {
+  fill: var(--color-paper);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+}
+.dgm-box--accent {
+  fill: var(--color-blue-wash, var(--color-blue-pale));
+  stroke: var(--color-blue);
+  stroke-width: 1.5;
+}
+.dgm-box--muted {
+  fill: var(--color-surface);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+}
+.dgm-box--ghost {
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
+}
+/* Same dashed outline, but opaque — for a dashed card sitting on a tinted
+   panel, where the card still has to read as white. */
+.dgm-box--ghost-paper {
+  fill: #FFFFFF;
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
+}
+
+/* Neutral panel behind a group of cards. Deliberately grey rather than the
+   palette's warm cream: it sits inside a white diagram frame and has to read
+   as "somewhere else / before", not as part of the page surface. Border uses
+   the same --color-border-strong as every other grey stroke in the diagram
+   vocabulary so all "gray" elements read as one consistent weight/color. */
+.dgm-panel {
+  fill: var(--color-surface);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+}
+.dgm-zone {
+  fill: var(--color-paper);
+  stroke: none;
+  opacity: 0.7;
+}
+
+/* Text roles */
+.dgm-label   { font-size: 15px; font-weight: 500; }
+.dgm-label--accent { fill: var(--color-blue-strong); }
+.dgm-label--strong { font-weight: 700; }
+
+/* Label above a diagram when a section carries more than one version of it
+   (e.g. a current and a proposed variant sitting side by side for review).
+   Selector qualified as .case-content h3.dgm-variant-title (not just the
+   bare class) so its specificity reliably beats the generic ".case-content
+   h3" rule above — a bare class selector was losing that fight and the
+   label was rendering at the generic h3 size/color instead of this one. */
+.case-content h3.dgm-variant-title {
+  margin: 32px 0 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-stone);
+}
+
+/* Design Process rhythm — two gaps, declared once so all four numbered steps
+   read the same: step-to-step, and a step's copy to its figure. Set as tokens
+   on the section so every rule below reads from the same number. */
+.page-tricuss #insight {
+  --step-gap:   64px;   /* between numbered steps: 1→2, 2→3, 3→4 */
+  --intro-gap:  40px;   /* section h2 → step 1 (a different kind of break) */
+  --figure-gap: 24px;   /* between a step's text and its figure */
+}
+/* Steps 2 and 4: the heading carries the gap. It dominates the preceding
+   figure's own 24px bottom margin when the two collapse, so the result is
+   exactly --step-gap. Direct children only: step 3's heading lives inside
+   .phase-lede and is spaced by the wrapper below, and .dgm-variant-title
+   keeps its own tight spacing inside a diagram card. */
+.page-tricuss #insight > h3:not(.dgm-variant-title) {
+  margin-top: var(--step-gap);
+}
+/* Step 1 opens the section rather than following another step, so it answers
+   to the h2 above it, not to the step rhythm. */
+.page-tricuss #insight > h3:first-of-type {
+  margin-top: var(--intro-gap);
+}
+/* Step 3's heading sits inside the sticky .phases lede, so the wrapper carries
+   the step gap on its behalf. The lede's own top padding sits on top of that —
+   it is what the pinned bar needs to clear the nav, so it cannot be a margin. */
+.page-tricuss #insight .phases {
+  margin-top: var(--step-gap);
+}
+/* Copy → figure, both directions, for every framed block a step can end on. */
+.page-tricuss #insight > .case-image,
+.page-tricuss #insight > .case-image-pair,
+.page-tricuss #insight > .case-image-compare,
+.page-tricuss #insight > .flow-compare,
+.page-tricuss #insight > .problem-showcase {
+  margin-top: var(--figure-gap);
+  margin-bottom: var(--figure-gap);
+}
+
+/* Material-style outline glyphs used inside diagrams (24px source grid).
+   Stroked, not filled, so they match the diagrams' line weight; the
+   glyphs are drawn at 0.75 scale, hence the slightly heavy stroke. */
+.dgm-icon {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dgm-sub     { font-size: 12px; fill: var(--color-stone); }
+.dgm-caption { font-size: 12px; fill: var(--color-slate); }
+.dgm-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--color-stone);
+}
+.dgm-tag--accent { fill: var(--color-blue-strong); }
+
+/* Phase band: the coarse spine a before/after diagram is measured against.
+   Sits above both lanes and names the job in 3 steps, so the lanes below can
+   be compared column-by-column instead of box-by-box. */
+.dgm-phase-band {
+  fill: var(--color-surface);
+  stroke: none;
+}
+.dgm-phase {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--color-ink);
+}
+.dgm-phase-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--color-stone);
+}
+.dgm-stat {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.dgm-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--color-paper);
+}
+
+/* Connectors */
+.dgm-line {
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  fill: none;
+}
+.dgm-line--dash   { stroke-dasharray: 6 6; }
+.dgm-line--accent { stroke: var(--color-blue); }
+.dgm-line--rule   { stroke: var(--color-border); stroke-width: 1; }
+
+/* Markers */
+.dgm-dot        { fill: var(--color-ink); }
+.dgm-dot--accent{ fill: var(--color-blue); }
+.dgm-dot--open  { fill: var(--color-paper); stroke: var(--color-border-strong); stroke-width: 1.5; }
+.dgm-node       { fill: var(--color-paper); stroke: var(--color-blue); stroke-width: 1.5; }
+.dgm-node--fill { fill: var(--color-blue); stroke: none; }
+.dgm-break      { fill: var(--color-coral); }
+.dgm-arrowhead  { fill: var(--color-border-strong); }
+.dgm-arrowhead--accent { fill: var(--color-blue); }
+
+@media (max-width: 700px) {
+  /* On phones the 840-unit viewBox scales to roughly a third, which
+     would drop 12px captions below legibility. Bump the whole type
+     ramp so the smallest text stays readable after scaling. */
+  .dgm-label   { font-size: 19px; }
+  .dgm-sub,
+  .dgm-caption { font-size: 16px; }
+  .dgm-tag     { font-size: 15px; }
+  .dgm-phase   { font-size: 18px; }
+  .dgm-phase-num { font-size: 14px; }
+}
+
+/* ---------- Problem showcase (screenshot + hoverable pain-point cards) ----------
+   A framed product screenshot sits on top; below it, 3 cards restate the
+   problems found in the surrounding prose as scannable, hoverable chips.
+   One card defaults to the active/accent state (is-active) so the pattern
+   reads immediately without requiring a hover; hovering or focusing any
+   other card promotes it to that same state and demotes the rest. */
+.problem-showcase { margin: 32px 0; }
+.problem-showcase-frame {
+  margin-top: 0;
+  margin-bottom: 20px;
+  background: #FFFFFF;
+}
+/* The frame holds one panel per card (only one is-active at a time), so its
+   own padding/min-height must not depend on :has(img) — a hidden image panel
+   would otherwise flip the whole frame's layout. Panels carry their own. */
+.case-image.case-image--flush.problem-showcase-frame {
+  display: block;
+  padding: 0;
+  min-height: 0;
+}
+.problem-panel { display: none; }
+/* Every panel keeps the frame the same height, so switching cards never
+   makes the block jump. Content centres in whatever space is left over. */
+.problem-panel.is-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pad-block);
+  /* Fixed, not min-: the frame must be identical for every card, and a
+     definite height is what lets the content below cap itself against it. */
+  height: 380px;
+}
+/* Fit inside the box rather than driving it — the source images have very
+   different aspect ratios, so let each scale down to whatever fits. */
+.problem-panel img,
+.problem-panel .dgm {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+}
+.problem-showcase-hint {
+  display: block;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-stone, var(--color-slate));
+  margin-bottom: 12px;
+}
+.problem-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.problem-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color var(--dur-base) var(--ease),
+              background-color var(--dur-base) var(--ease);
+}
+.problem-card:hover,
+.problem-card:focus-visible,
+.problem-card.is-active {
+  border-color: var(--color-blue);
+  background: var(--color-blue-wash);
+}
+.problem-card-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--color-surface);
+  color: var(--color-ink-soft);
+  transition: background-color var(--dur-base) var(--ease),
+              color var(--dur-base) var(--ease);
+}
+.problem-card:hover .problem-card-num,
+.problem-card:focus-visible .problem-card-num,
+.problem-card.is-active .problem-card-num {
+  background: var(--color-blue);
+  color: #FFFFFF;
+}
+.problem-card-body h4 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0 0 6px;
+}
+.problem-card-body p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .problem-cards { grid-template-columns: 1fr; gap: 12px; }
+  .problem-panel.is-active { height: 260px; }
+}
 
 /* ---------- Iteration block (Before/After with description cards) ----------
    Two cream cards on top describe the change in plain language; below sit
@@ -1700,9 +2370,9 @@ img.work-cover {
 }
 .iteration-card {
   background: var(--color-blue-wash);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 22px 26px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
 }
 .iteration-card .iteration-label {
   display: block;
@@ -1785,18 +2455,16 @@ img.work-cover {
 }
 .iteration-compare-card {
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 28px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .iteration-compare-card:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-blue);
 }
 .iteration-compare-card--after {
   background: var(--color-blue-wash);
@@ -1821,7 +2489,7 @@ img.work-cover {
 }
 .iteration-compare-image {
   margin: 0 0 20px;
-  border-radius: 10px;
+  border-radius: var(--r-block-inner);
   overflow: hidden;
   line-height: 0;
 }
@@ -1837,13 +2505,6 @@ img.work-cover {
   color: var(--color-ink-soft);
   margin: 0;
 }
-@media (max-width: 720px) {
-  .iteration-compare-card {
-    padding: 22px;
-    border-radius: 16px;
-  }
-}
-
 /* ---------- B-2 · Iteration split (文字左 / 圖右，Before/After 兩列堆疊) ----------
    Two bordered rows, each split text-left / image-right. Visual rhythm
    matches .case-step-row and .solution-row so the whole case study
@@ -1860,16 +2521,14 @@ img.work-cover {
   gap: 32px;
   align-items: center;
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 28px;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .iteration-split-row:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-blue);
 }
 .iteration-split-row--after {
   background: var(--color-blue-wash);
@@ -1901,7 +2560,7 @@ img.work-cover {
 }
 .iteration-split-image {
   margin: 0;
-  border-radius: 10px;
+  border-radius: var(--r-block-inner);
   overflow: hidden;
   line-height: 0;
 }
@@ -1917,10 +2576,10 @@ img.work-cover {
    WCAG AAA (text #0A0A0A on bg #F0E3D2 ≈ 14:1, exceeds 7:1 AAA threshold). */
 .iteration-note {
   margin-top: 16px;
-  padding: 20px;
+  padding: var(--pad-block-inner);
   background: var(--color-blue-wash);
   border: 1.5px solid var(--color-blue-soft);
-  border-radius: 14px;
+  border-radius: var(--r-block-inner);
 }
 .iteration-note .note-head {
   display: flex;
@@ -1935,7 +2594,7 @@ img.work-cover {
   width: 36px;
   height: 36px;
   flex-shrink: 0;
-  border-radius: 10px;
+  border-radius: var(--r-block-inner);
   background: var(--color-blue-soft);
 }
 .iteration-note .note-title {
@@ -1970,8 +2629,6 @@ img.work-cover {
   .iteration-split-row {
     grid-template-columns: 1fr;
     gap: 18px;
-    padding: 22px;
-    border-radius: 16px;
   }
 }
 
@@ -1983,8 +2640,8 @@ img.work-cover {
 .iteration-figure {
   position: relative;
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
   overflow: hidden;
   margin: 0;
 }
@@ -2028,7 +2685,7 @@ img.work-cover {
   margin-bottom: 20px;
 }
 .iteration-detail {
-  padding: 30px 32px;
+  padding: var(--pad-block);
   display: flex;
   flex-direction: column;
 }
@@ -2107,7 +2764,7 @@ img.work-cover {
   top: calc(50% - 22px);
   width: 44px;
   height: 44px;
-  border: 1.5px solid var(--color-ink);
+  border: 1.5px solid var(--color-border-strong);
   border-radius: 9999px;
   background: var(--color-paper);
   color: var(--color-ink);
@@ -2117,7 +2774,7 @@ img.work-cover {
   cursor: pointer;
   z-index: 3;
   padding: 0;
-  box-shadow: 0 0 0 var(--color-ink);
+  box-shadow: none;
   transition: background-color var(--dur-fast) var(--ease),
               color var(--dur-fast) var(--ease),
               box-shadow var(--dur-fast) var(--ease),
@@ -2126,7 +2783,7 @@ img.work-cover {
 .iteration-nav:hover {
   background: var(--color-ink);
   color: #FFFFFF;
-  box-shadow: 3px 3px 0 var(--color-ink);
+  box-shadow: var(--shadow-3);
   transform: translate(-1px, -1px);
 }
 .iteration-nav[hidden] { display: none; }
@@ -2191,8 +2848,8 @@ img.work-cover {
   align-items: stretch;
   gap: 0;
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
   overflow: hidden;
   padding: 0;
   margin: 0;
@@ -2204,7 +2861,7 @@ img.work-cover {
   z-index: 1;
 }
 .iteration-figure--split .iteration-split-text {
-  padding: 32px;
+  padding: var(--pad-block);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -2240,7 +2897,7 @@ img.work-cover {
   background: var(--color-paper);
   overflow: hidden;
   margin: 0;
-  padding: 32px;
+  padding: var(--pad-block);
 }
 /* Tighten text column's right padding so total gap to image isn't doubled
    once both sides have 32px padding. */
@@ -2292,17 +2949,15 @@ img.work-cover {
   align-items: center;
   margin: 32px 0;
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 32px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
   min-height: 280px;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .case-step-row:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-blue);
 }
 .case-step-row .case-step-text { min-width: 0; }
 .case-step-row .case-step-text > :first-child { margin-top: 0; }
@@ -2333,10 +2988,10 @@ img.work-cover {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: clamp(16px, 2vw, 32px);
-  padding: clamp(20px, 2.5vw, 36px) clamp(24px, 3vw, 44px);
+  padding: var(--pad-block);
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
   margin: 24px 0;
 }
 .case-compare-side { min-width: 0; }
@@ -2367,26 +3022,30 @@ img.work-cover {
 }
 .stat-item {
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 20px;
-  padding: 28px 24px;
-  box-shadow: 0 0 0 var(--color-ink);
-  transition: box-shadow var(--dur-base) var(--ease),
-              transform var(--dur-base) var(--ease);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
+  box-shadow: none;
+  transition: border-color var(--dur-base) var(--ease);
 }
 .stat-item:hover {
-  box-shadow: 4px 4px 0 var(--color-blue);
-  transform: translate(-2px, -2px);
+  border-color: var(--color-ink);
 }
 .stat-item .stat-num {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(44px, 5vw, 60px);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1;
   color: var(--color-blue);
   margin-bottom: 10px;
+}
+.stat-item .stat-unit {
+  font-size: 0.5em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-left: 2px;
 }
 .stat-item .stat-label {
   font-family: var(--font-sans);
@@ -2465,21 +3124,20 @@ img.work-cover {
   grid-template-columns: 1fr auto;
   gap: 32px;
   align-items: center;
-  padding: 36px 40px;
+  padding: var(--pad-block);
   background: var(--color-paper);
-  border: 1.5px solid var(--color-ink);
-  border-radius: 24px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
   color: inherit;
   text-decoration: none;
-  box-shadow: 0 0 0 var(--color-ink);
+  box-shadow: none;
   transition: background-color var(--dur-base) var(--ease),
               box-shadow var(--dur-base) var(--ease),
               transform var(--dur-base) var(--ease);
 }
 .next-card:hover {
-  background: #2E1E12;
-  box-shadow: 4px 4px 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+  background: var(--color-ink);
+  border-color: var(--color-blue);
 }
 .next-card-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .next-meta {
@@ -2505,7 +3163,7 @@ img.work-cover {
   justify-content: center;
   width: 56px;
   height: 56px;
-  border: 1.5px solid var(--color-ink);
+  border: 1.5px solid var(--color-border-strong);
   border-radius: 999px;
   font-family: var(--font-display);
   font-weight: 500;
@@ -2547,6 +3205,10 @@ img.work-cover {
   .hero-sparkle {
     width: 140px;
     top: -4px;
+  }
+  .hero-portrait {
+    width: 130px;
+    top: 130px;
     right: 5%;
   }
 }
@@ -2594,7 +3256,14 @@ img.work-cover {
 }
 
 @media (max-width: 720px) {
-  :root { --gutter: 20px; }
+  :root {
+    --gutter: 20px;
+    /* One step down for every framed block — still equal on all four sides. */
+    --r-block:        16px;
+    --r-block-inner:  10px;
+    --pad-block:       20px;
+    --pad-block-inner: 16px;
+  }
 
   /* Hero (home) */
   header.hero {
@@ -2617,6 +3286,7 @@ img.work-cover {
     top: -8px;
     right: 12px;
   }
+  .hero-portrait { display: none; }
   .hero-actions { gap: var(--s-3); margin-top: var(--s-7); }
   .pill.pill-lg { height: 52px; padding: 0 var(--s-6); }
   .pill.pill-ghost { padding: 0 var(--s-2); }
@@ -2652,12 +3322,11 @@ img.work-cover {
 
   /* Work cards */
   .work-list { gap: var(--s-6); }
-  .work-card { grid-template-columns: 1fr; gap: var(--s-5); padding: var(--s-5); border-radius: var(--r-4); }
-  .work-card.featured { padding: var(--s-5); }
+  .work-card { grid-template-columns: 1fr; gap: var(--s-5); }
+  .work-card.featured { box-shadow: var(--shadow-2); }
   .work-cover { aspect-ratio: 16 / 11; }
   .work-cover .num { font-size: 40px; top: var(--s-4); left: var(--s-5); }
   .work-title { font-size: clamp(22px, 5.5vw, 28px); }
-  .work-link { padding: 0 0 4px; } /* keep text-link style; remove large padding that misaligns underline */
 
   /* About */
   .about-grid { grid-template-columns: 1fr; gap: var(--s-7); }
@@ -2665,23 +3334,20 @@ img.work-cover {
 
   /* Case study mobile */
   .case-hero { padding: 20px 0 40px; }
-  .case-hero-image { border-radius: 20px; }
   .case-meta-grid { grid-template-columns: 1fr; }
   .case-image-pair { grid-template-columns: 1fr; gap: 12px; }
   .case-image-compare { grid-template-columns: 1fr; }
   .case-step-row {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 24px;
-    border-radius: 16px;
     margin: 24px 0;
   }
   .case-image-compare .case-compare-arrow { transform: rotate(90deg); margin: 4px 0; }
   .stat-row { grid-template-columns: 1fr; }
   .stat-item .stat-num { font-size: 44px; }
-  .case-content section { margin-bottom: 56px; }
+  .case-content > section { margin-bottom: 56px; }
   .case-next { padding: 56px 0; }
-  .next-card { grid-template-columns: 1fr; padding: 24px; gap: 20px; }
+  .next-card { grid-template-columns: 1fr; gap: 20px; }
   .next-arrow { width: 48px; height: 48px; font-size: 20px; align-self: flex-end; }
 
   /* Footer */
@@ -2713,10 +3379,10 @@ img.work-cover {
 /* PDOGs solution-overview — ink-bordered cards with shadow hover */
 .page-pdogs #solution-overview .solution-row {
   background: var(--color-paper);
-  border-color: var(--color-ink);
+  border-color: var(--color-border-strong);
 }
 .page-pdogs #solution-overview .solution-row:hover {
-  box-shadow: 4px 4px 0 var(--color-ink);
+  border-color: var(--color-blue);
 }
 .page-pdogs #solution-overview .solution-row h3 {
   display: flex;
@@ -2741,10 +3407,10 @@ img.work-cover {
   flex-shrink: 0;
 }
 .page-pdogs #solution-overview .solution-row .case-image {
-  background: var(--color-paper);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 /* --- Brinno (orange) --- */
@@ -2759,6 +3425,27 @@ img.work-cover {
   --color-blue-soft:     #EDC9AA;
   --color-blue-wash:     #FDF5EE;
 }
+
+/* --- Tricuss (charcoal) ---
+   The page carries both .page-brinno and .page-tricuss, so this block
+   must stay AFTER the Brinno theme to win the cascade. */
+.page-tricuss {
+  /* Gray/black accent, not a hue at all — tuned as a warm-neutral charcoal
+     so it still sits comfortably against the site's cream surfaces rather
+     than reading as flat/cold UI gray. */
+  --color-brinno:        #45454A;
+  --color-brinno-strong: #222225;
+  --color-brinno-wash:   #EFEFEE;
+  --color-brinno-soft:   #D6D5D3;
+  --color-blue:          #45454A;
+  --color-blue-strong:   #222225;
+  --color-blue-pale:     #E7E6E5;
+  --color-blue-soft:     #D6D5D3;
+  --color-blue-wash:     #EFEFEE;
+}
+/* The hero artwork sits on its own charcoal canvas, which already gives it a
+   clear edge against the cream page — no border needed. */
+.page-tricuss .case-hero-image { border: 0; }
 
 /* Brinno solution groups — spacing between groups */
 .page-brinno .solution-group + .solution-group {
@@ -2797,3 +3484,1520 @@ img.work-cover {
     transform: none;
   }
 }
+
+/* White variant — plain white diagram frame (overrides the cream dgm surface) */
+.case-image.case-image--white { background: #FFFFFF; }
+
+/* A figure built from side-by-side panels, each with its own heading. The
+   heading type matches the thinking-process step tags so the two blocks read
+   as one system. Columns top-align, so headings stay on one line even when the
+   panels below differ in height. */
+.case-image.case-image--states:has(img) {
+  padding: var(--pad-block);
+}
+/* A figure whose artwork is small enough that filling the column would blow it
+   up past its intrinsic size — cap it and centre it in the frame instead. */
+.case-image.case-image--narrow:has(img) {
+  padding: var(--pad-block);
+}
+.case-image--narrow img { max-width: 420px; }
+
+.img-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 3vw, 32px);
+  align-items: start;
+}
+/* Two captioned columns rather than three — a before/after pair. */
+.img-cols--pair { grid-template-columns: repeat(2, 1fr); }
+
+/* ---------- Folder before/after pair ---------- */
+.folder-pair {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  /* Inside the page's white figure frame, which supplies the outer border and
+     the margins — the pair only lays the two cards out. */
+  margin: 0;
+}
+/* Each side is its own card: the figure carries the frame, its figcaption the
+   title, and the screenshot sits below. Nested one level inside the white
+   page frame, so the border steps down to the softer token and the card keeps
+   the frame's white rather than painting its own.
+
+   The two screenshots are 690 and 1275 CSS px wide, and they only render at
+   the same scale — and so read as "the same items, sorted" — if each card's
+   INNER width is proportional to its image. Flex does that exactly:
+   flex-basis holds the card's horizontal padding, and the remaining space is
+   split by grow factors equal to the intrinsic widths. A grid with 690fr /
+   1275fr would split the padding evenly instead and leave the narrow card a
+   few percent short. */
+.folder-col {
+  margin: 0;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Width and colour come from the modifiers below — the pair's whole point is
+     that the two frames differ. */
+  border: 2px solid;
+  border-radius: var(--r-block-inner, 12px);
+  padding: 24px;
+}
+/* flex-basis = the card's own horizontal padding AND border, since box-sizing
+   is border-box globally: whatever the frame eats has to be excluded before
+   the remaining space is split, or the ratio below lands on the wrong boxes.
+   Before 24+2 per side = 52, After 24+4 per side = 56. */
+.folder-col--before {
+  flex: 690 1 52px;
+  border-color: rgba(136, 136, 136, 0.5);
+}
+/* The adopted side, matching the Before/After flow exports above: same card,
+   heavier and darkened, plus the tick. */
+.folder-col--after {
+  flex: 1275 1 56px;
+  border-width: 4px;
+  border-color: rgba(66, 66, 66, 0.8);
+}
+
+.folder-head {
+  display: block;
+  text-align: center;
+  /* Symmetric, so the badge in the corner cannot pull the title off-centre. */
+  padding-inline: 28px;
+  margin-bottom: 16px;
+}
+.folder-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+.folder-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--tp-tag-text);
+}
+/* Tick badge — marks the option that was adopted, in the card's top-right
+   corner as in the flow exports. Positioned against the card rather than the
+   title so it holds the corner however many lines the title runs to. */
+.pick-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: block;
+  width: 22px;
+  height: 22px;
+  color: var(--tp-tag-text);
+}
+.pick-badge svg { display: block; width: 100%; height: 100%; }
+
+.folder-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Pinned to the card's bottom, so the two screenshots share a baseline even
+     when one title wraps to a second line and the other does not. */
+  margin-top: auto;
+}
+/* Stacked, the proportional split is meaningless — each card takes the full
+   width and is capped at its own size so the sparse one is not blown up. */
+@media (max-width: 720px) {
+  .folder-pair { flex-direction: column; gap: 24px; }
+  .folder-col--before,
+  .folder-col--after { flex: 0 0 auto; width: 100%; }
+  .folder-col--before { max-width: 420px; }
+}
+
+/* ---------- Folder map (redesign draft of the pair above) ----------
+   Built in HTML rather than two screenshots, so the same items can be linked
+   across the pair. Plate colour encodes permission; the legend names it. */
+.case-image.fm {
+  /* Undo the text-only placeholder defaults .case-image applies without an img. */
+  display: block;
+  min-height: 0;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  letter-spacing: normal;
+  color: var(--color-ink-soft);
+  --fm-edit: #E4EBF7;
+  --fm-edit-line: #9DB4DE;
+  --fm-view: #F3E9D6;
+  --fm-view-line: #D6B87F;
+  --fm-hide-line: #B8B8B8;
+}
+.fm ul { list-style: none; margin: 0; padding: 0; }
+.fm-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.fm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-bottom: 24px !important;
+  font-size: 13px;
+  color: var(--tp-tag-text);
+}
+.fm-legend li { display: flex; align-items: center; gap: 7px; }
+.fm-swatch { width: 14px; height: 14px; border-radius: 4px; }
+.fm-swatch[data-p="edit"] { background: var(--fm-edit); box-shadow: inset 0 0 0 1px var(--fm-edit-line); }
+.fm-swatch[data-p="view"] { background: var(--fm-view); box-shadow: inset 0 0 0 1px var(--fm-view-line); }
+.fm-swatch[data-p="hide"] { border: 1.5px dashed var(--fm-hide-line); }
+
+/* Before | link gutter | After. The SVG spans all three and sits underneath,
+   so links run from each Before chip's right edge to its After chip's left. */
+.fm-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(48px, 9vw, 104px) minmax(0, 1.3fr);
+  align-items: stretch;
+}
+.fm-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.fm-side {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgba(136, 136, 136, 0.5);
+  border-radius: var(--r-block-inner, 12px);
+  padding: 20px;
+}
+.fm-side--before { grid-column: 1; }
+.fm-side--after {
+  grid-column: 3;
+  border-width: 4px;
+  border-color: rgba(66, 66, 66, 0.8);
+  padding: 18px;
+  gap: 10px;
+}
+.fm-head { text-align: center; padding-inline: 28px; margin-bottom: 8px; }
+.fm-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+.fm-sub { display: block; margin-top: 4px; font-size: 13.5px; color: var(--tp-tag-text); }
+.fm .pick-badge { top: 20px; right: 20px; }
+
+/* Before: one compact flat pile, centred, so its links fan out to the three
+   After zones — the shape itself reads as "spread out into structure". */
+.fm-side--before .fm-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.fm-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 11px;
+  font-size: 13.5px;
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: opacity .2s ease, box-shadow .2s ease;
+}
+.fm-item svg, .fm-folder svg { width: 15px; height: 15px; flex: none; color: var(--color-slate); }
+.fm-item[data-p="edit"] { background: var(--fm-edit); }
+.fm-item[data-p="view"] { background: var(--fm-view); }
+.fm-item[data-p="hide"] {
+  background: #fff;
+  border: 1.5px dashed var(--fm-hide-line);
+  color: var(--color-stone);
+}
+
+.fm-zone {
+  border: 1.5px solid #D9D9D9;
+  border-radius: 10px;
+  padding: 10px 12px 12px;
+}
+.fm-zone[data-p="hide"] { border-style: dashed; border-color: var(--fm-hide-line); }
+.fm-zone-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.fm-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border: 1px solid var(--tp-tag-border);
+  border-radius: var(--r-full);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tp-tag-text);
+}
+.fm-tag svg { width: 12px; height: 12px; }
+.fm-zone .fm-list { display: flex; flex-direction: column; gap: 5px; }
+
+/* Personal Files tree: folder rows are plain labels, their contents hang off
+   a guide line — the folders are what the redesign adds. */
+.fm-tree > li + li { margin-top: 6px; }
+.fm-folder { display: flex; align-items: center; gap: 8px; height: 26px; font-size: 13.5px; padding-left: 2px; color: var(--color-ink); }
+.fm-tree ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 3px 0 0 9px !important;
+  padding-left: 14px !important;
+  border-left: 1.5px solid #E2E2E2;
+}
+
+.fm-link { fill: none; stroke-width: 1.5; transition: opacity .2s ease, stroke-width .2s ease; }
+.fm-link[data-p="edit"] { stroke: var(--fm-edit-line); }
+.fm-link[data-p="view"] { stroke: var(--fm-view-line); }
+.fm-link[data-p="hide"] { stroke: var(--fm-hide-line); stroke-dasharray: 4 4; }
+
+/* Hover focus: the hovered pair and its link stay, everything else recedes. */
+.fm.is-focus .fm-item:not(.is-on) { opacity: .4; }
+.fm.is-focus .fm-link:not(.is-on) { opacity: .15; }
+.fm.is-focus .fm-link.is-on { stroke-width: 2.5; }
+.fm.is-focus .fm-item.is-on { box-shadow: 0 0 0 1.5px var(--color-ink-soft); }
+
+/* Stacked, the sides no longer face each other — drop the links and the
+   gutter, keep the colour legend doing the matching. */
+@media (max-width: 720px) {
+  .fm-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .fm-links { display: none; }
+  .fm-side--before, .fm-side--after { grid-column: 1; }
+  .fm-side--before .fm-list { justify-content: flex-start; gap: 6px; }
+}
+
+.img-col { margin: 0; }
+.img-col-title {
+  display: block;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: 0.2px;
+  color: var(--tp-tag-text);
+}
+/* Sits under the artwork, not above it: the title names the step, the note
+   says what it costs. Only the note carries the argument, so it reads in the
+   body voice rather than the tag voice. */
+.img-col-note {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+@media (max-width: 640px) {
+  .img-cols { grid-template-columns: 1fr; gap: 28px; }
+  .img-col-title { font-size: 13px; margin-bottom: 12px; }
+  .img-col-note { font-size: 12.5px; margin-top: 10px; }
+}
+
+/* Step strip inside a problem panel: the columns fill the frame instead of
+   centring at their intrinsic size, which is what the plain image panels do. */
+.problem-panel--steps.is-active {
+  align-items: center;
+  /* Three captioned columns need the vertical room the padding was using;
+     min-height keeps the frame level with the plain image panels, and lets it
+     grow rather than clip if the notes wrap at an awkward width. */
+  padding-block: clamp(20px, 2.4vw, 28px);
+  height: auto;
+  min-height: 380px;
+}
+.pain-steps { width: 100%; }
+.problem-panel--steps .img-cols { width: 100%; }
+.problem-panel--steps .img-col img {
+  width: 100%;
+  max-height: none;
+  border-radius: 6px;
+}
+.pain-steps-end {
+  margin: clamp(14px, 1.8vw, 22px) 0 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-soft);
+}
+/* Single-artwork pain panels reuse the step strip's frame so all three panels
+   share one grammar: artwork, then one mono line stating the cost. Capped so a
+   wide export doesn't run to the full content width while the three-column
+   panel next to it sits inside gutters. */
+.pain-steps--single {
+  max-width: 760px;
+  margin-inline: auto;
+}
+.pain-steps--single img {
+  display: block;
+  width: 100%;
+  /* Beats .problem-panel img's max-height: 100%, which was sized against the
+     old fixed-height panel and would now clip against the caption. */
+  max-height: none;
+  border-radius: 6px;
+}
+
+@media (max-width: 720px) {
+  /* Three stacked screenshots outgrow the shared frame height, so this panel
+     is allowed to size to its content. */
+  .problem-panel--steps.is-active { height: auto; min-height: 260px; }
+}
+
+
+/* ============================================================
+   DESIGN PROCESS  (#insight)  ·  case: Tricuss
+   The longest section on the page: four numbered steps, each a
+   heading + a paragraph + a diagram. At the default rhythm the
+   steps run together, so the vertical spacing is loosened here —
+   scoped to direct children and phase blocks so headings that live
+   inside a diagram card (.dgm-variant-title) keep their own tight
+   spacing.
+   ============================================================ */
+#insight > p,
+#insight .phase-block > p { margin-bottom: var(--s-6); }
+
+#insight > h3 { margin: var(--s-9) 0 var(--s-4); }
+#insight > h3:first-of-type { margin-top: var(--s-6); }
+
+@media (max-width: 720px) {
+  #insight > h3 { margin: var(--s-8) 0 var(--s-3); }
+}
+
+/* ============================================================
+   TRUST PHASES  (.phases)  ·  case: Tricuss
+   互動前 / 互動中 / 互動後 read straight down the page — nothing is
+   hidden behind an interaction, which is the point the section is
+   arguing. The one enhancement is the lede — heading, intro and
+   stepper — pinning under the nav for the whole run and lighting the
+   phase you are reading, so the claim stays on screen next to the
+   progress through it. scroll-spy.js drives .is-current / .is-done.
+   ============================================================ */
+.phases {
+  /* Where the pinned stepper comes to rest. Below 960px the TOC turns into
+     its own sticky bar under the nav, so the stepper has to clear that too —
+     scroll-spy.js measures the bar and overwrites --toc-bar-h. */
+  --phase-top: var(--nav-h);
+  /* The stepper's own top padding, which does double duty: the gap between
+     the intro and the steps at rest, and the opaque strip between the nav
+     and the steps once pinned. One value, so both read the same. */
+  --stepper-offset: 40px;
+  /* Was #insight > h3's top margin before the heading moved in here. */
+  margin: var(--s-9) 0 0;
+}
+@media (max-width: 960px) {
+  .phases { --phase-top: calc(var(--nav-h) + var(--toc-bar-h, 83px)); }
+}
+@media (max-width: 720px) {
+  .phases { margin-top: var(--s-8); }
+}
+
+/* Jumping to a phase must clear the nav, the mobile TOC bar and whichever
+   part of the lede is pinned. scroll-spy.js measures the pinned element
+   into --phase-bar-h — which now includes --stepper-offset, since that
+   space is the block's own padding. The fallback is roughly the desktop
+   lede. */
+.phase-block {
+  scroll-margin-top: calc(var(--phase-top) + var(--phase-bar-h, 190px) + 12px);
+}
+.phase-block + .phase-block { margin-top: 56px; }
+
+/* The pinned lede sets the whole gap above a phase, so the phase itself
+   opens flush. The h4 is out of flow (see below), which is why the second
+   selector is needed as well as :first-child. */
+.phases .phase-block > :first-child,
+.phases .phase-block > h4 + * { margin-top: 0; }
+
+/* The stepper carries the phase name now, so the heading is for the
+   outline and the #phase-* anchors only. */
+.case-content .phase-block h4 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- The lede: heading and intro, in ordinary flow ---------- */
+/* Not pinned. It is read once on the way in and has nothing to say while
+   the reader moves between phases; holding it on screen would only take
+   room from the content it introduces. */
+.phase-lede { margin: 0; }
+.case-content .phase-lede h3 { margin: 0 0 12px; }
+/* No bottom margin: the stepper's --stepper-offset padding is the gap, and
+   it has to be padding so the same space stays opaque when the bar pins. */
+.case-content .phase-lede > p { margin-bottom: 0; }
+
+/* ---------- The stepper: the one bar that pins ----------
+   It rests flush against the nav and carries --stepper-offset as its own
+   top padding instead of as a gap. A gap would be a transparent strip with
+   the article scrolling through it above the bar; as padding, the same
+   space is opaque and nothing shows above the steps. */
+.phase-stepper {
+  position: sticky;
+  top: var(--phase-top);
+  z-index: 6;
+  /* All of the gap below the bar is padding, not margin — margin would be a
+     transparent strip that the phase content scrolls through while pinned. */
+  margin-bottom: 0;
+  /* The bar has to be opaque edge to edge, or content slides visibly under
+     the gutters. -24px/24px bleeds it past the text column. */
+  margin-inline: -24px;
+  padding: var(--stepper-offset) 24px 10px;
+  background: var(--color-canvas);
+}
+
+.phase-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Every step but the last takes the slack, so the connector rules stretch
+   evenly and the last label sits flush right. */
+.phase-step {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.phase-step:last-child { flex: 0 0 auto; }
+
+/* The connector. It belongs to the step on its left, so it is the rule
+   leading out of that phase and into the next.
+
+   Track and fill share one box: the gradient's hard stop is how far the
+   reader is through the phase, so the rule advances continuously with the
+   scroll instead of jumping at the boundary. scroll-spy.js sets --fill
+   (0–1) per step. No transition — it is scroll-linked, and easing it would
+   only make it lag the page. */
+.phase-step:not(:last-child)::after {
+  content: '';
+  flex: 1 1 auto;
+  min-width: 16px;
+  height: 2px;
+  margin: 0 14px;
+  border-radius: 1px;
+  /* The filled part is the full accent, not a tint — against the warm grey
+     track it has to read as "covered so far" at a glance. */
+  background: linear-gradient(
+    to right,
+    var(--color-blue) calc(var(--fill, 0) * 100%),
+    var(--color-border) 0
+  );
+}
+
+/* ---------- Pinned stage ----------
+   Every rule here hangs off .is-staged, which scroll-spy.js adds only when
+   the tallest phase fits under the pinned lede — and never below 960px or
+   under reduced motion. Without the class this is three ordinary blocks
+   reading straight down the page, which is also what a reader with no JS
+   gets. JS supplies --stage-h (the tallest phase) and --track-h (that plus
+   the scroll distance the three phases share). */
+.phases.is-staged .phase-track { height: var(--track-h); }
+
+
+.phases.is-staged .phase-stage {
+  position: sticky;
+  /* Directly under the pinned lede, whose height JS measures. */
+  top: calc(var(--phase-top) + var(--phase-bar-h, 190px));
+  height: var(--stage-h);
+}
+
+/* The three phases occupy the same box and cross-fade. visibility, not just
+   opacity: a transparent phase must also be out of the tab order and
+   invisible to find-in-page — phase 2 alone holds five focusable seek
+   buttons. It is delayed to the end of the fade on the way out, and lifted
+   immediately on the way in. */
+.phases.is-staged .phase-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+.phases.is-staged .phase-block.is-showing {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s;
+}
+
+.phase-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+.phase-step-btn:hover { color: var(--color-slate); }
+.phase-step-btn:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Upcoming: hollow grey. Done: filled pale. Current: solid accent. */
+.phase-step-num {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.phase-step-label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.phase-step.is-done .phase-step-num {
+  background: var(--color-blue-pale);
+  color: var(--color-blue-strong);
+}
+.phase-step.is-done .phase-step-btn { color: var(--color-slate); }
+
+.phase-step.is-current .phase-step-num {
+  background: var(--color-blue);
+  color: #fff;
+}
+.phase-step.is-current .phase-step-btn { color: var(--color-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .phase-step-btn,
+  .phase-step-num { transition: none; }
+}
+
+/* Below 720px the nav + TOC bar already eat ~140px of a phone viewport, so
+   the stepper drops to circles plus the name of the phase you are in —
+   still sticky, because that one line is the whole point of the bar.
+   The bleed matches the 20px page gutter here; -24px would overflow it
+   and push the page sideways. */
+@media (max-width: 720px) {
+  .phases { --stepper-offset: 20px; }
+  .phase-stepper {
+    margin-inline: -20px;
+    padding: var(--stepper-offset) 20px 10px;
+  }
+  .phase-step-label { display: none; }
+  .phase-step.is-current .phase-step-label { display: inline; }
+  .phase-step:not(:last-child)::after { margin: 0 10px; }
+  .phase-block + .phase-block { margin-top: 40px; }
+}
+
+/* ============================================================
+   THINKING PROCESS TIMELINE  (.tp)  ·  case: Tricuss
+   Backstage (what the agent is doing) / frontstage (what the user
+   sees) blueprint that plays itself once when scrolled into view.
+   Timing is data-driven: each element carries --d (its start time)
+   and the whole run lasts --tp-dur. JS only toggles two classes —
+   .is-armed (hide the end state, set by script so a no-JS page
+   still shows everything) and .is-playing (run the timeline).
+   ============================================================ */
+.case-image.case-image--tp:not(:has(img)) {
+  display: block;
+  padding: var(--pad-block);
+  min-height: 0;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: inherit;
+  letter-spacing: normal;
+  color: var(--color-ink);
+}
+
+/* --tp-tag-border / --tp-tag-text live on :root so the tags, the chat panel,
+   the play/idle keyframes and the figure captions that match them all resolve
+   to exactly the same values. */
+.tp { --tp-dur: 10s; }
+
+/* Affordance for the seek tags — they look like labels, so say they are not.
+   A <span>, like .problem-showcase-hint: as a <p> the higher-specificity
+   ".case-content p" rule would override the size, colour and font. */
+.tp-hint {
+  display: block;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-stone, var(--color-slate));
+  margin: 0 0 12px;
+}
+
+/* ---- Backstage: the agent's own steps, as tags ---- */
+/* Equal columns so the tag row spans exactly the width of the chat box */
+.tp-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+/* The li is only the grid cell; the button inside it is the pill. */
+.tp-steps > li { display: flex; }
+/* Idle pill, matching the Figma spec (2px #888 outline, bold #424242 label,
+   fully rounded). The two colours are held as local custom properties so the
+   play/idle keyframes below can return to exactly the same resting state. */
+.tp-step {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 20px;
+  border-radius: 1000px;
+  border: 2px solid var(--tp-tag-border);
+  background: var(--color-paper);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  color: var(--tp-tag-text);
+  cursor: pointer;
+}
+.tp-step:focus-visible {
+  outline: 2px solid var(--color-blue, #2563eb);
+  outline-offset: 2px;
+}
+/* In Figma the number is part of the same bold label, so it carries the
+   tag's colour at full strength and flips with the active state. */
+.tp-num { color: currentColor; }
+.tp-num::after { content: "."; }
+/* The finished state (no JS / reduced motion) lights the last tag */
+.tp-step--last {
+  border-color: var(--tp-tag-text);
+  background: var(--tp-tag-text);
+  color: var(--color-paper);
+}
+
+/* ---- Frontstage: the chat surface the user actually watches ---- */
+.tp-chat {
+  margin-top: 24px;
+  border: 2px solid rgba(136, 136, 136, 0.5);
+  border-radius: var(--r-block);
+  background: transparent;
+  padding: var(--pad-block);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tp-user {
+  align-self: flex-end;
+  max-width: 82%;
+  background: var(--color-paper);
+  border: 2px solid rgba(136, 136, 136, 0.5);
+  color: var(--color-ink);
+  border-radius: 20px 20px 4px 20px;
+  padding: 13px 20px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+/* The stage: every phase shares one grid cell, so the box is as tall as
+   the tallest phase and the states cross-fade in place — no jumping. */
+.tp-stage { display: grid; }
+.tp-phase {
+  grid-area: 1 / 1;
+  align-self: start;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-slate);
+}
+.tp-phase--exec, .tp-phase--last { display: block; }
+/* Without JS (or with reduced motion) only the finished state shows */
+.tp-phase:not(.tp-phase--last) { opacity: 0; }
+
+/* Single pulsing dot — the model-level "still working" state */
+.tp-pulse {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-muted);
+  opacity: 0.45;
+}
+
+/* ---- Phase 4: the agent's steps, each with its own tool calls ---- */
+.tp-exec-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tp-exec {
+  display: grid;
+  grid-template-columns: auto auto auto 1fr;
+  align-items: center;
+  column-gap: 11px;
+  color: var(--color-muted);
+}
+.tp-chev--step { color: var(--color-muted); }
+.tp-exec-ico {
+  position: relative;
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+.tp-exec-label { font-size: 17px; color: currentColor; }
+.tp-glyph {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tp-exec-ico .tp-glyph { position: absolute; inset: 0; }
+.tp-spin {
+  position: absolute;
+  inset: 1px;
+  border: 1.5px solid var(--color-border-strong);
+  border-top-color: var(--color-slate);
+  border-radius: 50%;
+  opacity: 0;
+}
+.tp-tools {
+  grid-column: 2 / -1;
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.tp-tool {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+}
+/* A step that carries a tool list ends deep inside its own grid row, so the
+   plain 12px list gap reads as a much bigger break before the next step. */
+.tp-exec:has(.tp-tools) + .tp-exec { margin-top: -16px; }
+.tp-tool .tp-glyph { width: 15px; height: 15px; stroke-width: 1; flex-shrink: 0; }
+.tp-tool-name {
+  flex: 1;
+  font-family: var(--font-mono, ui-monospace, 'SF Mono', Menlo, Consolas, monospace);
+  font-size: 15px;
+}
+.tp-tool-status { font-size: 14px; color: var(--color-muted); opacity: 0; }
+.tp-spin--sm {
+  position: relative;
+  inset: auto;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- Phase 5: collapsed step summary + the answer ---- */
+.tp-done { color: var(--color-muted); }
+.tp-done > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  font-size: 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.tp-done > summary::-webkit-details-marker { display: none; }
+.tp-done[open] .tp-chev { transform: rotate(180deg); }
+.tp-chev {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.tp-done-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+}
+.tp-done-list li { display: flex; align-items: center; gap: 11px; }
+.tp-answer {
+  margin: 14px 0 0;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+.tp-answer strong { font-weight: 600; }
+/* Three-dot micro animation — the deliberate "say nothing" state */
+.tp-dots { display: inline-flex; gap: 5px; align-items: center; padding: 12px 2px; }
+.tp-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-muted);
+  animation: tp-bounce 1.2s ease-in-out infinite;
+}
+.tp-dots i:nth-child(2) { animation-delay: 0.2s; }
+.tp-dots i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tp-bounce {
+  0%, 80%, 100% { opacity: 0.4; transform: scale(0.7); }
+  40%           { opacity: 1;   transform: scale(1); }
+}
+
+/* ---- Armed: JS is present, so hide the end state before playing ---- */
+.tp.is-armed .tp-phase { opacity: 0; }
+.tp.is-armed .tp-step--last {
+  border-color: var(--tp-tag-border);
+  background: var(--color-paper);
+  color: var(--tp-tag-text);
+}
+
+/* ---- Playing ---- */
+/* One tag is lit at a time, from --on until --off */
+.tp.is-playing .tp-step {
+  animation: tp-step-on 0.2s var(--ease) var(--on) both,
+             tp-step-off 0.2s var(--ease) var(--off) forwards;
+}
+.tp.is-playing .tp-step--last {
+  animation: tp-step-on 0.2s var(--ease) var(--on) both;
+}
+/* Each phase fades in at --d and out at --out; the last one stays.
+   Later animations use `forwards` (not `both`) so their backwards fill
+   never overrides the state an earlier animation is still holding. */
+.tp.is-playing .tp-phase {
+  animation: tp-in 0.35s var(--ease) var(--d) both,
+             tp-fade-out 0.28s var(--ease) var(--out) forwards;
+}
+.tp.is-playing .tp-phase--last {
+  animation: tp-in 0.35s var(--ease) var(--d) both;
+}
+/* The dot pulses for as long as its phase is the live one */
+.tp.is-playing .tp-pulse {
+  animation: tp-pulse 1.1s var(--ease) var(--d) infinite both;
+}
+
+/* Step rows: appear dimmed (pending) → active → done */
+.tp.is-playing .tp-exec {
+  animation: tp-exec-in 0.4s var(--ease) var(--d) both,
+             tp-exec-act 0.3s var(--ease) var(--act) forwards,
+             tp-exec-done 0.3s var(--ease) var(--done) forwards;
+}
+.tp.is-playing .tp-spin {
+  animation: tp-rot 0.8s linear infinite,
+             tp-fade-in 0.2s var(--ease) var(--act) both,
+             tp-fade-out 0.2s var(--ease) var(--done) forwards;
+}
+.tp.is-playing .tp-exec-ico .tp-glyph {
+  animation: tp-fade-out 0.2s var(--ease) var(--act) forwards,
+             tp-fade-in 0.2s var(--ease) var(--done) forwards;
+}
+.tp.is-playing .tp-tool {
+  animation: tp-in 0.3s var(--ease) var(--d) both;
+}
+.tp.is-playing .tp-tool .tp-spin {
+  animation: tp-rot 0.8s linear infinite,
+             tp-fade-in 0.2s var(--ease) var(--d) both,
+             tp-fade-out 0.2s var(--ease) var(--done) forwards;
+}
+.tp.is-playing .tp-tool-status {
+  animation: tp-fade-in 0.2s var(--ease) var(--done) both;
+}
+
+/* Knocked out while it is that step's turn: the idle label colour becomes the
+   fill and the outline, and the text drops to paper. */
+@keyframes tp-step-on {
+  from { background: var(--color-paper);   color: var(--tp-tag-text); border-color: var(--tp-tag-border); }
+  to   { background: var(--tp-tag-text);   color: var(--color-paper); border-color: var(--tp-tag-text); }
+}
+@keyframes tp-step-off {
+  from { background: var(--tp-tag-text);   color: var(--color-paper); border-color: var(--tp-tag-text); }
+  to   { background: var(--color-paper);   color: var(--tp-tag-text); border-color: var(--tp-tag-border); }
+}
+@keyframes tp-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tp-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1); }
+}
+@keyframes tp-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tp-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes tp-rot      { to { transform: rotate(360deg); } }
+@keyframes tp-exec-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 0.38; transform: translateY(0); }
+}
+@keyframes tp-exec-act {
+  from { opacity: 0.38; color: var(--color-muted); }
+  to   { opacity: 1;    color: var(--color-ink); }
+}
+@keyframes tp-exec-done {
+  from { color: var(--color-ink); }
+  to   { color: var(--color-muted); }
+}
+
+@media (max-width: 640px) {
+  .tp-steps      { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .tp-step       { font-size: 12px; padding: 9px 8px; }
+  .tp-phase      { font-size: 15px; }
+  .tp-exec-label { font-size: 14.5px; }
+  .tp-tool-name  { font-size: 13px; }
+  .tp-user       { font-size: 15px; }
+  .tp-answer     { font-size: 15px; }
+  .tp-chat       { padding: 16px; }
+}
+
+/* Reduced motion — show the finished state, no movement, no replay */
+@media (prefers-reduced-motion: reduce) {
+  .tp.is-armed .tp-phase--last { opacity: 1; }
+  .tp.is-armed .tp-step--last {
+    border-color: var(--tp-tag-text);
+    background: var(--tp-tag-text);
+    color: var(--color-paper);
+  }
+  .tp.is-playing .tp-step,
+  .tp.is-playing .tp-step--last,
+  .tp.is-playing .tp-phase,
+  .tp.is-playing .tp-phase--last,
+  .tp.is-playing .tp-pulse,
+  .tp.is-playing .tp-exec,
+  .tp.is-playing .tp-spin,
+  .tp.is-playing .tp-exec-ico .tp-glyph,
+  .tp.is-playing .tp-tool,
+  .tp.is-playing .tp-tool .tp-spin,
+  .tp.is-playing .tp-tool-status,
+  .tp-dots i { animation: none; }
+  .tp.is-playing .tp-phase--last { opacity: 1; }
+  /* Seeking is not wired up when motion is reduced, so the tags are inert */
+  .tp-step { cursor: default; }
+  .tp-hint { display: none; }
+}
+
+/* ============================================================
+   LESSONS LEARNED  (#lessons)
+   Each numbered lesson is a heading + one paragraph, so the gap
+   between blocks is the heading's top margin. 40px separates the
+   lessons clearly without breaking the section apart.
+   ============================================================ */
+.case-content #lessons h3 { margin-top: 40px; }
+
+/* ============================================================
+   DESIGN SYSTEM EXCERPT  (#design-system, .ds-*)
+   The Figma spec sheet is 1501x2332 — at content width every hex
+   code and every "24px / Bold / 120%" annotation renders around
+   7px and turns to mush. So this is a hand-picked excerpt rebuilt
+   in markup rather than exported as a flat image: hex codes stay
+   selectable, the type samples render in a real font at their
+   literal sizes, and the whole thing reflows on a phone.
+   The specimens keep the product's own blue and sit on white,
+   because that is the surface they were designed for — the warm
+   frame around them is the portfolio's, not the product's.
+   ============================================================ */
+/* Scoped to .case-image.ds, not bare .ds: the placeholder rule
+   `.case-image:not(:has(img))` outranks a single class, so a bare .ds
+   would lose display/text-align to its flex-centred mono defaults. */
+.case-image.ds {
+  display: block;
+  /* .case-image's text-only placeholder rule hands children mono 12px,
+     centred, with letter-spacing; none of that belongs here. */
+  font-family: var(--font-sans);
+  font-size: 14px;
+  letter-spacing: normal;
+  text-align: left;
+  color: var(--color-ink);
+}
+.ds-block + .ds-block { margin-top: 34px; }
+
+.ds .ds-h {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+.ds .ds-h span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+}
+.ds .ds-note {
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--color-stone);
+}
+
+/* ---------- Colour ramps ---------- */
+.ds-ramp + .ds-ramp { margin-top: 18px; }
+.ds-ramp-label {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-slate);
+}
+.ds-chips {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Four functional colours read as samples, not as a ramp, so they get
+   their own width instead of stretching across nine columns. */
+.ds-chips--fn { grid-template-columns: repeat(4, minmax(0, 116px)); }
+.ds-chips li { margin: 0; }
+.ds-chips i {
+  display: block;
+  height: 46px;
+  border-radius: 8px;
+  /* The lightest steps are near-white; without a hairline they vanish
+     against the specimen surface. */
+  box-shadow: inset 0 0 0 1px rgba(10, 10, 10, 0.10);
+  background: var(--c);
+}
+.ds-chips b {
+  display: block;
+  margin-top: 7px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.ds-chips code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.01em;
+  color: var(--color-stone);
+}
+
+/* ---------- Type scale ---------- */
+.ds-type { margin: 0; }
+.ds-type-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-top: 1px solid var(--color-border-soft);
+}
+.ds-type-row:first-child { border-top: 0; }
+.ds-type-row dt {
+  margin: 0;
+  font-family: 'Noto Sans TC', var(--font-sans);
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+.ds-type-row dd {
+  margin: 0;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--color-stone);
+  white-space: nowrap;
+}
+
+/* ---------- Component specimens ----------
+   Each specimen is a white card so the product UI sits on the
+   surface it was drawn for. The state label above each row is the
+   point of the excerpt — this system was handed to engineering as
+   states, not as shapes. */
+.ds-specs { display: grid; gap: 14px; }
+.ds-spec {
+  padding: 18px 18px 20px;
+  background: var(--color-paper);
+  border-radius: var(--r-block-inner);
+}
+.ds .ds-spec-title {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-slate);
+}
+.ds-state-label {
+  display: block;
+  margin: 0 0 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+}
+.ds-rows { display: grid; gap: 12px; }
+
+/* Everything below is product UI, so it uses the product's tokens
+   verbatim rather than the portfolio's. */
+.ds-ui { --p500: #2563EB; --p600: #1D4ED8; --n300: #E5E7EB; --n600: #6B7280; --n800: #1F2937; }
+
+/* Data asset card */
+.ds-asset {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--n300);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--n800);
+}
+.ds-asset-name { font-weight: 500; }
+.ds-asset-ico { flex: none; color: var(--n600); }
+.ds-asset-ico svg { display: block; width: 15px; height: 15px; }
+.ds-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+.ds-pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.ds-pill--ok   { color: #16A34A; background: #E9F7EF; }
+.ds-pill--busy { color: #6B7280; background: #F3F4F6; }
+.ds-pill--warn { color: #A16207; background: #FEF6DC; }
+.ds-asset-actions { margin-left: auto; display: flex; gap: 6px; }
+.ds-icon-btn {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--n300);
+  border-radius: 6px;
+  color: var(--n600);
+}
+.ds-icon-btn--danger { color: #EF4444; }
+.ds-icon-btn svg { width: 13px; height: 13px; }
+
+/* Alert */
+.ds-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid;
+  border-radius: 8px;
+  font-size: 12.5px;
+}
+.ds-alert-body { line-height: 1.45; }
+.ds-alert-body strong { display: block; font-weight: 600; }
+.ds-alert-body span { color: var(--n600); }
+.ds-alert-ico { flex: none; width: 16px; height: 16px; }
+.ds-alert-ico svg { display: block; width: 16px; height: 16px; }
+.ds-alert-act {
+  margin-left: auto;
+  flex: none;
+  padding: 5px 11px;
+  border: 1px solid var(--n300);
+  border-radius: 6px;
+  background: #FFFFFF;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--n800);
+}
+.ds-alert--info  { border-color: #BFDBFE; background: #EFF6FF; }
+.ds-alert--info  .ds-alert-ico { color: #347397; }
+.ds-alert--warn  { border-color: #FDE68A; background: #FEFBEB; }
+.ds-alert--warn  .ds-alert-ico { color: #B45309; }
+.ds-alert--error { border-color: #FECACA; background: #FEF2F2; }
+.ds-alert--error .ds-alert-ico { color: #DC2626; }
+
+/* Button */
+.ds-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+.ds-btn {
+  padding: 7px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.ds-btn--primary   { background: var(--p500); color: #FFFFFF; }
+.ds-btn--secondary { background: #FFFFFF; color: var(--p600); border-color: var(--p500); }
+.ds-btn--text      { background: transparent; color: var(--p600); padding-left: 6px; padding-right: 6px; }
+
+/* ---------- Board layout ----------
+   The excerpt is laid out as one wide board (lands near 16:9 at content
+   width) rather than a tall stack: colour and type share the top row,
+   the component specimens sit across the bottom. Everything shrinks a
+   step so the whole system reads in one screen. */
+/* Three classes deep so it outranks the image-less .case-image rules,
+   which flex-centre their contents. */
+.case-image.ds.ds--board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "color comps"
+    "type  comps";
+  grid-template-rows: auto 1fr;
+  gap: 20px 30px;
+  align-content: start;
+}
+.ds--board .ds-block + .ds-block { margin-top: 0; }
+.ds--board .ds-block--color { grid-area: color; }
+.ds--board .ds-block--type  { grid-area: type; }
+/* The specimens are the tall half, so they take one full-height column
+   beside the two token blocks rather than a third row under them. */
+.ds--board .ds-block--comps { grid-area: comps; }
+.ds--board .ds-h { margin-bottom: 12px; }
+
+.ds--board .ds-ramp + .ds-ramp { margin-top: 6px; }
+.ds--board .ds-ramp-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.ds--board .ds-ramp-label code {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--color-stone);
+}
+.ds--board .ds-chips { gap: 5px; }
+.ds--board .ds-chips i { height: 22px; border-radius: 6px; }
+/* Unlabelled by default; the three ramps on this board all opt back in
+   below, but the rule stays for any future reference strip. */
+.ds--board .ds-chips b { display: none; }
+/* Primary and neutral carry step numbers, functional carries names —
+   without them each row is four unexplained colours. */
+.ds--board .ds-ramp--steps .ds-chips b,
+.ds--board .ds-chips--fn b {
+  display: block;
+  margin-top: 4px;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--color-stone);
+}
+.ds--board .ds-chips--fn,
+.ds--board .ds-chips--quad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* All three ramps are four chips at one size, copying the Figma sheet's
+   card: a near-square tile with a generous radius, the step number or
+   name under it in dark bold, the hex in grey below that. */
+.ds--board .ds-chips--quad i {
+  height: 62px;
+  border-radius: 14px;
+}
+.ds--board .ds-chips--quad b {
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-ink-soft);
+}
+.ds--board .ds-chips--quad code {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.01em;
+  color: var(--color-muted);
+}
+
+.ds--board .ds-type-row { padding: 4px 0; }
+
+.ds--board .ds-specs { gap: 14px; align-content: start; }
+/* On the white board the specimen cards can no longer be white-on-warm,
+   so a hairline replaces the fill as the thing that separates them. */
+.ds--board .ds-spec {
+  padding: 12px 14px 14px;
+  border: 1px solid var(--color-border-soft);
+}
+.ds--board .ds-spec-title { margin-bottom: 8px; }
+.ds--board .ds-rows { gap: 6px; }
+.ds--board .ds-asset { padding: 6px 10px; }
+.ds--board .ds-btns { margin-top: 10px; gap: 8px; }
+
+/* One column once the board's halves would be narrower than their
+   content — the order in markup is already the reading order. */
+@media (max-width: 860px) {
+  .case-image.ds.ds--board {
+    grid-template-columns: 1fr;
+    grid-template-areas: "color" "type" "comps";
+    grid-template-rows: auto;
+    gap: 26px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ds-chips { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .ds-chips--fn { grid-template-columns: repeat(2, 1fr); }
+  .ds-chips i { height: 38px; }
+  .ds-chips code { font-size: 9.5px; }
+  .ds-type-row { flex-direction: column; gap: 4px; }
+  .ds-type-row dd { white-space: normal; }
+  /* The action buttons are decoration in a specimen, not controls —
+     drop them before the row starts wrapping awkwardly. */
+  .ds-asset-actions { display: none; }
+  .ds-alert { flex-wrap: wrap; }
+  .ds-alert-act { margin-left: 26px; }
+}
+
+/* Disclaimer under a demo screenshot or GIF. A <span>, like
+   .problem-showcase-hint, so the broader ".case-content p" rules don't set its
+   size or margins; it sits tight under the frame it annotates. */
+.case-image-note {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-stone, var(--color-slate));
+}
+
+/* Tricuss Solution Overview — numbered summary cards. Reuses .goal-card so the
+   block matches Design Goals, swapping the icon slot for a numbered badge that
+   mirrors the .h3-num treatment used elsewhere in the case. */
+.page-tricuss #solution-overview .solution-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 12px;
+  border-radius: 9999px;
+  background: var(--color-brinno-strong);
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  flex-shrink: 0;
+}
+.page-tricuss #solution-overview .goal-title {
+  font-size: clamp(16px, 1.3vw, 18px);
+}
+.page-tricuss #solution-overview .solution-overview-more {
+  margin-top: 24px;
+}
+@media (max-width: 720px) {
+  .page-tricuss #solution-overview .solution-num { margin-bottom: 10px; }
+}
+
+/* Solution Overview — hero shot then three full-width cards.
+   The cards are full width on purpose: these are UI screenshots, and in a
+   three-column grid their labels fall below reading size, which leaves a
+   picture that proves nothing. Width is what makes them evidence. */
+.page-tricuss #solution-overview .so-hero {
+  margin: 32px 0 0;
+}
+.page-tricuss #solution-overview .so-hero .case-image {
+  margin: 0;
+}
+/* Roomier than the default --pad-block: these shots are full-bleed UI with
+   their own light chrome, so they need more breathing room than a diagram
+   before the frame reads as a frame rather than a crop. Clamped so the gutter
+   gives way on narrow screens instead of squeezing the screenshot. */
+.page-tricuss #solution-overview .so-hero .case-image:has(img) {
+  padding: clamp(20px, 3.2vw, 48px);
+}
+.page-tricuss #solution-overview .so-card .case-image:has(img) {
+  padding: 16px;
+}
+
+.page-tricuss #solution-overview .so-cards {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.page-tricuss #solution-overview .so-card {
+  background: var(--color-blue-wash);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--r-block);
+  padding: var(--pad-block);
+  color: var(--color-ink);
+  transition: border-color var(--dur-base) var(--ease);
+}
+.page-tricuss #solution-overview .so-card:hover {
+  border-color: var(--color-brinno, var(--color-blue));
+}
+/* The screenshot frame sits on paper inside a washed card, so it keeps its own
+   border — without it the shot bleeds into the card at its light edges. */
+.page-tricuss #solution-overview .so-card .case-image {
+  margin: 20px 0 0;
+}
+@media (max-width: 900px) {
+  .page-tricuss #solution-overview .so-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .page-tricuss #solution-overview .so-cards { gap: 16px; margin-top: 28px; }
+  .page-tricuss #solution-overview .so-card .case-image { margin-top: 16px; }
+}
+
+/* The curated board is parked behind [hidden]. Needs to match
+   .case-image.ds.ds--board's specificity, or that rule's display:grid wins. */
+.case-image.ds.ds--board[hidden] { display: none; }

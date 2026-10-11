@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PDOGs Redesign · NTU IM</title>
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body class="page-pdogs">
+
+<nav class="top" aria-label="Primary">
+  <div class="wrap row">
+    <a href="index.html" class="wordmark">Chelsea Hsu</a>
+    
+    <ul class="nav-links">
+      <li><a class="link" href="index.html#work">Work</a></li>
+      <li><a class="link" href="about.html">About</a></li>
+      <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+      <li class="nav-lang"><a class="link lang-switch" href="../case-pdogs.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+    </ul>
+    
+    <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+  
+  <div class="nav-dropdown" id="navMenu" aria-hidden="true">
+    <div class="wrap">
+      <ul>
+        <li><a class="link" href="index.html#work">Work</a></li>
+        <li><a class="link" href="about.html">About</a></li>
+        <li><a class="link" href="https://drive.google.com/file/d/1eTgf2lx3YndsquBLUWXkQHzcCbq_Es6T/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
+        <li class="nav-lang"><a class="link lang-switch" href="../case-pdogs.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="case-hero">
+  <div class="wrap">
+    <img class="case-hero-image" src="../img/PDOGs/cover.png" alt="PDOGs Redesign cover">
+  </div>
+</header>
+
+<main class="case-main">
+  <div class="wrap case-grid">
+
+    <aside class="case-toc" aria-label="Section navigation">
+      <ul>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#solution-overview">Solution Overview</a></li>
+        <li><a href="#research">Research</a></li>
+        
+        <li><a href="#goals">Design Goals</a></li>
+        <li><a href="#improvements">Design</a></li>
+        
+        <li><a href="#conclusion">Outcome</a></li>
+        <li><a href="#lessons">Lessons Learned</a></li>
+      </ul>
+    </aside>
+
+    <article class="case-content">
+
+      <section id="context">
+        <span class="case-eyebrow">Context</span>
+        <h1>Streamlining assignment submission and management on a code-grading platform</h1>
+        <p>
+          PDOGs is the code-grading platform used in programming courses at NTU’s Department of Information Management. In 2023, I led a team of three designers in a redesign focused on <strong>improving the experience for students and teaching assistants (TAs)</strong>. We <strong>restructured the information architecture and system flows</strong> to make submitting assignments faster, and added <strong>clearer system guidance</strong> to make the TA side easier to learn.
+        </p>
+
+        <div class="case-meta-grid">
+          <div class="case-meta-card">
+            <h3 class="meta-title">Timeline</h3>
+            <p>2 months, Jul 2023 – Sep 2023</p>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">Team</h3>
+            <ul>
+              <li>Product manager × 1</li>
+              <li>Development team</li>
+              <li>UX/UI designers × 4 (incl. me)</li>
+            </ul>
+          </div>
+          <div class="case-meta-card">
+            <h3 class="meta-title">My role</h3>
+            <ul>
+              <li>Planned user research and usability testing</li>
+              <li>Generated and consolidated design proposals</li>
+              <li>Defined the design system</li>
+              <li>Planned the responsive design</li>
+            </ul>
+          </div>
+          <div class="case-meta-card highlight">
+            <h3 class="meta-title">Outcome</h3>
+            <ul>
+              <li>Cut assignment submission time by <strong>28%</strong></li>
+              <li><strong>3/3</strong> users found the new design more intuitive</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="background">
+        <span class="case-eyebrow">Background</span>
+        <h2>Fixing usability issues to make learning and course management smoother</h2>
+
+        <h3>What is PDOGs?</h3>
+        <p>
+          Picture yourself as a beginner programmer: you finish an assignment, log in, paste your code, hit submit, and see your score instantly. That’s PDOGs (Programming Design Online Grading System). Every semester, it supports <strong>500+</strong> students through their first programming courses.
+        </p>
+
+        <h3>Why redesign PDOGs?</h3>
+        <p>
+          PDOGs had already gone through several versions, but two problems remained: <strong>submitting assignments was slow and tedious, and the TA side was hard to learn</strong>. This redesign set out to fix those usability issues so PDOGs could better support students and TAs throughout the course.
+        </p>
+
+        <div class="callout">
+          <p><strong>Project goal:</strong> Fix existing usability issues so the submission and management flows — and the way information is presented — match what students and TAs actually need</p>
+        </div>
+
+        <div class="case-image"><img src="../img/PDOGs/stakeholders.png" alt="Stakeholder map: students, TAs, and the development team"></div>
+      </section>
+
+      <section id="solution-overview">
+        <span class="case-eyebrow">Solution Overview</span>
+        <h2>Four changes to the student and TA experience</h2>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">01</span>Cleaner, denser information</h3>
+            <p>Resized table columns and put assignment status — what users care about most — first, so students find what they need faster.</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="../img/PDOGs/solution-1.png" alt="Reorganized assignment list with the status column shown first"></div>
+        </div>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">02</span>A clearer, friendlier sidebar</h3>
+            <p>The back button now names its destination to prevent wrong turns, and status icons show submission progress at a glance.</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="../img/PDOGs/solution-2.png" alt="Sidebar showing the back destination and assignment submission status"></div>
+        </div>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">03</span>Clearer system feedback</h3>
+            <p>Added explanations of technical terms and input rules to the TA tools, and standardized error messages to make the system easier to learn and debug.</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="../img/PDOGs/solution-3.png" alt="Term tooltips and a unified error message format"></div>
+        </div>
+
+        <div class="solution-row">
+          <div class="solution-row-text">
+            <h3><span class="h3-num" aria-hidden="true">04</span>A smoother cross-device experience</h3>
+            <p>Introduced responsive design so students and TAs can check and manage assignments on any device.</p>
+          </div>
+          <div class="case-image case-image--flush"><img src="../img/PDOGs/solution-4.png" alt="Responsive interface across devices"></div>
+        </div>
+      </section>
+
+      <section id="research">
+        <span class="case-eyebrow">Research</span>
+        <h2>Pinpointing problems from the user’s perspective, then prioritizing with the team</h2>
+        <p>
+          To understand how students and TAs actually used PDOGs, I led preliminary research with the design team. With a tight timeline, I took stock of available resources and worked with the developers to categorize and prioritize what we found — <strong>focusing on issues with the biggest user impact that were also technically feasible</strong>.
+        </p>
+
+        <h3><span class="h3-num" aria-hidden="true">01</span>Heuristic evaluation of the student system</h3>
+        <p>
+          Everyone on the team had used PDOGs as a student, so we walked through every user flow and flagged anything confusing or worth improving on sticky notes. I consolidated the issues into a spreadsheet and focused on the flow that matters most to students: submitting a programming assignment.
+        </p>
+        <div class="case-image"><img src="../img/PDOGs/heuristic.png" alt="Heuristic evaluation: flagging issues in user flows with sticky notes"></div>
+
+        <h3><span class="h3-num" aria-hidden="true">02</span>User interviews with TAs</h3>
+        <p>
+          The TA side has more complex features, so I planned interviews with <strong>6 TAs</strong> to learn how they used PDOGs, where they struggled, and what could be improved.
+        </p>
+
+        <div class="case-step-row">
+          <div class="case-step-text">
+            <h4>Before: planning the interview guide</h4>
+            <p>I ordered the questions along an interview curve — opening with easy background questions, then gradually moving into actual behaviors, thoughts, and feelings.</p>
+          </div>
+          <div class="case-image"><img src="../img/PDOGs/interview-prep.png" alt="Interview guide: questions ordered along the interview curve"></div>
+        </div>
+
+        <div class="case-step-row">
+          <div class="case-step-text">
+            <h4>During: semi-structured interviews</h4>
+            <p>TAs shared their screens, walked through their everyday tasks and past experiences, and thought aloud as they went.</p>
+          </div>
+          <div class="case-image"><img src="../img/PDOGs/interview-session.png" alt="Semi-structured interview: screen sharing + think-aloud"></div>
+        </div>
+
+        <div class="case-step-row">
+          <div class="case-step-text">
+            <h4>After: converging on problems</h4>
+            <p>
+              We grouped similar issues in an affinity diagram, then sorted them with the developers into system-side and interface-side issues. System-side changes were costly, so <strong>we focused on interface-side issues</strong>.
+            </p>
+          </div>
+          <div class="case-image"><img src="../img/PDOGs/affinity-diagram.png" alt="Affinity diagram: issues split into system-side and interface-side"></div>
+        </div>
+      </section>
+
+      <section id="findings">
+        <span class="case-eyebrow">Key Findings</span>
+        <h2>Two core insights</h2>
+
+        <h3><span class="h3-num" aria-hidden="true">01</span>Scattered information, extra steps, and unintuitive interactions slowed down submission</h3>
+        <div class="callout">
+          <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f64b.svg" alt="Student" style="width:1.4em;height:1.4em;vertical-align:-0.3em;margin-right:4px;display:inline"> <em>“I just want to hand in my assignment quickly. Why do I have to go through so many steps every time?”</em></p>
+        </div>
+        <div class="case-image"><img src="../img/PDOGs/insight-1.png" alt="Insight #1: pain points in the submission flow"></div>
+
+        <h3><span class="h3-num" aria-hidden="true">02</span>Unexplained terms and interactions made the TA side hard to learn</h3>
+        <div class="callout">
+          <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f469-200d-1f4bb.svg" alt="TA" style="width:1.4em;height:1.4em;vertical-align:-0.3em;margin-right:4px;display:inline"> <em>“A lot of things aren’t explained clearly. We only learn how to use them by word of mouth from other TAs.”</em></p>
+        </div>
+        <div class="case-image"><img src="../img/PDOGs/insight-2.png" alt="Insight #2: high learning cost for TAs"></div>
+      </section>
+
+      <section id="goals">
+        <span class="case-eyebrow">Design Goals</span>
+        <h2>Defining design goals from research and team input</h2>
+        <p>
+          When we shared our findings with the PM and developers, they asked us to add responsive design to this release. Combining the research with the team’s input, I defined four design goals:
+        </p>
+
+        <div class="goals-grid">
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+            </span>
+            <h3 class="goal-title">Optimize the information architecture</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+            </span>
+            <h3 class="goal-title">Create a smooth interaction flow</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </span>
+            <h3 class="goal-title">Provide clear system guidance</h3>
+          </div>
+          <div class="goal-card">
+            <span class="goal-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+            </span>
+            <h3 class="goal-title">Improve the cross-device experience</h3>
+          </div>
+        </div>
+      </section>
+
+      <section id="improvements">
+        <span class="case-eyebrow">Design Improvements</span>
+        <h2>Validating hypotheses with usability testing to move the design forward</h2>
+        <p>
+          We drafted initial proposals for each goal. In team discussions, I realized internal opinions alone wouldn’t convince the PM and developers to commit to changes. So I ran usability tests with <strong>3 PDOGs users</strong> to validate our hypotheses, set the design direction, and build the case for implementation.
+        </p>
+
+        <h3>Goal #1 · Optimize the information architecture</h3>
+
+        <h4><span class="h3-num" aria-hidden="true">01</span>Resize columns to show more at a glance</h4>
+        <p>
+          Each column needs a different width, so we redefined them to fit as much information as possible without truncating anything. Testing also confirmed our hypothesis that the “Status” column should come first.
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="Design iteration switcher">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="Show Before">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>
+                    1. Oversized columns and type meant scrolling to see everything<br>
+                    2. “Time” came first, but users look for “Status”<br>
+                    3. Arrow tap targets were too small
+                  </p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      
+                      <span class="note-title">Hypothesis</span>
+                    </div>
+                    <p>When submitting, users care more about “Status” than “Time”</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-1-before.png" alt="Before: oversized table columns and type">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>
+                    1. Resized table columns and type<br>
+                    2. Moved “Status” ahead of “Time”<br>
+                    3. Enlarged button tap targets
+                  </p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      
+                      <span class="note-title">Test result</span>
+                    </div>
+                    <p><strong>3/3</strong> users checked “Status” to confirm an assignment was open before looking at “Time”</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-1-after.png" alt="After: resized and reordered columns">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="Show After" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After toggle">
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="Show Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="Show After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h4><span class="h3-num" aria-hidden="true">02</span>Surface the information that matters</h4>
+        <p>
+          To make pages easier to scan, we hid empty fields and moved repeated content to the bottom. Our heuristic evaluation also showed that users care less about their exact score than about whether they got full marks. After testing, we added cues like the total score and the Verdict to the table, so users can tell at a glance whether an assignment is complete.
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="Design iteration switcher">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="Show Before">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>1. Most assignment description fields were empty <br>
+                    2. Assignment info was already shown in the previous page’s table <br>
+                    3. Only the score was shown, but users care more about full marks</p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      
+                      <span class="note-title">Hypothesis</span>
+                    </div>
+                    <p>Showing whether an assignment is complete helps users more than showing the score alone</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-2-before.png" alt="Before: most assignment description fields are empty">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>
+                    1. Hide the assignment description when it’s empty <br>
+                    2. Show the Overview earlier so users see submission status sooner <br>
+                    3. Show the score alongside the total to gauge the gap to full marks <br>
+                    4. Add a Verdict column to show completion at a glance
+                  </p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      
+                      <span class="note-title">Test result</span>
+                    </div>
+                    <p><strong>3/3</strong> users said seeing the total score in the table, without clicking in, was convenient</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-2-after.png" alt="After: total score and Verdict column shown">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="Show After" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After toggle">
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="Show Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="Show After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Goal #2 · Create a smooth interaction flow</h3>
+
+        <h4><span class="h3-num" aria-hidden="true">01</span>Make sidebar feedback clear and friendly</h4>
+        <p>
+          The back button used to go up one level in the system hierarchy instead of returning to the previous page, which often confused users. We labeled it with its destination and added status icons that encourage users to finish their assignments.
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="Design iteration switcher">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="Show Before">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>The back button went up one level in the hierarchy, not back to the previous page — so users had to navigate from the assignment description back to the submission page.</p>
+                  <div class="iteration-note">
+                    <div class="note-head">
+                      
+                      <span class="note-title">Hypothesis</span>
+                    </div>
+                    <p>Submission status cues encourage users to complete assignments</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-3-before.png" alt="Before: the back button jumps up one level">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>
+                    1. Show the name of the page the back button leads to (one level up) <br>
+                    2. Fill the selected item’s background to highlight the current course <br>
+                    3. Add submission status cues to encourage users to finish
+                  </p>
+                  <div class="iteration-note">
+                    
+                    <p><strong>Test result<br></strong><strong>3/3</strong> users understood the green check icon and felt it made their progress clear</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-3-after.png" alt="After: the back button shows its destination, plus submission status">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="Show After" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After toggle">
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="Show Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="Show After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h4><span class="h3-num" aria-hidden="true">02</span>Explore faster paths to submission</h4>
+        <p>
+          We explored 3 ways to cut submission steps. Option 2 (tabs) got more positive feedback in testing, but required major system changes. We chose Option 3 (direct file upload): it fits how students already work without adding development effort.
+        </p>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="Design iteration switcher">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="Previous option" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Option 1</span>
+                  <h5 class="iteration-split-title">Show all test case results on the submission page</h5>
+                  <p>✔ One step fewer than resubmitting today<br>✖ Built for editing online, not for students who code locally</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/proposal-1.png" alt="Option 1: all test case results on the submission page">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Option 2</span>
+                  <h5 class="iteration-split-title">Use tabs for task pages</h5>
+                  <p>✔ Tabs are more visible and intuitive than the sidebar<br>✖ Resubmitting takes just as many steps; large development changes</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/proposal-2.png" alt="Option 2: task pages as tabs">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split" data-slide="2">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">Option 3</span>
+                  <h5 class="iteration-split-title">Upload files directly</h5>
+                  <p>✔ No more copying and pasting from local files<br>✔ Matches how students already work</p>
+                  <div class="iteration-note">
+                    
+                    <p><strong>Test result<br></strong><strong>2/3</strong> users found tabs more intuitive than the original design <br> <strong>1/3</strong> users said file upload took little thought and matched their habits</p>
+                  </div>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/proposal-3.png" alt="Option 3: upload files directly">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="Next option">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Option switcher">
+              <button type="button" class="iteration-dot is-active" data-dot="0" aria-label="Option 1"></button>
+              <button type="button" class="iteration-dot" data-dot="1" aria-label="Option 2"></button>
+              <button type="button" class="iteration-dot" data-dot="2" aria-label="Option 3"></button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Goal #3 · Provide clear system guidance</h3>
+        <p>
+          The TA side is full of technical terms and input formats, but the interface explained little, so users often had to figure things out by trial and error. We <strong>added clearer guidance</strong> and <strong>standardized error messages</strong>.
+        </p>
+
+        <h4><span class="h3-num" aria-hidden="true">01</span>Explain technical terms and input rules</h4>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="Design iteration switcher">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="Show Before">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>When creating a new task, users often couldn’t tell Label and Title apart</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-4-before.png" alt="Before: Label and Title are easy to confuse">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>Hovering shows what Label and Title mean</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-4-after.png" alt="After: hover reveals Label and Title explanations">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="Show After" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After toggle">
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="Show Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="Show After"></button>
+            </div>
+          </div>
+        </div>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="Design iteration switcher">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="Show Before">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>The original placeholder made users think all three formats were required</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-5-before.png" alt="Before: a misleading placeholder">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>Separated each input option with a slash and explained when each format applies</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/iteration-5-after.png" alt="After: input options separated by slashes, with conditions noted">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="Show After" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After toggle">
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="Show Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="Show After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h4><span class="h3-num" aria-hidden="true">02</span>Standardize error messages with likely causes and fixes</h4>
+        <div class="case-iteration">
+          <div class="iteration-carousel" data-iteration-carousel aria-label="Design iteration switcher">
+            <button type="button" class="iteration-nav iteration-nav--prev" data-prev aria-label="Show Before">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+
+            <div class="iteration-viewport">
+              <figure class="iteration-figure iteration-figure--split" data-slide="0">
+                <div class="iteration-split-text">
+                  <span class="iteration-label">Before</span>
+                  <p>Only the error type was shown, so users didn’t know what to do next</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/error 2.png" alt="Before: only the error type is shown">
+                </div>
+              </figure>
+              <figure class="iteration-figure iteration-figure--split is-active" data-slide="1">
+                <div class="iteration-split-text">
+                  <span class="iteration-label iteration-label--after">After</span>
+                  <p>Unified the format and added likely causes and fixes to help users troubleshoot quickly</p>
+                </div>
+                <div class="iteration-split-image">
+                  <img src="../img/PDOGs/error 1.png" alt="After: error type + likely cause + fix">
+                </div>
+              </figure>
+            </div>
+
+            <button type="button" class="iteration-nav iteration-nav--next" data-next aria-label="Show After" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="iteration-dots" role="tablist" aria-label="Before / After toggle">
+              <button type="button" class="iteration-dot" data-dot="0" aria-label="Show Before"></button>
+              <button type="button" class="iteration-dot is-active" data-dot="1" aria-label="Show After"></button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Goal #4 · Improve the cross-device experience</h3>
+        <p>
+          PDOGs had no mobile interface, yet many students check grades and assignments on their phones. Responsive design lets them move seamlessly between devices.
+        </p>
+        <div class="case-image"><img src="../img/PDOGs/RWD.png" alt="Responsive design: mobile and desktop interfaces side by side"></div>
+      </section>
+
+      <section id="design-system">
+        <span class="case-eyebrow">Design System</span>
+        <h2>Design system &amp; component guidelines</h2>
+        
+        <div class="case-image"><img src="../img/PDOGs/design system.png" alt="PDOGs design system: color, typography, and components"></div>
+      </section>
+
+      <section id="conclusion">
+        <span class="case-eyebrow">Outcome</span>
+        <h2>Faster submission and an easier learning curve for TAs</h2>
+
+        <p>
+          <strong>Restructuring the information architecture and system flows</strong> simplified a submission process that had been slow and tedious, while clearer guidance made the TA side easier to learn.
+        </p>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <span class="stat-num">28%</span>
+            <span class="stat-label">Shorter assignment submission time</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">3/3</span>
+            <span class="stat-label">Participants found the new design more intuitive</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">2 mo</span>
+            <span class="stat-label">From research to redesign delivery</span>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="lessons">
+        <span class="case-eyebrow">Lessons Learned</span>
+        <h2>Reflections &amp; learnings</h2>
+
+        <h3><span class="h3-num" aria-hidden="true">01</span>Managing timelines and team communication</h3>
+        <p>
+          This was my first time leading a design team, owning everything from project goals to the timeline. I learned to keep close track of each teammate’s progress, <strong>and to factor other teams’ needs and timelines into every decision</strong> and schedule.
+        </p>
+
+        <h3><span class="h3-num" aria-hidden="true">02</span>Designing within an existing system</h3>
+        <p>
+          Many early ideas stalled after conversations with engineering, which was frustrating at first. I came to see that redesigning a mature system isn’t about blue-sky ideas — <strong>it’s about finding the most feasible improvements within the system that already exists</strong>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="case-next" aria-labelledby="next-project-title">
+  <div class="wrap">
+    <div class="next-header">
+      <span class="next-label">Next project</span>
+      
+    </div>
+    <a href="case-brinno.html" class="next-card">
+      <div class="next-card-body">
+        <span class="next-meta">01 · NTU × Brinno</span>
+        <h3 class="next-title" id="next-project-title">Remote camera management for construction sites</h3>
+      </div>
+      <span class="next-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <span class="copy">© 2026 Chelsea Hsu</span>
+    <div class="links">
+      <a href="mailto:pupss95315@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/chien-chi-hsu" target="_blank" rel="noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../scroll-spy.js" defer></script>
+<script src="../iteration-carousel.js" defer></script>
+
+<script>
+  (function () {
+    var btn  = document.getElementById('navMenuBtn');
+    var menu = document.getElementById('navMenu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function() {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('aria-hidden', String(open));
+      menu.classList.toggle('is-open', !open);
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
